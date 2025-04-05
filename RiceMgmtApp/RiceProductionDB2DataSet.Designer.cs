@@ -3674,6 +3674,8 @@ namespace RiceMgmtApp {
             
             private global::System.Data.DataColumn columnCreatedAt;
             
+            private global::System.Data.DataColumn columnFullName;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public UsersDataTable() {
@@ -3773,6 +3775,14 @@ namespace RiceMgmtApp {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn FullNameColumn {
+                get {
+                    return this.columnFullName;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -3808,7 +3818,7 @@ namespace RiceMgmtApp {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
-            public UsersRow AddUsersRow(string Username, string PasswordHash, string Email, string ContactNumber, RolesRow parentRolesRowByFK__Users__RoleID__3F466844, string Status, System.DateTime CreatedAt) {
+            public UsersRow AddUsersRow(string Username, string PasswordHash, string Email, string ContactNumber, RolesRow parentRolesRowByFK__Users__RoleID__3F466844, string Status, System.DateTime CreatedAt, string FullName) {
                 UsersRow rowUsersRow = ((UsersRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -3818,7 +3828,8 @@ namespace RiceMgmtApp {
                         ContactNumber,
                         null,
                         Status,
-                        CreatedAt};
+                        CreatedAt,
+                        FullName};
                 if ((parentRolesRowByFK__Users__RoleID__3F466844 != null)) {
                     columnValuesArray[5] = parentRolesRowByFK__Users__RoleID__3F466844[0];
                 }
@@ -3859,6 +3870,7 @@ namespace RiceMgmtApp {
                 this.columnRoleID = base.Columns["RoleID"];
                 this.columnStatus = base.Columns["Status"];
                 this.columnCreatedAt = base.Columns["CreatedAt"];
+                this.columnFullName = base.Columns["FullName"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3880,6 +3892,8 @@ namespace RiceMgmtApp {
                 base.Columns.Add(this.columnStatus);
                 this.columnCreatedAt = new global::System.Data.DataColumn("CreatedAt", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCreatedAt);
+                this.columnFullName = new global::System.Data.DataColumn("FullName", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnFullName);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnUserID}, true));
                 this.columnUserID.AutoIncrement = true;
@@ -3896,6 +3910,8 @@ namespace RiceMgmtApp {
                 this.columnContactNumber.MaxLength = 20;
                 this.columnRoleID.AllowDBNull = false;
                 this.columnStatus.MaxLength = 20;
+                this.columnFullName.AllowDBNull = false;
+                this.columnFullName.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -5344,6 +5360,17 @@ namespace RiceMgmtApp {
                 }
                 set {
                     this[this.tableUsers.CreatedAtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string FullName {
+                get {
+                    return ((string)(this[this.tableUsers.FullNameColumn]));
+                }
+                set {
+                    this[this.tableUsers.FullNameColumn] = value;
                 }
             }
             
@@ -9723,10 +9750,11 @@ SELECT StockID, FarmerID, CropType, Quantity, LastUpdated FROM Stock WHERE (Stoc
             tableMapping.ColumnMappings.Add("RoleID", "RoleID");
             tableMapping.ColumnMappings.Add("Status", "Status");
             tableMapping.ColumnMappings.Add("CreatedAt", "CreatedAt");
+            tableMapping.ColumnMappings.Add("FullName", "FullName");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Users] WHERE (([UserID] = @Original_UserID) AND ([Username] = @Original_Username) AND ([PasswordHash] = @Original_PasswordHash) AND ((@IsNull_Email = 1 AND [Email] IS NULL) OR ([Email] = @Original_Email)) AND ((@IsNull_ContactNumber = 1 AND [ContactNumber] IS NULL) OR ([ContactNumber] = @Original_ContactNumber)) AND ([RoleID] = @Original_RoleID) AND ((@IsNull_Status = 1 AND [Status] IS NULL) OR ([Status] = @Original_Status)) AND ((@IsNull_CreatedAt = 1 AND [CreatedAt] IS NULL) OR ([CreatedAt] = @Original_CreatedAt)))";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [Users] WHERE (([UserID] = @Original_UserID) AND ([Username] = @Original_Username) AND ([PasswordHash] = @Original_PasswordHash) AND ((@IsNull_Email = 1 AND [Email] IS NULL) OR ([Email] = @Original_Email)) AND ((@IsNull_ContactNumber = 1 AND [ContactNumber] IS NULL) OR ([ContactNumber] = @Original_ContactNumber)) AND ([RoleID] = @Original_RoleID) AND ((@IsNull_Status = 1 AND [Status] IS NULL) OR ([Status] = @Original_Status)) AND ((@IsNull_CreatedAt = 1 AND [CreatedAt] IS NULL) OR ([CreatedAt] = @Original_CreatedAt)) AND ([FullName] = @Original_FullName))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_UserID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -9740,10 +9768,11 @@ SELECT StockID, FarmerID, CropType, Quantity, LastUpdated FROM Stock WHERE (Stoc
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Status", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_CreatedAt", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CreatedAt", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CreatedAt", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CreatedAt", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_FullName", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FullName", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[Users] ([Username], [PasswordHash], [Email], [ContactNumber], [RoleID], [Status], [CreatedAt]) VALUES (@Username, @PasswordHash, @Email, @ContactNumber, @RoleID, @Status, @CreatedAt);
-SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, CreatedAt FROM Users WHERE (UserID = SCOPE_IDENTITY())";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [Users] ([Username], [PasswordHash], [Email], [ContactNumber], [RoleID], [Status], [CreatedAt], [FullName]) VALUES (@Username, @PasswordHash, @Email, @ContactNumber, @RoleID, @Status, @CreatedAt, @FullName);
+SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, CreatedAt, FullName FROM Users WHERE (UserID = SCOPE_IDENTITY())";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PasswordHash", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PasswordHash", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -9752,10 +9781,11 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RoleID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RoleID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CreatedAt", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CreatedAt", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@FullName", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FullName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE [dbo].[Users] SET [Username] = @Username, [PasswordHash] = @PasswordHash, [Email] = @Email, [ContactNumber] = @ContactNumber, [RoleID] = @RoleID, [Status] = @Status, [CreatedAt] = @CreatedAt WHERE (([UserID] = @Original_UserID) AND ([Username] = @Original_Username) AND ([PasswordHash] = @Original_PasswordHash) AND ((@IsNull_Email = 1 AND [Email] IS NULL) OR ([Email] = @Original_Email)) AND ((@IsNull_ContactNumber = 1 AND [ContactNumber] IS NULL) OR ([ContactNumber] = @Original_ContactNumber)) AND ([RoleID] = @Original_RoleID) AND ((@IsNull_Status = 1 AND [Status] IS NULL) OR ([Status] = @Original_Status)) AND ((@IsNull_CreatedAt = 1 AND [CreatedAt] IS NULL) OR ([CreatedAt] = @Original_CreatedAt)));
-SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, CreatedAt FROM Users WHERE (UserID = @UserID)";
+            this._adapter.UpdateCommand.CommandText = @"UPDATE [Users] SET [Username] = @Username, [PasswordHash] = @PasswordHash, [Email] = @Email, [ContactNumber] = @ContactNumber, [RoleID] = @RoleID, [Status] = @Status, [CreatedAt] = @CreatedAt, [FullName] = @FullName WHERE (([UserID] = @Original_UserID) AND ([Username] = @Original_Username) AND ([PasswordHash] = @Original_PasswordHash) AND ((@IsNull_Email = 1 AND [Email] IS NULL) OR ([Email] = @Original_Email)) AND ((@IsNull_ContactNumber = 1 AND [ContactNumber] IS NULL) OR ([ContactNumber] = @Original_ContactNumber)) AND ([RoleID] = @Original_RoleID) AND ((@IsNull_Status = 1 AND [Status] IS NULL) OR ([Status] = @Original_Status)) AND ((@IsNull_CreatedAt = 1 AND [CreatedAt] IS NULL) OR ([CreatedAt] = @Original_CreatedAt)) AND ([FullName] = @Original_FullName));
+SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, CreatedAt, FullName FROM Users WHERE (UserID = @UserID)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@PasswordHash", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PasswordHash", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
@@ -9764,6 +9794,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RoleID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RoleID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CreatedAt", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CreatedAt", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@FullName", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FullName", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_UserID", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Username", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Username", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_PasswordHash", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "PasswordHash", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
@@ -9776,6 +9807,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Status", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Status", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_CreatedAt", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CreatedAt", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CreatedAt", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CreatedAt", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_FullName", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "FullName", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@UserID", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "UserID", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
@@ -9793,7 +9825,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
             this._commandCollection[0].CommandText = "SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Crea" +
-                "tedAt FROM dbo.Users";
+                "tedAt, FullName FROM Users";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -9854,7 +9886,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_UserID, string Original_Username, string Original_PasswordHash, string Original_Email, string Original_ContactNumber, int Original_RoleID, string Original_Status, global::System.Nullable<global::System.DateTime> Original_CreatedAt) {
+        public virtual int Delete(int Original_UserID, string Original_Username, string Original_PasswordHash, string Original_Email, string Original_ContactNumber, int Original_RoleID, string Original_Status, global::System.Nullable<global::System.DateTime> Original_CreatedAt, string Original_FullName) {
             this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_UserID));
             if ((Original_Username == null)) {
                 throw new global::System.ArgumentNullException("Original_Username");
@@ -9901,6 +9933,12 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
                 this.Adapter.DeleteCommand.Parameters[10].Value = ((object)(1));
                 this.Adapter.DeleteCommand.Parameters[11].Value = global::System.DBNull.Value;
             }
+            if ((Original_FullName == null)) {
+                throw new global::System.ArgumentNullException("Original_FullName");
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[12].Value = ((string)(Original_FullName));
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -9921,7 +9959,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string Username, string PasswordHash, string Email, string ContactNumber, int RoleID, string Status, global::System.Nullable<global::System.DateTime> CreatedAt) {
+        public virtual int Insert(string Username, string PasswordHash, string Email, string ContactNumber, int RoleID, string Status, global::System.Nullable<global::System.DateTime> CreatedAt, string FullName) {
             if ((Username == null)) {
                 throw new global::System.ArgumentNullException("Username");
             }
@@ -9959,6 +9997,12 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
             else {
                 this.Adapter.InsertCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
+            if ((FullName == null)) {
+                throw new global::System.ArgumentNullException("FullName");
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[7].Value = ((string)(FullName));
+            }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -9987,6 +10031,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
                     int RoleID, 
                     string Status, 
                     global::System.Nullable<global::System.DateTime> CreatedAt, 
+                    string FullName, 
                     int Original_UserID, 
                     string Original_Username, 
                     string Original_PasswordHash, 
@@ -9995,6 +10040,7 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
                     int Original_RoleID, 
                     string Original_Status, 
                     global::System.Nullable<global::System.DateTime> Original_CreatedAt, 
+                    string Original_FullName, 
                     int UserID) {
             if ((Username == null)) {
                 throw new global::System.ArgumentNullException("Username");
@@ -10033,53 +10079,65 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
             else {
                 this.Adapter.UpdateCommand.Parameters[6].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(Original_UserID));
+            if ((FullName == null)) {
+                throw new global::System.ArgumentNullException("FullName");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((string)(FullName));
+            }
+            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(Original_UserID));
             if ((Original_Username == null)) {
                 throw new global::System.ArgumentNullException("Original_Username");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[8].Value = ((string)(Original_Username));
+                this.Adapter.UpdateCommand.Parameters[9].Value = ((string)(Original_Username));
             }
             if ((Original_PasswordHash == null)) {
                 throw new global::System.ArgumentNullException("Original_PasswordHash");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((string)(Original_PasswordHash));
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((string)(Original_PasswordHash));
             }
             if ((Original_Email == null)) {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[12].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[10].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[11].Value = ((string)(Original_Email));
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[12].Value = ((string)(Original_Email));
             }
             if ((Original_ContactNumber == null)) {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[13].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[12].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[13].Value = ((string)(Original_ContactNumber));
+                this.Adapter.UpdateCommand.Parameters[13].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[14].Value = ((string)(Original_ContactNumber));
             }
-            this.Adapter.UpdateCommand.Parameters[14].Value = ((int)(Original_RoleID));
+            this.Adapter.UpdateCommand.Parameters[15].Value = ((int)(Original_RoleID));
             if ((Original_Status == null)) {
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[15].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[16].Value = ((string)(Original_Status));
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((string)(Original_Status));
             }
             if ((Original_CreatedAt.HasValue == true)) {
-                this.Adapter.UpdateCommand.Parameters[17].Value = ((object)(0));
-                this.Adapter.UpdateCommand.Parameters[18].Value = ((System.DateTime)(Original_CreatedAt.Value));
+                this.Adapter.UpdateCommand.Parameters[18].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((System.DateTime)(Original_CreatedAt.Value));
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[17].Value = ((object)(1));
-                this.Adapter.UpdateCommand.Parameters[18].Value = global::System.DBNull.Value;
+                this.Adapter.UpdateCommand.Parameters[18].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
             }
-            this.Adapter.UpdateCommand.Parameters[19].Value = ((int)(UserID));
+            if ((Original_FullName == null)) {
+                throw new global::System.ArgumentNullException("Original_FullName");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[20].Value = ((string)(Original_FullName));
+            }
+            this.Adapter.UpdateCommand.Parameters[21].Value = ((int)(UserID));
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
                         != global::System.Data.ConnectionState.Open)) {
@@ -10100,8 +10158,25 @@ SELECT UserID, Username, PasswordHash, Email, ContactNumber, RoleID, Status, Cre
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string Username, string PasswordHash, string Email, string ContactNumber, int RoleID, string Status, global::System.Nullable<global::System.DateTime> CreatedAt, int Original_UserID, string Original_Username, string Original_PasswordHash, string Original_Email, string Original_ContactNumber, int Original_RoleID, string Original_Status, global::System.Nullable<global::System.DateTime> Original_CreatedAt) {
-            return this.Update(Username, PasswordHash, Email, ContactNumber, RoleID, Status, CreatedAt, Original_UserID, Original_Username, Original_PasswordHash, Original_Email, Original_ContactNumber, Original_RoleID, Original_Status, Original_CreatedAt, Original_UserID);
+        public virtual int Update(
+                    string Username, 
+                    string PasswordHash, 
+                    string Email, 
+                    string ContactNumber, 
+                    int RoleID, 
+                    string Status, 
+                    global::System.Nullable<global::System.DateTime> CreatedAt, 
+                    string FullName, 
+                    int Original_UserID, 
+                    string Original_Username, 
+                    string Original_PasswordHash, 
+                    string Original_Email, 
+                    string Original_ContactNumber, 
+                    int Original_RoleID, 
+                    string Original_Status, 
+                    global::System.Nullable<global::System.DateTime> Original_CreatedAt, 
+                    string Original_FullName) {
+            return this.Update(Username, PasswordHash, Email, ContactNumber, RoleID, Status, CreatedAt, FullName, Original_UserID, Original_Username, Original_PasswordHash, Original_Email, Original_ContactNumber, Original_RoleID, Original_Status, Original_CreatedAt, Original_FullName, Original_UserID);
         }
     }
     

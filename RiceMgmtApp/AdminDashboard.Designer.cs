@@ -61,6 +61,8 @@
             this.riceProductionDB2DataSet = new RiceMgmtApp.RiceProductionDB2DataSet();
             this.usersBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.usersTableAdapter = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
+            this.usersTableAdapter1 = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
+            this.usersTableAdapter2 = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
             this.panelsideMenu.SuspendLayout();
             this.panel3side.SuspendLayout();
             this.panel2submenu.SuspendLayout();
@@ -433,6 +435,14 @@
             // 
             this.usersTableAdapter.ClearBeforeFill = true;
             // 
+            // usersTableAdapter1
+            // 
+            this.usersTableAdapter1.ClearBeforeFill = true;
+            // 
+            // usersTableAdapter2
+            // 
+            this.usersTableAdapter2.ClearBeforeFill = true;
+            // 
             // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -450,7 +460,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "AdminDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.AdminDashboard_Load);
+            this.Load += new System.EventHandler(this.AdminDashboard_Load_1);
             this.panelsideMenu.ResumeLayout(false);
             this.panel3side.ResumeLayout(false);
             this.panel2submenu.ResumeLayout(false);
@@ -508,6 +518,9 @@
         private RiceProductionDB2DataSet riceProductionDB2DataSet;
         private System.Windows.Forms.BindingSource usersBindingSource;
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter;
+        private System.Windows.Forms.DataGridView dgvUsers;
+        private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter1;
+        private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter2;
         // private FontAwesome.Sharp.IconToolStripButton iconToolStripButton1;
         // private FontAwesome.Sharp.IconMenuItem iconMenuItem1;
     }

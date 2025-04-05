@@ -20,10 +20,7 @@ namespace RiceMgmtApp
             LoadRoles();
         }
 
-        private void AddUser_Load(object sender, EventArgs e)
-        {
-
-        }
+       
 
         private void LoadRoles()
         {
@@ -54,8 +51,9 @@ namespace RiceMgmtApp
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("INSERT INTO Users (Username, PasswordHash, Email, ContactNumber, RoleID, Status) VALUES (@Username, @PasswordHash, @Email, @ContactNumber, @RoleID, 'Active')", conn);
+                SqlCommand cmd = new SqlCommand("INSERT INTO Users (Username, FullName, PasswordHash, Email, ContactNumber, RoleID, Status) VALUES (@Username, @FullName, @PasswordHash, @Email, @ContactNumber, @RoleID, 'Active')", conn);
                 cmd.Parameters.AddWithValue("@Username", txtUsername.Text);
+                cmd.Parameters.AddWithValue("@FullName", txtFullName.Text);
                 cmd.Parameters.AddWithValue("@PasswordHash", hashedPassword);
                 cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
                 cmd.Parameters.AddWithValue("@ContactNumber", txtContact.Text);
@@ -66,6 +64,8 @@ namespace RiceMgmtApp
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
+
+      
     }
     }
 

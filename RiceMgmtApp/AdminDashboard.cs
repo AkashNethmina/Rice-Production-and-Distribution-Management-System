@@ -244,6 +244,32 @@ namespace RiceMgmtApp
             ShowSection(panelUsers); // Make sure to show the panel after loading data
         }
 
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            if (dgvUsers.SelectedRows.Count > 0)
+            {
+                int userId = Convert.ToInt32(dgvUsers.SelectedRows[0].Cells["UserID"].Value);
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes)
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand("DELETE FROM Users WHERE UserID = @id", conn);
+                        cmd.Parameters.AddWithValue("@id", userId);
+                        cmd.ExecuteNonQuery();
+                        LoadUserManagement();
+                        MessageBox.Show("User deleted successfully.");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a user.");
+            }
+        }
+
+
         private void btn_Farmers_Click(object sender, EventArgs e)
         {
             ShowSubMenu(panel3side);
@@ -287,6 +313,11 @@ namespace RiceMgmtApp
         {
             // TODO: This line of code loads data into the 'riceProductionDB2DataSet.Users' table. You can move, or remove it, as needed.
             this.usersTableAdapter.Fill(this.riceProductionDB2DataSet.Users);
+
+        }
+
+        private void AdminDashboard_Load_1(object sender, EventArgs e)
+        {
 
         }
     }
