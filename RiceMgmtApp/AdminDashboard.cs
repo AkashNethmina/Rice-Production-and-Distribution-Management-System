@@ -26,9 +26,9 @@ namespace RiceMgmtApp
         private void CustomizeDashboard()
         {
             panelDashboard.Visible = true;
-            panelUsers.Visible = false;
-            panelFarmers.Visible = false;
-            panelSales.Visible = false;
+           // panelUsers.Visible = false;
+           // panelFarmers.Visible = false;
+           // panelSales.Visible = false;
         }
 
         private void HideSubMenu()
@@ -42,9 +42,9 @@ namespace RiceMgmtApp
         private void ShowSection(Panel panel)
         {
             panelDashboard.Visible = false;
-            panelUsers.Visible = false;
-            panelFarmers.Visible = false;
-            panelSales.Visible = false;
+           // panelUsers.Visible = false;
+            //panelFarmers.Visible = false;
+            //panelSales.Visible = false;
 
             panel.Visible = true;
         }
@@ -90,140 +90,140 @@ namespace RiceMgmtApp
             }
         }
 
-        private void LoadUserManagement()
-        {
-            panelUsers.Controls.Clear();
+        //private void LoadUserManagement()
+        //{
+        //    panelUsers.Controls.Clear();
 
-            DataGridView dgvUsers = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
+        //    DataGridView dgvUsers = new DataGridView
+        //    {
+        //        Dock = DockStyle.Fill,
+        //        AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        //    };
 
-            panelUsers.Controls.Add(dgvUsers);
+        //    panelUsers.Controls.Add(dgvUsers);
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter(@"
-                        SELECT u.UserID, u.Username, u.Email, u.ContactNumber, r.RoleName, u.Status, u.CreatedAt
-                        FROM Users u
-                        JOIN Roles r ON u.RoleID = r.RoleID", conn);
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            SqlDataAdapter adapter = new SqlDataAdapter(@"
+        //                SELECT u.UserID, u.Username, u.Email, u.ContactNumber, r.RoleName, u.Status, u.CreatedAt
+        //                FROM Users u
+        //                JOIN Roles r ON u.RoleID = r.RoleID", conn);
 
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dgvUsers.DataSource = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading user data: " + ex.Message);
-            }
+        //            DataTable dt = new DataTable();
+        //            adapter.Fill(dt);
+        //            dgvUsers.DataSource = dt;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error loading user data: " + ex.Message);
+        //    }
 
-            // Add control buttons
-            Button btnAdd = new Button { Text = "Add User", Dock = DockStyle.Top };
-            btnAdd.Click += btn_AddUsers_Click;
+        //    // Add control buttons
+        //    Button btnAdd = new Button { Text = "Add User", Dock = DockStyle.Top };
+        //    btnAdd.Click += btn_AddUsers_Click;
 
-            Button btnEdit = new Button { Text = "Edit User", Dock = DockStyle.Top };
-            // btnEdit.Click += BtnEdit_Click; // Future implementation
+        //    Button btnEdit = new Button { Text = "Edit User", Dock = DockStyle.Top };
+        //    // btnEdit.Click += BtnEdit_Click; // Future implementation
 
-            Button btnSuspend = new Button { Text = "Suspend/Activate", Dock = DockStyle.Top };
-            // btnSuspend.Click += BtnSuspend_Click; // Future implementation
+        //    Button btnSuspend = new Button { Text = "Suspend/Activate", Dock = DockStyle.Top };
+        //    // btnSuspend.Click += BtnSuspend_Click; // Future implementation
 
-            panelUsers.Controls.Add(btnSuspend);
-            panelUsers.Controls.Add(btnEdit);
-            panelUsers.Controls.Add(btnAdd);
-        }
+        //    panelUsers.Controls.Add(btnSuspend);
+        //    panelUsers.Controls.Add(btnEdit);
+        //    panelUsers.Controls.Add(btnAdd);
+        //}
 
-        private void LoadFarmerManagement()
-        {
-            panelFarmers.Controls.Clear();
+        //private void LoadFarmerManagement()
+        //{
+        //    panelFarmers.Controls.Clear();
 
-            DataGridView dgvFarmers = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
+        //    DataGridView dgvFarmers = new DataGridView
+        //    {
+        //        Dock = DockStyle.Fill,
+        //        AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        //    };
 
-            panelFarmers.Controls.Add(dgvFarmers);
+        //    panelFarmers.Controls.Add(dgvFarmers);
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter(@"
-                        SELECT u.UserID, u.Username, u.Email, u.ContactNumber, f.FarmSize, f.Location, u.Status
-                        FROM Users u
-                        JOIN Farmers f ON u.UserID = f.UserID
-                        WHERE u.RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Farmer')", conn);
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            SqlDataAdapter adapter = new SqlDataAdapter(@"
+        //                SELECT u.UserID, u.Username, u.Email, u.ContactNumber, f.FarmSize, f.Location, u.Status
+        //                FROM Users u
+        //                JOIN Farmers f ON u.UserID = f.UserID
+        //                WHERE u.RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Farmer')", conn);
 
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dgvFarmers.DataSource = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading farmer data: " + ex.Message);
-            }
+        //            DataTable dt = new DataTable();
+        //            adapter.Fill(dt);
+        //            dgvFarmers.DataSource = dt;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error loading farmer data: " + ex.Message);
+        //    }
 
-            // Add control buttons for farmer management if needed
-            Button btnAddFarmer = new Button { Text = "Add Farmer", Dock = DockStyle.Top };
-            // btnAddFarmer.Click += BtnAddFarmer_Click; // Future implementation
+        //    // Add control buttons for farmer management if needed
+        //    Button btnAddFarmer = new Button { Text = "Add Farmer", Dock = DockStyle.Top };
+        //    // btnAddFarmer.Click += BtnAddFarmer_Click; // Future implementation
 
-            Button btnEditFarmer = new Button { Text = "Edit Farmer", Dock = DockStyle.Top };
-            // btnEditFarmer.Click += BtnEditFarmer_Click; // Future implementation
+        //    Button btnEditFarmer = new Button { Text = "Edit Farmer", Dock = DockStyle.Top };
+        //    // btnEditFarmer.Click += BtnEditFarmer_Click; // Future implementation
 
-            panelFarmers.Controls.Add(btnEditFarmer);
-            panelFarmers.Controls.Add(btnAddFarmer);
-        }
+        //    panelFarmers.Controls.Add(btnEditFarmer);
+        //    panelFarmers.Controls.Add(btnAddFarmer);
+        //}
 
-        private void LoadSalesManagement()
-        {
-            panelSales.Controls.Clear();
+        //private void LoadSalesManagement()
+        //{
+        //    panelSales.Controls.Clear();
 
-            DataGridView dgvSales = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
-            };
+        //    DataGridView dgvSales = new DataGridView
+        //    {
+        //        Dock = DockStyle.Fill,
+        //        AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+        //    };
 
-            panelSales.Controls.Add(dgvSales);
+        //    panelSales.Controls.Add(dgvSales);
 
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter(@"
-                        SELECT s.SaleID, u.Username AS Farmer, p.ProductName, s.Quantity, s.TotalAmount, s.SaleDate
-                        FROM Sales s
-                        JOIN Users u ON s.FarmerID = u.UserID
-                        JOIN Products p ON s.ProductID = p.ProductID", conn);
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+        //            SqlDataAdapter adapter = new SqlDataAdapter(@"
+        //                SELECT s.SaleID, u.Username AS Farmer, p.ProductName, s.Quantity, s.TotalAmount, s.SaleDate
+        //                FROM Sales s
+        //                JOIN Users u ON s.FarmerID = u.UserID
+        //                JOIN Products p ON s.ProductID = p.ProductID", conn);
 
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dgvSales.DataSource = dt;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error loading sales data: " + ex.Message);
-            }
+        //            DataTable dt = new DataTable();
+        //            adapter.Fill(dt);
+        //            dgvSales.DataSource = dt;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error loading sales data: " + ex.Message);
+        //    }
 
-            // Add control buttons for sales management
-            Button btnAddSale = new Button { Text = "Add Sale", Dock = DockStyle.Top };
-            // btnAddSale.Click += BtnAddSale_Click; // Future implementation
+        //    // Add control buttons for sales management
+        //    Button btnAddSale = new Button { Text = "Add Sale", Dock = DockStyle.Top };
+        //    // btnAddSale.Click += BtnAddSale_Click; // Future implementation
 
-            Button btnSalesReport = new Button { Text = "Generate Report", Dock = DockStyle.Top };
-            // btnSalesReport.Click += BtnSalesReport_Click; // Future implementation
+        //    Button btnSalesReport = new Button { Text = "Generate Report", Dock = DockStyle.Top };
+        //    // btnSalesReport.Click += BtnSalesReport_Click; // Future implementation
 
-            panelSales.Controls.Add(btnSalesReport);
-            panelSales.Controls.Add(btnAddSale);
-        }
+        //    panelSales.Controls.Add(btnSalesReport);
+        //    panelSales.Controls.Add(btnAddSale);
+        //}
 
         // Navigation Event Handlers
         private void btn_Dashboard_Click(object sender, EventArgs e)
@@ -237,11 +237,17 @@ namespace RiceMgmtApp
         {
             ShowSubMenu(panel2submenu);
         }
-
+        private void addUserControl(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
         private void btn_AllUsers_Click(object sender, EventArgs e)
         {
-            LoadUserManagement();
-            ShowSection(panelUsers); // Make sure to show the panel after loading data
+            UserManagement um = new UserManagement();
+            addUserControl(um);
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
@@ -258,7 +264,7 @@ namespace RiceMgmtApp
                         SqlCommand cmd = new SqlCommand("DELETE FROM Users WHERE UserID = @id", conn);
                         cmd.Parameters.AddWithValue("@id", userId);
                         cmd.ExecuteNonQuery();
-                        LoadUserManagement();
+                     //   LoadUserManagement();
                         MessageBox.Show("User deleted successfully.");
                     }
                 }
@@ -277,14 +283,14 @@ namespace RiceMgmtApp
 
         private void btn_FarmersList_Click(object sender, EventArgs e)
         {
-            LoadFarmerManagement();
-            ShowSection(panelFarmers); // Make sure to show the panel after loading data
+           // LoadFarmerManagement();
+          //  ShowSection(panelFarmers); // Make sure to show the panel after loading data
         }
 
         private void btn_Sales_Click(object sender, EventArgs e)
         {
-            LoadSalesManagement();
-            ShowSection(panelSales); // Make sure to show the panel after loading data
+           // LoadSalesManagement();
+          //  ShowSection(panelSales); // Make sure to show the panel after loading data
             HideSubMenu();
         }
 
@@ -299,8 +305,8 @@ namespace RiceMgmtApp
         {
             AddUser addUser = new AddUser(); // Assuming this is another form
             addUser.ShowDialog();
-            LoadUserManagement(); // Refresh list after adding
-            ShowSection(panelUsers); // Ensure panel stays visible
+            ;//  LoadUserManagement(); // Refresh list after adding
+            ShowSection(panelContainer); // Ensure panel stays visible
         }
 
         private void btn_Fields_Click(object sender, EventArgs e)

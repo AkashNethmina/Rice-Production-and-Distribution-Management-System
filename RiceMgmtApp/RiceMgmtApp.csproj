@@ -298,7 +298,7 @@
       <DependentUpon>SalesManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="UserManagement.cs">
-      <SubType>Form</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserManagement.Designer.cs">
       <DependentUpon>UserManagement.cs</DependentUpon>

@@ -56,32 +56,36 @@
             // 
             // txtUsername
             // 
-            this.txtUsername.Location = new System.Drawing.Point(279, 147);
+            this.txtUsername.Font = new System.Drawing.Font("Outfit Medium", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtUsername.Location = new System.Drawing.Point(193, 140);
             this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(123, 20);
+            this.txtUsername.Size = new System.Drawing.Size(234, 24);
             this.txtUsername.TabIndex = 0;
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(527, 100);
+            this.txtEmail.Font = new System.Drawing.Font("Outfit Medium", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtEmail.Location = new System.Drawing.Point(559, 94);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(121, 20);
+            this.txtEmail.Size = new System.Drawing.Size(234, 24);
             this.txtEmail.TabIndex = 1;
             // 
             // txtContact
             // 
-            this.txtContact.Location = new System.Drawing.Point(279, 192);
+            this.txtContact.Font = new System.Drawing.Font("Outfit Medium", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtContact.Location = new System.Drawing.Point(193, 185);
             this.txtContact.Name = "txtContact";
-            this.txtContact.Size = new System.Drawing.Size(123, 20);
+            this.txtContact.Size = new System.Drawing.Size(234, 24);
             this.txtContact.TabIndex = 2;
             // 
             // cmbRole
             // 
             this.cmbRole.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.riceProductionDB2DataSet, "Roles.RoleName", true));
+            this.cmbRole.Font = new System.Drawing.Font("Outfit Medium", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbRole.FormattingEnabled = true;
-            this.cmbRole.Location = new System.Drawing.Point(527, 192);
+            this.cmbRole.Location = new System.Drawing.Point(559, 140);
             this.cmbRole.Name = "cmbRole";
-            this.cmbRole.Size = new System.Drawing.Size(121, 21);
+            this.cmbRole.Size = new System.Drawing.Size(234, 24);
             this.cmbRole.TabIndex = 3;
             // 
             // riceProductionDB2DataSet
@@ -101,26 +105,34 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(279, 248);
+            this.btnSave.BackColor = System.Drawing.Color.RoyalBlue;
+            this.btnSave.FlatAppearance.BorderSize = 0;
+            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSave.Font = new System.Drawing.Font("Outfit", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSave.ForeColor = System.Drawing.Color.White;
+            this.btnSave.Location = new System.Drawing.Point(559, 242);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.Size = new System.Drawing.Size(123, 36);
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // txtPassword
             // 
-            this.txtPassword.Location = new System.Drawing.Point(527, 147);
+            this.txtPassword.Font = new System.Drawing.Font("Outfit Medium", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPassword.Location = new System.Drawing.Point(559, 185);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(121, 20);
+            this.txtPassword.Size = new System.Drawing.Size(234, 24);
             this.txtPassword.TabIndex = 5;
             // 
             // txtFullName
             // 
-            this.txtFullName.Location = new System.Drawing.Point(279, 101);
+            this.txtFullName.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtFullName.Font = new System.Drawing.Font("Outfit Medium", 9.749999F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtFullName.Location = new System.Drawing.Point(193, 94);
             this.txtFullName.Name = "txtFullName";
-            this.txtFullName.Size = new System.Drawing.Size(123, 20);
+            this.txtFullName.Size = new System.Drawing.Size(234, 24);
             this.txtFullName.TabIndex = 6;
             // 
             // panel1
@@ -130,7 +142,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 45);
+            this.panel1.Size = new System.Drawing.Size(839, 45);
             this.panel1.TabIndex = 7;
             // 
             // label1
@@ -147,72 +159,82 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(153, 101);
+            this.label2.Font = new System.Drawing.Font("Outfit SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(48, 94);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 13);
+            this.label2.Size = new System.Drawing.Size(81, 20);
             this.label2.TabIndex = 8;
             this.label2.Text = "Full Name";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(156, 147);
+            this.label3.Font = new System.Drawing.Font("Outfit SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(45, 140);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 13);
+            this.label3.Size = new System.Drawing.Size(84, 20);
             this.label3.TabIndex = 9;
             this.label3.Text = "Username";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(156, 199);
+            this.label4.Font = new System.Drawing.Font("Outfit SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(45, 185);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(84, 13);
+            this.label4.Size = new System.Drawing.Size(129, 20);
             this.label4.TabIndex = 10;
             this.label4.Text = "Contact Number";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(459, 107);
+            this.label5.Font = new System.Drawing.Font("Outfit SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(439, 94);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(32, 13);
+            this.label5.Size = new System.Drawing.Size(110, 20);
             this.label5.TabIndex = 11;
-            this.label5.Text = "Email";
+            this.label5.Text = "Email Address";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(459, 150);
+            this.label6.Font = new System.Drawing.Font("Outfit SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(439, 181);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 13);
+            this.label6.Size = new System.Drawing.Size(77, 20);
             this.label6.TabIndex = 12;
             this.label6.Text = "Password";
             // 
             // Role
             // 
             this.Role.AutoSize = true;
-            this.Role.Location = new System.Drawing.Point(462, 199);
+            this.Role.Font = new System.Drawing.Font("Outfit SemiBold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Role.Location = new System.Drawing.Point(439, 139);
             this.Role.Name = "Role";
-            this.Role.Size = new System.Drawing.Size(29, 13);
+            this.Role.Size = new System.Drawing.Size(40, 20);
             this.Role.TabIndex = 13;
             this.Role.Text = "Role";
             // 
             // btnCancel
             // 
-            this.btnCancel.Location = new System.Drawing.Point(375, 248);
+            this.btnCancel.FlatAppearance.BorderSize = 0;
+            this.btnCancel.Font = new System.Drawing.Font("Outfit", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCancel.Location = new System.Drawing.Point(688, 242);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(105, 36);
             this.btnCancel.TabIndex = 14;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // AddUser
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackColor = System.Drawing.Color.White;
+            this.ClientSize = new System.Drawing.Size(839, 322);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.Role);
             this.Controls.Add(this.label6);
@@ -231,6 +253,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AddUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.AddUser_Load);
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource1)).EndInit();

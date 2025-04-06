@@ -53,11 +53,7 @@
             this.panel9 = new System.Windows.Forms.Panel();
             this.pictureBox8 = new System.Windows.Forms.PictureBox();
             this.lblTotalUsers = new System.Windows.Forms.Label();
-            this.panelUsers = new System.Windows.Forms.Panel();
-            this.panelFarmers = new System.Windows.Forms.Panel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.panelSales = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
+            this.panelContainer = new System.Windows.Forms.Panel();
             this.riceProductionDB2DataSet = new RiceMgmtApp.RiceProductionDB2DataSet();
             this.usersBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.usersTableAdapter = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
@@ -73,8 +69,6 @@
             this.panel10.SuspendLayout();
             this.panel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
-            this.panelFarmers.SuspendLayout();
-            this.panelSales.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -380,46 +374,12 @@
             this.lblTotalUsers.TabIndex = 0;
             this.lblTotalUsers.Text = "Users Tot";
             // 
-            // panelUsers
+            // panelContainer
             // 
-            this.panelUsers.Location = new System.Drawing.Point(256, 220);
-            this.panelUsers.Name = "panelUsers";
-            this.panelUsers.Size = new System.Drawing.Size(956, 100);
-            this.panelUsers.TabIndex = 5;
-            // 
-            // panelFarmers
-            // 
-            this.panelFarmers.Controls.Add(this.label2);
-            this.panelFarmers.Location = new System.Drawing.Point(256, 360);
-            this.panelFarmers.Name = "panelFarmers";
-            this.panelFarmers.Size = new System.Drawing.Size(956, 100);
-            this.panelFarmers.TabIndex = 6;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(177, 55);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(75, 14);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "panelFarmers";
-            // 
-            // panelSales
-            // 
-            this.panelSales.Controls.Add(this.label3);
-            this.panelSales.Location = new System.Drawing.Point(256, 482);
-            this.panelSales.Name = "panelSales";
-            this.panelSales.Size = new System.Drawing.Size(956, 100);
-            this.panelSales.TabIndex = 7;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(177, 55);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 14);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "panelSales";
+            this.panelContainer.Location = new System.Drawing.Point(256, 39);
+            this.panelContainer.Name = "panelContainer";
+            this.panelContainer.Size = new System.Drawing.Size(956, 605);
+            this.panelContainer.TabIndex = 5;
             // 
             // riceProductionDB2DataSet
             // 
@@ -450,9 +410,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
             this.CausesValidation = false;
             this.ClientSize = new System.Drawing.Size(1224, 666);
-            this.Controls.Add(this.panelSales);
-            this.Controls.Add(this.panelFarmers);
-            this.Controls.Add(this.panelUsers);
+            this.Controls.Add(this.panelContainer);
             this.Controls.Add(this.panelDashboard);
             this.Controls.Add(this.panelsideMenu);
             this.Font = new System.Drawing.Font("Outfit", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -475,10 +433,6 @@
             this.panel9.ResumeLayout(false);
             this.panel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
-            this.panelFarmers.ResumeLayout(false);
-            this.panelFarmers.PerformLayout();
-            this.panelSales.ResumeLayout(false);
-            this.panelSales.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -506,11 +460,7 @@
         private System.Windows.Forms.PictureBox pictureBox8;
         private System.Windows.Forms.Label lblTotalUsers;
         private System.Windows.Forms.Button btn_Farmers;
-        private System.Windows.Forms.Panel panelUsers;
-        private System.Windows.Forms.Panel panelFarmers;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panelSales;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Panel panelContainer;
         private System.Windows.Forms.Panel panel3side;
         private System.Windows.Forms.Button btn_Sales;
         private System.Windows.Forms.Button btn_Fields;
