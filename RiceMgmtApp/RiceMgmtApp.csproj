@@ -303,6 +303,12 @@
     <Compile Include="UserManagement.Designer.cs">
       <DependentUpon>UserManagement.cs</DependentUpon>
     </Compile>
+    <Compile Include="UsersAdd.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UsersAdd.Designer.cs">
+      <DependentUpon>UsersAdd.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddUser.resx">
       <DependentUpon>AddUser.cs</DependentUpon>
     </EmbeddedResource>
@@ -333,6 +339,9 @@
     </Compile>
     <EmbeddedResource Include="UserManagement.resx">
       <DependentUpon>UserManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UsersAdd.resx">
+      <DependentUpon>UsersAdd.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -385,6 +394,48 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\menu_561184.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RICE MGMT SYSTEM.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ricetreeoption20_2-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ricetreeoption19_2-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ricetreeoption19_2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ricetreeoption20_2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RICE MGMT SYSTEM1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RICE MGMT SYSTEM %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\RICE MGMT SYSTEM %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame 1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame 11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame 2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame 2 %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame 2 %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Frame 2 %283%29.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

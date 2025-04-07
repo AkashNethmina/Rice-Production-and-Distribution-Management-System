@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.SqlClient;
-using System.Data;
 using System.Drawing;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data.SqlClient;
 
 namespace RiceMgmtApp
 {
-    public partial class AddUser: Form
+    public partial class UsersAdd : UserControl
     {
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
-        public AddUser()
+
+        public UsersAdd()
         {
             InitializeComponent();
             LoadRoles();
         }
-
-       
 
         private void LoadRoles()
         {
@@ -37,6 +36,10 @@ namespace RiceMgmtApp
                 }
             }
         }
+
+        
+
+        
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -61,29 +64,16 @@ namespace RiceMgmtApp
                 cmd.ExecuteNonQuery();
             }
             MessageBox.Show("User added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
-        private void AddUser_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
+            // Remove the following lines as they are not applicable for UserControl
+            // this.DialogResult = DialogResult.OK;
+            // this.Close();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            AddUser.ActiveForm.Close();
-        }
-
-        private void txtFullName_TextChanged(object sender, EventArgs e)
-        {
-
+            // Add logic to handle cancel action appropriately for UserControl
+            // For example, you might want to clear the form or navigate away
+            this.Parent.Controls.Remove(this);
         }
     }
-    }
-
+}

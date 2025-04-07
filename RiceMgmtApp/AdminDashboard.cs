@@ -25,7 +25,7 @@ namespace RiceMgmtApp
 
         private void CustomizeDashboard()
         {
-            panelDashboard.Visible = true;
+            //panelDashboard.Visible = true;
            // panelUsers.Visible = false;
            // panelFarmers.Visible = false;
            // panelSales.Visible = false;
@@ -41,7 +41,7 @@ namespace RiceMgmtApp
 
         private void ShowSection(Panel panel)
         {
-            panelDashboard.Visible = false;
+            //panelDashboard.Visible = false;
            // panelUsers.Visible = false;
             //panelFarmers.Visible = false;
             //panelSales.Visible = false;
@@ -70,10 +70,10 @@ namespace RiceMgmtApp
                 {
                     conn.Open();
 
-                    lblTotalUsers.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users");
-                    lblTotalFarmers.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users WHERE RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Farmer')");
-                    lblTotalSales.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Sales");
-                    lblPendingReports.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM DamageReports WHERE Status = 'Pending'");
+                    //lblTotalUsers.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users");
+                    //lblTotalFarmers.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users WHERE RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Farmer')");
+                    //lblTotalSales.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Sales");
+                    //lblPendingReports.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM DamageReports WHERE Status = 'Pending'");
                 }
             }
             catch (Exception ex)
@@ -228,7 +228,7 @@ namespace RiceMgmtApp
         // Navigation Event Handlers
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-            ShowSection(panelDashboard);
+           // ShowSection(panelDashboard);
             HideSubMenu();
             LoadDashboardData(); // Refresh dashboard data
         }
@@ -237,7 +237,7 @@ namespace RiceMgmtApp
         {
             ShowSubMenu(panel2submenu);
         }
-        private void addUserControl(UserControl userControl)
+        private void AllUsersControl(UserControl userControl)
         {
             userControl.Dock = DockStyle.Fill;
             panelContainer.Controls.Clear();
@@ -247,8 +247,19 @@ namespace RiceMgmtApp
         private void btn_AllUsers_Click(object sender, EventArgs e)
         {
             UserManagement um = new UserManagement();
-            addUserControl(um);
+            AllUsersControl(um);
         }
+
+        private void AddUserControl(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
+
+
+        
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
@@ -301,13 +312,13 @@ namespace RiceMgmtApp
             this.Hide();
         }
 
-        private void btn_AddUsers_Click(object sender, EventArgs e)
-        {
-            AddUser addUser = new AddUser(); // Assuming this is another form
-            addUser.ShowDialog();
-            ;//  LoadUserManagement(); // Refresh list after adding
-            ShowSection(panelContainer); // Ensure panel stays visible
-        }
+        //private void btn_AddUsers_Click(object sender, EventArgs e)
+        //{
+        //    AddUser addUser = new AddUser(); // Assuming this is another form
+        //    addUser.ShowDialog();
+        //    ;//  LoadUserManagement(); // Refresh list after adding
+        //    ShowSection(panelContainer); // Ensure panel stays visible
+        //}
 
         private void btn_Fields_Click(object sender, EventArgs e)
         {
@@ -322,9 +333,11 @@ namespace RiceMgmtApp
 
         }
 
-        private void AdminDashboard_Load_1(object sender, EventArgs e)
-        {
 
+        private void btn_AddUsers_Click(object sender, EventArgs e)
+        {
+            UsersAdd ua = new UsersAdd();
+            AddUserControl(ua);
         }
     }
 }

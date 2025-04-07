@@ -134,6 +134,7 @@
             this.txtFullName.Name = "txtFullName";
             this.txtFullName.Size = new System.Drawing.Size(234, 24);
             this.txtFullName.TabIndex = 6;
+            this.txtFullName.TextChanged += new System.EventHandler(this.txtFullName_TextChanged);
             // 
             // panel1
             // 
