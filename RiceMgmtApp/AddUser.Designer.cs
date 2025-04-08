@@ -134,7 +134,7 @@
             this.txtFullName.Name = "txtFullName";
             this.txtFullName.Size = new System.Drawing.Size(234, 24);
             this.txtFullName.TabIndex = 6;
-            this.txtFullName.TextChanged += new System.EventHandler(this.txtFullName_TextChanged);
+        //    this.txtFullName.TextChanged += new System.EventHandler(this.txtFullName_TextChanged);
             // 
             // panel1
             // 
@@ -166,7 +166,7 @@
             this.label2.Size = new System.Drawing.Size(81, 20);
             this.label2.TabIndex = 8;
             this.label2.Text = "Full Name";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
+      //      this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -254,7 +254,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "AddUser";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Load += new System.EventHandler(this.AddUser_Load);
+        //    this.Load += new System.EventHandler(this.AddUser_Load);
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource1)).EndInit();
