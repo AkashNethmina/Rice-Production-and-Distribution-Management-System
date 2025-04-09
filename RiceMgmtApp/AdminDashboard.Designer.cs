@@ -91,6 +91,7 @@
             this.btn_Sales.Text = "Sales";
             this.btn_Sales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_Sales.UseVisualStyleBackColor = true;
+            this.btn_Sales.Click += new System.EventHandler(this.btn_Sales_Click);
             // 
             // panel3side
             // 
@@ -137,6 +138,7 @@
             this.btn_AllFarmers.Text = "All Farmers";
             this.btn_AllFarmers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_AllFarmers.UseVisualStyleBackColor = false;
+            this.btn_AllFarmers.Click += new System.EventHandler(this.btn_AllFarmers_Click);
             // 
             // btn_Farmers
             // 
@@ -257,7 +259,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-        
             // 
             // panelContainer
             // 
@@ -307,7 +308,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdminDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-           
             this.panelsideMenu.ResumeLayout(false);
             this.panel3side.ResumeLayout(false);
             this.panel2submenu.ResumeLayout(false);
@@ -336,7 +336,7 @@
         private RiceProductionDB2DataSet riceProductionDB2DataSet;
         private System.Windows.Forms.BindingSource usersBindingSource;
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter;
-        private System.Windows.Forms.DataGridView dgvUsers;
+      //  private System.Windows.Forms.DataGridView dgvUsers;
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter1;
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter2;
         private System.Windows.Forms.Button btn_AddUsers;

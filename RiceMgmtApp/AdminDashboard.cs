@@ -14,7 +14,7 @@ namespace RiceMgmtApp
 {
     public partial class AdminDashboard : Form
     {
-        private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+       // private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
 
         public AdminDashboard(string log)
         {
@@ -114,12 +114,7 @@ namespace RiceMgmtApp
           //  ShowSection(panelFarmers); // Make sure to show the panel after loading data
         }
 
-        private void btn_Sales_Click(object sender, EventArgs e)
-        {
-           // LoadSalesManagement();
-          //  ShowSection(panelSales); // Make sure to show the panel after loading data
-            HideSubMenu();
-        }
+        
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
@@ -128,12 +123,21 @@ namespace RiceMgmtApp
             this.Hide();
         }
 
-        
+        private void FieldsControl(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
+
 
         private void btn_Fields_Click(object sender, EventArgs e)
         {
-            // Implement fields management
-            MessageBox.Show("Fields management feature coming soon.");
+            Fields fie = new Fields();
+
+            FieldsControl(fie);
+
         }
 
         private void AdminDashboard_Load(object sender, EventArgs e)
@@ -148,6 +152,35 @@ namespace RiceMgmtApp
         {
             UsersAdd ua = new UsersAdd();
             AddUserControl(ua);
+        }
+
+        private void AllFarmersControl(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
+
+        private void btn_AllFarmers_Click(object sender, EventArgs e)
+        {
+            FarmerManagement fm = new FarmerManagement();
+            
+            AllFarmersControl(fm);
+        }
+
+        private void SalesManagementControl(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
+
+        private void btn_Sales_Click(object sender, EventArgs e)
+        {
+            SalesManagement sm = new SalesManagement();
+            SalesManagementControl(sm);
         }
     }
 }

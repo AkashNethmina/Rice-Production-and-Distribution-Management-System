@@ -180,7 +180,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-            this.ClientSize = new System.Drawing.Size(346, 498);
+            this.ClientSize = new System.Drawing.Size(330, 459);
             this.Controls.Add(this.show_password);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
