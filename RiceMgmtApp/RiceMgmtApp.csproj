@@ -462,6 +462,12 @@
     <Compile Include="GovtOfficialDashboard.Designer.cs">
       <DependentUpon>GovtOfficialDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="profileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="profileControl.Designer.cs">
+      <DependentUpon>profileControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -479,6 +485,12 @@
     </Compile>
     <Compile Include="SalesManagement.Designer.cs">
       <DependentUpon>SalesManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StockManagement.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StockManagement.Designer.cs">
+      <DependentUpon>StockManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="UserManagement.cs">
       <SubType>UserControl</SubType>
@@ -507,6 +519,9 @@
     <EmbeddedResource Include="EditUser.resx">
       <DependentUpon>EditUser.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FarmerDashboard.resx">
+      <DependentUpon>FarmerDashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FarmerManagement.resx">
       <DependentUpon>FarmerManagement.cs</DependentUpon>
     </EmbeddedResource>
@@ -519,6 +534,9 @@
     <EmbeddedResource Include="GovtOfficialDashboard.resx">
       <DependentUpon>GovtOfficialDashboard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="profileControl.resx">
+      <DependentUpon>profileControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
@@ -526,6 +544,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesManagement.resx">
       <DependentUpon>SalesManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StockManagement.resx">
+      <DependentUpon>StockManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserManagement.resx">
       <DependentUpon>UserManagement.cs</DependentUpon>

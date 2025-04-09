@@ -8,18 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows.Forms;
-//using System.Windows.Controls;
 
 namespace RiceMgmtApp
 {
-    public partial class SalesManagement: UserControl
+    public partial class SalesManagement : UserControl
     {
-
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+
         public SalesManagement()
         {
             InitializeComponent();
-            LoadSalesData();
+            this.Load += SalesManagement_Load; // Ensure Load event is connected
         }
 
         private void SalesManagement_Load(object sender, EventArgs e)
@@ -28,8 +27,16 @@ namespace RiceMgmtApp
             LoadFarmerCombo();
             LoadBuyerCombo();
 
+            cmbBuyerType.Items.Clear();
             cmbBuyerType.Items.AddRange(new[] { "Government", "Private" });
+
+            cmbPaymentStatus.Items.Clear();
             cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed", "Failed" });
+
+            cmbFarmer.SelectedIndex = -1;
+            cmbBuyer.SelectedIndex = -1;
+            cmbBuyerType.SelectedIndex = -1;
+            cmbPaymentStatus.SelectedIndex = -1;
         }
 
         private void LoadSalesData()
@@ -57,6 +64,7 @@ namespace RiceMgmtApp
                 cmbFarmer.ValueMember = "UserID";
             }
         }
+
         private void LoadBuyerCombo()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -66,11 +74,10 @@ namespace RiceMgmtApp
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
                 cmbBuyer.DataSource = dt;
-                cmbFarmer.DisplayMember = "FullName";
-                cmbFarmer.ValueMember = "UserID";
+                cmbBuyer.DisplayMember = "FullName";  // FIXED: previously set Farmer fields again
+                cmbBuyer.ValueMember = "UserID";
             }
         }
-
 
         private void AddSale()
         {
@@ -78,8 +85,8 @@ namespace RiceMgmtApp
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus)
-                                 VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus)";
+                string query = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate)
+                                 VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate)";
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@FarmerID", cmbFarmer.SelectedValue);
@@ -88,6 +95,7 @@ namespace RiceMgmtApp
                     cmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtSalePrice.Text));
                     cmd.Parameters.AddWithValue("@Quantity", decimal.Parse(txtQuantity.Text));
                     cmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
+                    cmd.Parameters.AddWithValue("@SaleDate", DateTime.Now); // Assuming sale date is now
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -97,7 +105,6 @@ namespace RiceMgmtApp
                 ClearInputs();
             }
         }
-
 
         private void UpdateSale(int saleId)
         {
@@ -149,7 +156,6 @@ namespace RiceMgmtApp
             }
         }
 
-
         private void SearchSales(string keyword)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -168,7 +174,7 @@ namespace RiceMgmtApp
 
         private bool ValidateInputs()
         {
-            if (cmbFarmer.SelectedIndex == -1 || cmbBuyerType.SelectedIndex == -1 || cmbPaymentStatus.SelectedIndex == -1 ||
+            if (cmbFarmer.SelectedIndex == -1 || cmbBuyer.SelectedIndex == -1 || cmbBuyerType.SelectedIndex == -1 || cmbPaymentStatus.SelectedIndex == -1 ||
                 string.IsNullOrWhiteSpace(txtSalePrice.Text) || string.IsNullOrWhiteSpace(txtQuantity.Text))
             {
                 MessageBox.Show("Please fill all required fields.");
@@ -239,10 +245,10 @@ namespace RiceMgmtApp
 
                 cmbFarmer.SelectedValue = row.Cells["FarmerID"].Value;
                 cmbBuyer.SelectedValue = row.Cells["BuyerID"].Value;
-                cmbBuyerType.Text = row.Cells["BuyerType"].Value.ToString();
-                txtSalePrice.Text = row.Cells["SalePrice"].Value.ToString();
-                txtQuantity.Text = row.Cells["Quantity"].Value.ToString();
-                cmbPaymentStatus.Text = row.Cells["PaymentStatus"].Value.ToString();
+                cmbBuyerType.Text = row.Cells["BuyerType"].Value?.ToString();
+                txtSalePrice.Text = row.Cells["SalePrice"].Value?.ToString();
+                txtQuantity.Text = row.Cells["Quantity"].Value?.ToString();
+                cmbPaymentStatus.Text = row.Cells["PaymentStatus"].Value?.ToString();
             }
         }
     }

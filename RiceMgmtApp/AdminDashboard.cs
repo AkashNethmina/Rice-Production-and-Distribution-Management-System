@@ -182,5 +182,17 @@ namespace RiceMgmtApp
             SalesManagement sm = new SalesManagement();
             SalesManagementControl(sm);
         }
+        private void StockManagementControl(UserControl userControl)
+        {
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+        }
+        private void btn_StockManagement_Click(object sender, EventArgs e)
+        {
+            StockManagement stm = new StockManagement();
+            StockManagementControl(stm);
+        }
     }
 }

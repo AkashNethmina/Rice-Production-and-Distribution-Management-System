@@ -89,12 +89,12 @@
             // 
             // cmbBuyer
             // 
-            this.cmbBuyer.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.usersBindingSource, "UserID", true));
             this.cmbBuyer.FormattingEnabled = true;
             this.cmbBuyer.Location = new System.Drawing.Point(353, 75);
             this.cmbBuyer.Name = "cmbBuyer";
             this.cmbBuyer.Size = new System.Drawing.Size(121, 21);
             this.cmbBuyer.TabIndex = 4;
+    //        this.cmbBuyer.SelectedIndexChanged += new System.EventHandler(this.cmbBuyer_SelectedIndexChanged);
             // 
             // cmbBuyerType
             // 

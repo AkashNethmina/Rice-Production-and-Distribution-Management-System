@@ -142,9 +142,11 @@ namespace RiceMgmtApp
                 case 2: // Farmer
                     MessageBox.Show("Redirecting to Farmer Dashboard...");
                     FarmerDashboard farmerForm = new FarmerDashboard();
+                    farmerForm.LoggedInUsername = username;
                     farmerForm.Show();
                     this.Hide();
                     break;
+
                 case 3: // Government Official
                     MessageBox.Show("Redirecting to Government Dashboard...");
                     GovtOfficialDashboard govtForm = new GovtOfficialDashboard();
@@ -163,6 +165,9 @@ namespace RiceMgmtApp
             }
         }
 
-       
+        private void txt_username_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
