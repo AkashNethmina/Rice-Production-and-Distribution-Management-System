@@ -15,50 +15,84 @@ namespace RiceMgmtApp
     public partial class Fields: UserControl
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["RiceMgmtApp.Properties.Settings.RiceProductionDB2ConnectionString"].ConnectionString;
-        public Fields()
+        //public Fields()
+        //{
+        //    InitializeComponent();
+        //    LoadFields();
+        //}
+
+        
+
+        private int currentUserId;
+        private int currentUserRoleId;
+        public Fields(int userId, int roleId)
         {
             InitializeComponent();
+            currentUserId = userId;
+            currentUserRoleId = roleId;
             LoadFields();
         }
-
 
         private void LoadFields()
         {
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, SeasonType, CreatedAt FROM Fields";
-                SqlDataAdapter da = new SqlDataAdapter(query, con);
+                con.Open();
+                string query;
+
+                if (currentUserRoleId == 2) // Farmer
+                {
+                    query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, SeasonType, CreatedAt FROM Fields WHERE FarmerID = @UserID";
+                }
+                else // Admin or Government Official
+                {
+                    query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, SeasonType, CreatedAt FROM Fields";
+                }
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                if (currentUserRoleId == 2)
+                {
+                    cmd.Parameters.AddWithValue("@UserID", currentUserId);
+                }
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
                 dgvFields.DataSource = dt;
 
-                // Add Edit/Delete buttons if not already added
-                if (dgvFields.Columns["Edit"] == null)
+                // Add Edit/Delete buttons only for Admin and Farmer
+                if (dgvFields.Columns["Edit"] == null && currentUserRoleId != 3)
                 {
                     DataGridViewImageColumn editColumn = new DataGridViewImageColumn();
                     editColumn.Name = "Edit";
-                   // editColumn.Image = Properties.Resources.edit_icon; // Add an edit icon to Resources
+                    editColumn.HeaderText = "";
+                  //  editColumn.Image = Properties.Resources.edit_icon; // Add image to resources
                     dgvFields.Columns.Add(editColumn);
                 }
 
-                if (dgvFields.Columns["Delete"] == null)
+                if (dgvFields.Columns["Delete"] == null && currentUserRoleId == 1)
                 {
                     DataGridViewImageColumn deleteColumn = new DataGridViewImageColumn();
                     deleteColumn.Name = "Delete";
-                  //  deleteColumn.Image = Properties.Resources.delete_icon; // Add a delete icon to Resources
+                    deleteColumn.HeaderText = "";
+                    //deleteColumn.Image = Properties.Resources.delete_icon; // Add image to resources
                     dgvFields.Columns.Add(deleteColumn);
                 }
             }
         }
+
 
         private void dgvFields_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 int fieldID = Convert.ToInt32(dgvFields.Rows[e.RowIndex].Cells["FieldID"].Value);
+                int farmerID = Convert.ToInt32(dgvFields.Rows[e.RowIndex].Cells["FarmerID"].Value);
 
-                if (dgvFields.Columns[e.ColumnIndex].Name == "Edit")
+                string columnName = dgvFields.Columns[e.ColumnIndex].Name;
+
+                if (columnName == "Edit" && (currentUserRoleId == 1 || (currentUserRoleId == 2 && farmerID == currentUserId)))
                 {
                     DialogResult result = MessageBox.Show("Do you want to edit this record?", "Edit Confirmation", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
@@ -67,7 +101,7 @@ namespace RiceMgmtApp
                     }
                 }
 
-                if (dgvFields.Columns[e.ColumnIndex].Name == "Delete")
+                if (columnName == "Delete" && currentUserRoleId == 1)
                 {
                     DialogResult result = MessageBox.Show("Are you sure you want to delete this record?", "Delete Confirmation", MessageBoxButtons.YesNo);
                     if (result == DialogResult.Yes)
@@ -78,6 +112,7 @@ namespace RiceMgmtApp
                 }
             }
         }
+
 
         private void EditField(int fieldID)
         {

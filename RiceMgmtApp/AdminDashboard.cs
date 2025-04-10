@@ -8,13 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 
 namespace RiceMgmtApp
 {
     public partial class AdminDashboard : Form
     {
-       // private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+        // private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+
+        
 
         public AdminDashboard(string log)
         {
@@ -134,10 +137,12 @@ namespace RiceMgmtApp
 
         private void btn_Fields_Click(object sender, EventArgs e)
         {
-            Fields fie = new Fields();
+            //// Assuming you have a way to get the current user's ID and role ID
+            // int userId = GetCurrentUserId(); // Replace with actual method to get user ID
+            // int roleId = GetCurrentUserRoleId(); // Replace with actual method to get role ID
 
-            FieldsControl(fie);
-
+            //Fields fie = new Fields(userId, roleId);
+            //FieldsControl(fie);
         }
 
         private void AdminDashboard_Load(object sender, EventArgs e)

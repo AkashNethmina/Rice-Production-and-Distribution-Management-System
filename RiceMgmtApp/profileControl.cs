@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
 
@@ -86,6 +85,7 @@ namespace RiceMgmtApp
                 {
                     conn.Open();
 
+                    // Update basic profile details
                     string updateQuery = @"
                         UPDATE Users 
                         SET FullName = @FullName, Email = @Email, ContactNumber = @Contact 
@@ -100,7 +100,7 @@ namespace RiceMgmtApp
                         cmd.ExecuteNonQuery();
                     }
 
-                    // Handle password update
+                    // If password change is requested
                     if (updatePassword && !string.IsNullOrWhiteSpace(txtNewPassword.Text))
                     {
                         if (txtNewPassword.Text != txtConfirmPassword.Text)
@@ -135,12 +135,12 @@ namespace RiceMgmtApp
 
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            UpdateProfile(updatePassword: true); // Handles both profile and optional password change
+            UpdateProfile(updatePassword: false); // Only updates name, email, contact
         }
 
         private void btnChangePassword_Click(object sender, EventArgs e)
         {
-            UpdateProfile(updatePassword: true); // Reuses the same method
+            UpdateProfile(updatePassword: true); // Updates password (and profile if needed)
         }
     }
 }

@@ -21,6 +21,14 @@ namespace RiceMgmtApp
             txt_password.UseSystemPasswordChar = !show_password.Checked;
         }
 
+        public static class Session
+        {
+            public static int UserId { get; set; }
+            public static int RoleId { get; set; }
+            public static string Username { get; set; }
+        }
+
+
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -131,6 +139,13 @@ namespace RiceMgmtApp
         private void RedirectUser(int roleId)
         {
             string username = txt_username.Text.Trim(); // Get the logged-in username
+            Session.Username = username; // Store globally
+           // Session.UserId = fetchedUserId; // from database
+           // Session.RoleId = fetchedRoleId;
+            Session.Username = txt_username.Text.Trim();
+
+           // RedirectUser(Session.RoleId);
+
             switch (roleId)
             {
                 case 1: // Admin
@@ -139,10 +154,19 @@ namespace RiceMgmtApp
                     adminForm.Show();
                     this.Hide();
                     break;
+                //case 2: // Farmer
+                //    MessageBox.Show("Redirecting to Farmer Dashboard...");
+                //    FarmerDashboard farmerForm = new FarmerDashboard();
+                //    farmerForm.LoggedInUsername = username;
+                //    farmerForm.Show();
+                //    this.Hide();
+                //    break;
+
                 case 2: // Farmer
                     MessageBox.Show("Redirecting to Farmer Dashboard...");
                     FarmerDashboard farmerForm = new FarmerDashboard();
                     farmerForm.LoggedInUsername = username;
+                //    farmerForm.UserId = Session.UserId;
                     farmerForm.Show();
                     this.Hide();
                     break;
