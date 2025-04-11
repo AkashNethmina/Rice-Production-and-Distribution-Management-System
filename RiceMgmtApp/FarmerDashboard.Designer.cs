@@ -142,6 +142,7 @@
             this.btn_Farmers.Text = "Field Management";
             this.btn_Farmers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_Farmers.UseVisualStyleBackColor = true;
+            this.btn_Farmers.Click += new System.EventHandler(this.btn_Farmers_Click);
             // 
             // btn_logout
             // 

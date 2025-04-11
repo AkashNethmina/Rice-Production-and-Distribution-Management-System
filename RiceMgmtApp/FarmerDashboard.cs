@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace RiceMgmtApp
 {
     public partial class FarmerDashboard : Form
     {
+        private int _userId;
+        private int _roleId;
         public string LoggedInUsername { get; set; }
 
-        public FarmerDashboard()
+        public FarmerDashboard(int userId, int roleId)
         {
             InitializeComponent();
+            _userId = userId;
+            _roleId = roleId;
         }
 
         // Generic method to load any UserControl into the container panel
@@ -48,8 +53,16 @@ namespace RiceMgmtApp
         private void FarmerDashboard_Load(object sender, EventArgs e)
         {
             // Optionally load a default control when form loads
-            AdminHome defaultHome = new AdminHome();
-            LoadControl(defaultHome);
+           
+        }
+
+        private void btn_Farmers_Click(object sender, EventArgs e)
+        {
+            int currentUserId = _userId; // Replace with the actual user ID
+            int currentUserRoleId = _roleId; // Replace with the actual role ID
+
+            Fields fie = new Fields(currentUserId, currentUserRoleId);
+            LoadControl(fie);
         }
     }
 }

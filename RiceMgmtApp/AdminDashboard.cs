@@ -17,12 +17,21 @@ namespace RiceMgmtApp
     {
         // private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
 
-        
 
-        public AdminDashboard(string log)
+        private int _userId;
+        private int _roleId;
+
+        public AdminDashboard(int userId, int roleId)
         {
             InitializeComponent();
+            _userId = userId;
+            _roleId = roleId;
         }
+
+        //public AdminDashboard()
+        //{
+        //    InitializeComponent();
+        //}
 
         
 
@@ -137,12 +146,12 @@ namespace RiceMgmtApp
 
         private void btn_Fields_Click(object sender, EventArgs e)
         {
-            //// Assuming you have a way to get the current user's ID and role ID
-            // int userId = GetCurrentUserId(); // Replace with actual method to get user ID
-            // int roleId = GetCurrentUserRoleId(); // Replace with actual method to get role ID
+            // Assuming you have the current user's ID and role ID available
+            int currentUserId = _userId; // Replace with the actual user ID
+            int currentUserRoleId = _roleId; // Replace with the actual role ID
 
-            //Fields fie = new Fields(userId, roleId);
-            //FieldsControl(fie);
+            Fields fie = new Fields(currentUserId, currentUserRoleId);
+            FieldsControl(fie);
         }
 
         private void AdminDashboard_Load(object sender, EventArgs e)

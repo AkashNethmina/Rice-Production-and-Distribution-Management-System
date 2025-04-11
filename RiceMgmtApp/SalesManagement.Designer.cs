@@ -54,21 +54,23 @@
             // dataGridViewSales
             // 
             this.dataGridViewSales.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewSales.Location = new System.Drawing.Point(149, 124);
+            this.dataGridViewSales.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.dataGridViewSales.Location = new System.Drawing.Point(0, 154);
             this.dataGridViewSales.Name = "dataGridViewSales";
-            this.dataGridViewSales.Size = new System.Drawing.Size(240, 150);
+            this.dataGridViewSales.Size = new System.Drawing.Size(889, 277);
             this.dataGridViewSales.TabIndex = 0;
             // 
             // txtSalePrice
             // 
-            this.txtSalePrice.Location = new System.Drawing.Point(178, 32);
+            this.txtSalePrice.Location = new System.Drawing.Point(85, 66);
             this.txtSalePrice.Name = "txtSalePrice";
             this.txtSalePrice.Size = new System.Drawing.Size(100, 20);
             this.txtSalePrice.TabIndex = 1;
+            this.txtSalePrice.TextChanged += new System.EventHandler(this.txtSalePrice_TextChanged);
             // 
             // txtQuantity
             // 
-            this.txtQuantity.Location = new System.Drawing.Point(337, 31);
+            this.txtQuantity.Location = new System.Drawing.Point(189, 66);
             this.txtQuantity.Name = "txtQuantity";
             this.txtQuantity.Size = new System.Drawing.Size(100, 20);
             this.txtQuantity.TabIndex = 2;
@@ -77,7 +79,7 @@
             // 
             this.cmbFarmer.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.riceProductionDB2DataSet, "Users.Username", true));
             this.cmbFarmer.FormattingEnabled = true;
-            this.cmbFarmer.Location = new System.Drawing.Point(178, 75);
+            this.cmbFarmer.Location = new System.Drawing.Point(295, 65);
             this.cmbFarmer.Name = "cmbFarmer";
             this.cmbFarmer.Size = new System.Drawing.Size(121, 21);
             this.cmbFarmer.TabIndex = 3;
@@ -90,16 +92,15 @@
             // cmbBuyer
             // 
             this.cmbBuyer.FormattingEnabled = true;
-            this.cmbBuyer.Location = new System.Drawing.Point(353, 75);
+            this.cmbBuyer.Location = new System.Drawing.Point(422, 65);
             this.cmbBuyer.Name = "cmbBuyer";
             this.cmbBuyer.Size = new System.Drawing.Size(121, 21);
             this.cmbBuyer.TabIndex = 4;
-    //        this.cmbBuyer.SelectedIndexChanged += new System.EventHandler(this.cmbBuyer_SelectedIndexChanged);
             // 
             // cmbBuyerType
             // 
             this.cmbBuyerType.FormattingEnabled = true;
-            this.cmbBuyerType.Location = new System.Drawing.Point(480, 75);
+            this.cmbBuyerType.Location = new System.Drawing.Point(549, 65);
             this.cmbBuyerType.Name = "cmbBuyerType";
             this.cmbBuyerType.Size = new System.Drawing.Size(121, 21);
             this.cmbBuyerType.TabIndex = 5;
@@ -107,14 +108,14 @@
             // cmbPaymentStatus
             // 
             this.cmbPaymentStatus.FormattingEnabled = true;
-            this.cmbPaymentStatus.Location = new System.Drawing.Point(637, 75);
+            this.cmbPaymentStatus.Location = new System.Drawing.Point(682, 66);
             this.cmbPaymentStatus.Name = "cmbPaymentStatus";
             this.cmbPaymentStatus.Size = new System.Drawing.Size(121, 21);
             this.cmbPaymentStatus.TabIndex = 6;
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(398, 159);
+            this.btnAdd.Location = new System.Drawing.Point(85, 103);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(75, 23);
             this.btnAdd.TabIndex = 7;
@@ -124,7 +125,7 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(552, 181);
+            this.btnUpdate.Location = new System.Drawing.Point(176, 103);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(75, 23);
             this.btnUpdate.TabIndex = 8;
@@ -134,7 +135,7 @@
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(509, 210);
+            this.btnDelete.Location = new System.Drawing.Point(257, 103);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(75, 23);
             this.btnDelete.TabIndex = 8;
@@ -144,7 +145,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(613, 234);
+            this.btnSearch.Location = new System.Drawing.Point(511, 103);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(75, 23);
             this.btnSearch.TabIndex = 8;
@@ -159,7 +160,7 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(732, 124);
+            this.txtSearch.Location = new System.Drawing.Point(405, 103);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(100, 20);
             this.txtSearch.TabIndex = 9;
@@ -190,7 +191,7 @@
             this.Controls.Add(this.txtSalePrice);
             this.Controls.Add(this.dataGridViewSales);
             this.Name = "SalesManagement";
-            this.Size = new System.Drawing.Size(845, 431);
+            this.Size = new System.Drawing.Size(889, 431);
             this.Load += new System.EventHandler(this.SalesManagement_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSales)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).EndInit();

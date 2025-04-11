@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace RiceMgmtApp
@@ -18,7 +13,7 @@ namespace RiceMgmtApp
         public SalesManagement()
         {
             InitializeComponent();
-            this.Load += SalesManagement_Load; // Ensure Load event is connected
+            this.Load += SalesManagement_Load;
         }
 
         private void SalesManagement_Load(object sender, EventArgs e)
@@ -37,6 +32,35 @@ namespace RiceMgmtApp
             cmbBuyer.SelectedIndex = -1;
             cmbBuyerType.SelectedIndex = -1;
             cmbPaymentStatus.SelectedIndex = -1;
+
+            StyleSalesGrid();
+        }
+
+        private void StyleSalesGrid()
+        {
+            dataGridViewSales.EnableHeadersVisualStyles = false;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
+            dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridViewSales.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue;
+            dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dataGridViewSales.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridViewSales.RowTemplate.Height = 28;
+            dataGridViewSales.GridColor = Color.LightGray;
+            dataGridViewSales.BorderStyle = BorderStyle.Fixed3D;
+            dataGridViewSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridViewSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewSales.MultiSelect = false;
+            dataGridViewSales.AllowUserToAddRows = false;
+            dataGridViewSales.ReadOnly = true;
         }
 
         private void LoadSalesData()
@@ -74,7 +98,7 @@ namespace RiceMgmtApp
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
                 cmbBuyer.DataSource = dt;
-                cmbBuyer.DisplayMember = "FullName";  // FIXED: previously set Farmer fields again
+                cmbBuyer.DisplayMember = "FullName";
                 cmbBuyer.ValueMember = "UserID";
             }
         }
@@ -95,7 +119,7 @@ namespace RiceMgmtApp
                     cmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtSalePrice.Text));
                     cmd.Parameters.AddWithValue("@Quantity", decimal.Parse(txtQuantity.Text));
                     cmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
-                    cmd.Parameters.AddWithValue("@SaleDate", DateTime.Now); // Assuming sale date is now
+                    cmd.Parameters.AddWithValue("@SaleDate", DateTime.Now);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
@@ -250,6 +274,11 @@ namespace RiceMgmtApp
                 txtQuantity.Text = row.Cells["Quantity"].Value?.ToString();
                 cmbPaymentStatus.Text = row.Cells["PaymentStatus"].Value?.ToString();
             }
+        }
+
+        private void txtSalePrice_TextChanged(object sender, EventArgs e)
+        {
+            // Optional: live validation or calculation can go here
         }
     }
 }

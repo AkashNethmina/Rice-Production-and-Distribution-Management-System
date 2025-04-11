@@ -6,27 +6,25 @@ using System.Windows.Forms;
 using System.Configuration;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using Microsoft.VisualBasic;
-
 using System.IO;
 
 namespace RiceMgmtApp
 {
-    public partial class Fields: UserControl
+    public partial class Fields : UserControl
     {
         private string connectionString = ConfigurationManager.ConnectionStrings["RiceMgmtApp.Properties.Settings.RiceProductionDB2ConnectionString"].ConnectionString;
-        //public Fields()
-        //{
-        //    InitializeComponent();
-        //    LoadFields();
-        //}
-
-        
-
         private int currentUserId;
         private int currentUserRoleId;
+
         public Fields(int userId, int roleId)
         {
+            if (roleId == 4) // Private Buyer - No access
+            {
+                MessageBox.Show("Access denied. You are not authorized to view field data.");
+                this.Dispose();
+                return;
+            }
+
             InitializeComponent();
             currentUserId = userId;
             currentUserRoleId = roleId;
@@ -40,13 +38,17 @@ namespace RiceMgmtApp
                 con.Open();
                 string query;
 
-                if (currentUserRoleId == 2) // Farmer
+                if (currentUserRoleId == 2) // Farmer - own fields
                 {
                     query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, SeasonType, CreatedAt FROM Fields WHERE FarmerID = @UserID";
                 }
-                else // Admin or Government Official
+                else if (currentUserRoleId == 1 || currentUserRoleId == 3) // Admin or Government
                 {
                     query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, SeasonType, CreatedAt FROM Fields";
+                }
+                else
+                {
+                    return;
                 }
 
                 SqlCommand cmd = new SqlCommand(query, con);
@@ -58,30 +60,53 @@ namespace RiceMgmtApp
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
-
                 dgvFields.DataSource = dt;
 
-                // Add Edit/Delete buttons only for Admin and Farmer
-                if (dgvFields.Columns["Edit"] == null && currentUserRoleId != 3)
+                // Remove old buttons if any
+                if (dgvFields.Columns["Edit"] != null) dgvFields.Columns.Remove("Edit");
+                if (dgvFields.Columns["Delete"] != null) dgvFields.Columns.Remove("Delete");
+
+                // Add Edit button if role is Admin or Farmer
+                if (currentUserRoleId == 1 || currentUserRoleId == 2)
                 {
                     DataGridViewImageColumn editColumn = new DataGridViewImageColumn();
                     editColumn.Name = "Edit";
                     editColumn.HeaderText = "";
-                  //  editColumn.Image = Properties.Resources.edit_icon; // Add image to resources
+                   // editColumn.Image = Properties.Resources.edit_icon; // Optional image icon
                     dgvFields.Columns.Add(editColumn);
                 }
 
-                if (dgvFields.Columns["Delete"] == null && currentUserRoleId == 1)
+                // Add Delete button if Admin
+                if (currentUserRoleId == 1)
                 {
                     DataGridViewImageColumn deleteColumn = new DataGridViewImageColumn();
                     deleteColumn.Name = "Delete";
                     deleteColumn.HeaderText = "";
-                    //deleteColumn.Image = Properties.Resources.delete_icon; // Add image to resources
+                  //  deleteColumn.Image = Properties.Resources.delete_icon; // Optional image icon
                     dgvFields.Columns.Add(deleteColumn);
                 }
+
+                StyleDataGridView(); // Apply modern styling
             }
         }
 
+        private void StyleDataGridView()
+        {
+            dgvFields.BorderStyle = BorderStyle.None;
+            dgvFields.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+            dgvFields.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvFields.DefaultCellStyle.SelectionBackColor = Color.SeaGreen;
+            dgvFields.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+            dgvFields.BackgroundColor = Color.White;
+            dgvFields.EnableHeadersVisualStyles = false;
+            dgvFields.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvFields.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            dgvFields.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvFields.RowHeadersVisible = false;
+            dgvFields.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvFields.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvFields.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+        }
 
         private void dgvFields_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -89,15 +114,21 @@ namespace RiceMgmtApp
             {
                 int fieldID = Convert.ToInt32(dgvFields.Rows[e.RowIndex].Cells["FieldID"].Value);
                 int farmerID = Convert.ToInt32(dgvFields.Rows[e.RowIndex].Cells["FarmerID"].Value);
-
                 string columnName = dgvFields.Columns[e.ColumnIndex].Name;
 
-                if (columnName == "Edit" && (currentUserRoleId == 1 || (currentUserRoleId == 2 && farmerID == currentUserId)))
+                if (columnName == "Edit")
                 {
-                    DialogResult result = MessageBox.Show("Do you want to edit this record?", "Edit Confirmation", MessageBoxButtons.YesNo);
-                    if (result == DialogResult.Yes)
+                    if (currentUserRoleId == 1 || (currentUserRoleId == 2 && farmerID == currentUserId))
                     {
-                        EditField(fieldID);
+                        DialogResult result = MessageBox.Show("Do you want to edit this record?", "Edit Confirmation", MessageBoxButtons.YesNo);
+                        if (result == DialogResult.Yes)
+                        {
+                            EditField(fieldID);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("You do not have permission to edit this field.");
                     }
                 }
 
@@ -107,12 +138,11 @@ namespace RiceMgmtApp
                     if (result == DialogResult.Yes)
                     {
                         DeleteField(fieldID);
-                        LoadFields(); // Refresh table
+                        LoadFields(); // Refresh
                     }
                 }
             }
         }
-
 
         private void EditField(int fieldID)
         {
@@ -128,7 +158,6 @@ namespace RiceMgmtApp
                 {
                     string newLocation = Microsoft.VisualBasic.Interaction.InputBox("Enter new location:", "Edit Field", reader["LocationCoordinates"].ToString());
                     decimal newSize = Convert.ToDecimal(Microsoft.VisualBasic.Interaction.InputBox("Enter new size:", "Edit Field", reader["FieldSize"].ToString()));
-
                     reader.Close();
 
                     string updateQuery = "UPDATE Fields SET LocationCoordinates=@Loc, FieldSize=@Size WHERE FieldID=@FieldID";
@@ -173,7 +202,7 @@ namespace RiceMgmtApp
                         PdfWriter.GetInstance(doc, new FileStream(sfd.FileName, FileMode.Create));
                         doc.Open();
 
-                        PdfPTable pdfTable = new PdfPTable(dgvFields.Columns.Count - 2); // Skip Edit & Delete
+                        PdfPTable pdfTable = new PdfPTable(dgvFields.Columns.Count - 2); // Exclude Edit/Delete
                         foreach (DataGridViewColumn column in dgvFields.Columns)
                         {
                             if (column.Name != "Edit" && column.Name != "Delete")
@@ -194,7 +223,6 @@ namespace RiceMgmtApp
 
                         doc.Add(pdfTable);
                         doc.Close();
-
                         MessageBox.Show("Exported Successfully!", "PDF Export");
                     }
                     catch (Exception ex)

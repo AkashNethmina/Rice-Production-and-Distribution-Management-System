@@ -3,6 +3,7 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace RiceMgmtApp
@@ -20,14 +21,6 @@ namespace RiceMgmtApp
         {
             txt_password.UseSystemPasswordChar = !show_password.Checked;
         }
-
-        public static class Session
-        {
-            public static int UserId { get; set; }
-            public static int RoleId { get; set; }
-            public static string Username { get; set; }
-        }
-
 
         private void btn_cancel_Click(object sender, EventArgs e)
         {
@@ -70,10 +63,16 @@ namespace RiceMgmtApp
                             if (VerifyPassword(password, storedHash))
                             {
                                 LogAuthAttempt(userId, "Success");
-                               // MessageBox.Show("Login successful!", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                // MessageBox.Show("Login successful!", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                                 // Redirect user based on role
-                                RedirectUser(roleId);
+                                // Update the call to RedirectUser to include the missing userId parameter
+                                if (VerifyPassword(password, storedHash))
+                                {
+                                    LogAuthAttempt(userId, "Success");
+                                    RedirectUser(roleId, userId); // Pass both roleId and userId
+                                }
+                                //RedirectUser(roleId);
                             }
                             else
                             {
@@ -135,50 +134,33 @@ namespace RiceMgmtApp
             }
         }
 
-        
-        private void RedirectUser(int roleId)
+
+        private void RedirectUser(int roleId, int userId)
         {
             string username = txt_username.Text.Trim(); // Get the logged-in username
-            Session.Username = username; // Store globally
-           // Session.UserId = fetchedUserId; // from database
-           // Session.RoleId = fetchedRoleId;
-            Session.Username = txt_username.Text.Trim();
-
-           // RedirectUser(Session.RoleId);
-
             switch (roleId)
             {
                 case 1: // Admin
-                    MessageBox.Show("Redirecting to Admin Dashboard...");
-                    AdminDashboard adminForm = new AdminDashboard(username);
+                        //MessageBox.Show("Redirecting to Admin Panel...");
+                    AdminDashboard adminForm = new AdminDashboard(userId,roleId);
                     adminForm.Show();
                     this.Hide();
                     break;
-                //case 2: // Farmer
-                //    MessageBox.Show("Redirecting to Farmer Dashboard...");
-                //    FarmerDashboard farmerForm = new FarmerDashboard();
-                //    farmerForm.LoggedInUsername = username;
-                //    farmerForm.Show();
-                //    this.Hide();
-                //    break;
-
                 case 2: // Farmer
-                    MessageBox.Show("Redirecting to Farmer Dashboard...");
-                    FarmerDashboard farmerForm = new FarmerDashboard();
+                        //MessageBox.Show("Redirecting to Farmer Dashboard...");
+                    FarmerDashboard farmerForm = new FarmerDashboard(userId, roleId);
                     farmerForm.LoggedInUsername = username;
-                //    farmerForm.UserId = Session.UserId;
                     farmerForm.Show();
                     this.Hide();
                     break;
-
                 case 3: // Government Official
-                    MessageBox.Show("Redirecting to Government Dashboard...");
+                        //MessageBox.Show("Redirecting to Government Panel...");
                     GovtOfficialDashboard govtForm = new GovtOfficialDashboard();
                     govtForm.Show();
                     this.Hide();
                     break;
                 case 4: // Private Buyer
-                    MessageBox.Show("Redirecting to Private Buyer Dashboard...");
+                        //  MessageBox.Show("Redirecting to Private Buyer Panel...");
                     BuyerDashboard buyerForm = new BuyerDashboard();
                     buyerForm.Show();
                     this.Hide();
@@ -189,9 +171,6 @@ namespace RiceMgmtApp
             }
         }
 
-        private void txt_username_TextChanged(object sender, EventArgs e)
-        {
 
-        }
     }
 }
