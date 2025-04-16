@@ -1,0 +1,158 @@
+-- Roles Table
+CREATE TABLE Roles (
+    RoleID INT IDENTITY(1,1) PRIMARY KEY,
+    RoleName NVARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Users Table
+CREATE TABLE Users (
+    UserID INT IDENTITY(1,1) PRIMARY KEY,
+    FullName NVARCHAR(100) NOT NULL,
+    Username NVARCHAR(50) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(512) NOT NULL,
+    Email NVARCHAR(100) UNIQUE, 
+    ContactNumber NVARCHAR(20),
+    RoleID INT NOT NULL,
+    Status NVARCHAR(20) CHECK (Status IN ('Active', 'Suspended')) DEFAULT 'Active',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
+);
+
+-- Farmers Table
+CREATE TABLE Farmers (
+    FarmerID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT NOT NULL UNIQUE,
+    ContactNumber NVARCHAR(20) NOT NULL,
+    Address NVARCHAR(255),
+    FarmSize DECIMAL(10,2) NULL,
+    RegistrationDate DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+-- Authentication Logs Table
+CREATE TABLE AuthLogs (
+    LogID INT IDENTITY(1,1) PRIMARY KEY,
+    UserID INT,
+    LoginTime DATETIME DEFAULT GETDATE(),
+    Status NVARCHAR(20) CHECK (Status IN ('Success', 'Failure')),
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+-- Fields Table
+CREATE TABLE Fields (
+    FieldID INT IDENTITY(1,1) PRIMARY KEY,
+    FarmerID INT NOT NULL,
+    LocationCoordinates NVARCHAR(100) NOT NULL, -- Can be changed to GEOGRAPHY type for GIS support
+    FieldSize DECIMAL(10,2) NOT NULL, -- Size in acres or hectares
+    SoilCondition NVARCHAR(50) CHECK (SoilCondition IN (
+        'Alluvial Soils', 
+        'Reddish Brown Earth', 
+        'Low Humic Gley', 
+        'Grumusols (Black Clay)', 
+        'Red-Yellow Podzolic'
+    )),
+    Zone NVARCHAR(50) CHECK (Zone IN (
+        'Lowlands', 
+        'Dry Zone', 
+        'Low-lying areas', 
+        'Central/North', 
+        'Wet Zone'
+    )),
+    SeasonType NVARCHAR(50) CHECK (SeasonType IN ('Yala', 'Maha')),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+-- Sales Table with NO ACTION on BuyerID to prevent cascade conflicts
+CREATE TABLE Sales (
+    SaleID INT IDENTITY(1,1) PRIMARY KEY,
+    FarmerID INT NOT NULL,
+    BuyerID INT NULL, 
+    BuyerType NVARCHAR(50) CHECK (BuyerType IN ('Government', 'Private')),
+    SalePrice DECIMAL(10,2) NOT NULL,
+    Quantity DECIMAL(10,2) NOT NULL,
+    PaymentStatus NVARCHAR(20) CHECK (PaymentStatus IN ('Pending', 'Completed', 'Failed')) DEFAULT 'Pending',
+    SaleDate DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE, 
+    FOREIGN KEY (BuyerID) REFERENCES Users(UserID) ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+-- Stock Table
+CREATE TABLE Stock (
+    StockID INT IDENTITY(1,1) PRIMARY KEY,
+    FarmerID INT NOT NULL,
+    CropType NVARCHAR(50) NOT NULL, 
+    Quantity DECIMAL(10,2) NOT NULL,
+    LastUpdated DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- Damage Reports Table
+CREATE TABLE DamageReports (
+    ReportID INT IDENTITY(1,1) PRIMARY KEY,
+    FarmerID INT NOT NULL,
+    ReportDetails NVARCHAR(MAX) NOT NULL,
+    Status NVARCHAR(50) CHECK (Status IN ('Pending', 'Under Review', 'Approved', 'Rejected')) DEFAULT 'Pending',
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    ResolvedAt DATETIME NULL, 
+    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- Reports & Analytics Table
+CREATE TABLE Reports (
+    ReportID INT IDENTITY(1,1) PRIMARY KEY,
+    ReportType NVARCHAR(50) NOT NULL,
+    GeneratedBy INT NOT NULL,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (GeneratedBy) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
+-- Price Monitoring Table
+CREATE TABLE PriceMonitoring (
+    PriceID INT IDENTITY(1,1) PRIMARY KEY,
+    Region NVARCHAR(100) NOT NULL,
+    AvgPrice DECIMAL(10,2) NOT NULL,
+    GovernmentPrice DECIMAL(10,2) NOT NULL,
+    PriceDeviation DECIMAL(10,2),
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+-- Cultivation Table
+CREATE TABLE Cultivation (
+    CultivationID INT IDENTITY(1,1) PRIMARY KEY,
+    FarmerID INT NOT NULL,
+    Season VARCHAR(10) CHECK (Season IN ('Yala', 'Maha')),
+    Year INT,
+    AcresCultivated DECIMAL(10,2),
+    ExpectedYield DECIMAL(10,2),
+    ActualYield DECIMAL(10,2) NULL,
+    CropLoss DECIMAL(10,2) NULL, -- Keep CropLoss manually updatable
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+GO  -- Ensure a new batch
+CREATE TRIGGER trg_DeleteBuyer
+ON Users
+INSTEAD OF DELETE
+AS
+BEGIN
+    -- Set BuyerID to NULL in Sales instead of deleting buyers
+    UPDATE Sales 
+    SET BuyerID = NULL 
+    WHERE BuyerID IN (SELECT UserID FROM deleted);
+
+    -- Now delete the buyer safely
+    DELETE FROM Users WHERE UserID IN (SELECT UserID FROM deleted);
+END;
+
+
+GO  -- Ensures a new batch
+
+CREATE TRIGGER trg_UpdateCropLoss
+ON Cultivation
+AFTER UPDATE
+AS
+BEGIN
+    -- Update CropLoss only if ActualYield is updated
+    UPDATE c
+    SET CropLoss = i.ExpectedYield - i.ActualYield
+    FROM Cultivation c
+    INNER JOIN inserted i ON c.CultivationID = i.CultivationID
+    WHERE i.ActualYield IS NOT NULL;
+END;

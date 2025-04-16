@@ -44,11 +44,34 @@ namespace RiceMgmtApp
 
                 if (currentUserRoleId == 2) // Farmer
                 {
-                    query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, Zone, SeasonType, CreatedAt FROM Fields WHERE FarmerID = @UserID";
+                    query = @"
+                SELECT 
+                    F.FieldID, 
+                    FA.FullName AS FarmerName, 
+                    F.LocationCoordinates, 
+                    F.FieldSize, 
+                    F.SoilCondition, 
+                    F.Zone, 
+                    F.SeasonType, 
+                    F.CreatedAt
+                FROM Fields F
+                JOIN Users FA ON F.FarmerID = FA.UserID
+                WHERE FA.UserID = @UserID";
                 }
                 else if (currentUserRoleId == 1 || currentUserRoleId == 3) // Admin or Govt
                 {
-                    query = "SELECT FieldID, FarmerID, LocationCoordinates, FieldSize, SoilCondition, Zone, SeasonType, CreatedAt FROM Fields";
+                    query = @"
+                SELECT 
+                    F.FieldID, 
+                    FA.FullName AS FarmerName, 
+                    F.LocationCoordinates, 
+                    F.FieldSize, 
+                    F.SoilCondition, 
+                    F.Zone, 
+                    F.SeasonType, 
+                    F.CreatedAt
+                FROM Fields F
+                JOIN Users FA ON F.FarmerID = FA.UserID";
                 }
                 else
                 {
@@ -65,6 +88,16 @@ namespace RiceMgmtApp
                 DataTable dt = new DataTable();
                 da.Fill(dt);
                 dgvFields.DataSource = dt;
+                dgvFields.Columns["FieldID"].HeaderText = "ID";
+                dgvFields.Columns["FarmerName"].HeaderText = "Farmer Name";
+                dgvFields.Columns["LocationCoordinates"].HeaderText = "Location";
+                dgvFields.Columns["FieldSize"].HeaderText = "Size (Acres)";
+                dgvFields.Columns["SoilCondition"].HeaderText = "Soil Condition";
+                dgvFields.Columns["Zone"].HeaderText = "Zone";
+                dgvFields.Columns["SeasonType"].HeaderText = "Season Type";
+                dgvFields.Columns["CreatedAt"].HeaderText = "Created At";
+                dgvFields.Columns["CreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm:ss"; // Format date
+
 
                 // Remove old buttons if any
                 if (dgvFields.Columns["Edit"] != null) dgvFields.Columns.Remove("Edit");
@@ -81,7 +114,7 @@ namespace RiceMgmtApp
                     dgvFields.Columns.Add(editColumn);
                 }
 
-                // Add Delete button for Admin
+                // Add Delete button for Admin/Farmer
                 if (currentUserRoleId == 1 || currentUserRoleId == 2)
                 {
                     DataGridViewImageColumn deleteColumn = new DataGridViewImageColumn();

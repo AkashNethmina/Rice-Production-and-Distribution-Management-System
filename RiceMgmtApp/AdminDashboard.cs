@@ -10,14 +10,10 @@ using System.Data.SqlClient;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.ApplicationServices;
 
-
 namespace RiceMgmtApp
 {
     public partial class AdminDashboard : Form
     {
-        // private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
-
-
         private int _userId;
         private int _roleId;
 
@@ -27,13 +23,6 @@ namespace RiceMgmtApp
             _userId = userId;
             _roleId = roleId;
         }
-
-        //public AdminDashboard()
-        //{
-        //    InitializeComponent();
-        //}
-
-        
 
         private void HideSubMenu()
         {
@@ -45,11 +34,6 @@ namespace RiceMgmtApp
 
         private void ShowSection(Panel panel)
         {
-            //panelDashboard.Visible = false;
-           // panelUsers.Visible = false;
-            //panelFarmers.Visible = false;
-            //panelSales.Visible = false;
-
             panel.Visible = true;
         }
 
@@ -66,67 +50,66 @@ namespace RiceMgmtApp
             }
         }
 
-
-        private void HomeControl(UserControl homeControl) // Change HomeControl to UserControl
+        private void LoadUserControl(UserControl userControl)
         {
-            homeControl.Dock = DockStyle.Fill;
+            userControl.Dock = DockStyle.Fill;
             panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(homeControl);
-            homeControl.BringToFront();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
         }
+
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-           // ShowSection(panelDashboard);
             HideSubMenu();
-          //  LoadDashboardData(); // Refresh dashboard data
-
             AdminHome ah = new AdminHome();
-            HomeControl(ah);
-           
+            LoadUserControl(ah);
         }
 
         private void btn_manUser_Click(object sender, EventArgs e)
         {
             ShowSubMenu(panel2submenu);
         }
-        private void AllUsersControl(UserControl userControl)
-        {
-            userControl.Dock = DockStyle.Fill;
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(userControl);
-            userControl.BringToFront();
-        }
+
         private void btn_AllUsers_Click(object sender, EventArgs e)
         {
             UserManagement um = new UserManagement();
-            AllUsersControl(um);
+            LoadUserControl(um);
         }
 
-        private void AddUserControl(UserControl userControl)
+        private void btn_AddUsers_Click(object sender, EventArgs e)
         {
-            userControl.Dock = DockStyle.Fill;
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(userControl);
-            userControl.BringToFront();
+            UsersAdd ua = new UsersAdd();
+            LoadUserControl(ua);
         }
-
-
-        
-
-     
 
         private void btn_Farmers_Click(object sender, EventArgs e)
         {
             ShowSubMenu(panel3side);
         }
 
-        private void btn_FarmersList_Click(object sender, EventArgs e)
+        private void btn_AllFarmers_Click(object sender, EventArgs e)
         {
-           // LoadFarmerManagement();
-          //  ShowSection(panelFarmers); // Make sure to show the panel after loading data
+            FarmerManagement fm = new FarmerManagement();
+            LoadUserControl(fm);
         }
 
-        
+        private void btn_Fields_Click(object sender, EventArgs e)
+        {
+            Fields fie = new Fields(_userId, _roleId);
+            LoadUserControl(fie);
+        }
+
+        private void btn_Sales_Click(object sender, EventArgs e)
+        {
+            SalesManagement sm = new SalesManagement();
+            LoadUserControl(sm);
+        }
+
+        private void btn_StockManagement_Click(object sender, EventArgs e)
+        {
+            StockManagement stm = new StockManagement();
+            LoadUserControl(stm);
+        }
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
@@ -135,78 +118,11 @@ namespace RiceMgmtApp
             this.Hide();
         }
 
-        private void FieldsControl(UserControl userControl)
-        {
-            userControl.Dock = DockStyle.Fill;
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(userControl);
-            userControl.BringToFront();
-        }
-
-
-        private void btn_Fields_Click(object sender, EventArgs e)
-        {
-            // Assuming you have the current user's ID and role ID available
-            int currentUserId = _userId; // Replace with the actual user ID
-            int currentUserRoleId = _roleId; // Replace with the actual role ID
-
-            Fields fie = new Fields(currentUserId, currentUserRoleId);
-            FieldsControl(fie);
-        }
-
         private void AdminDashboard_Load(object sender, EventArgs e)
         {
-            // TODO: This line of code loads data into the 'riceProductionDB2DataSet.Users' table. You can move, or remove it, as needed.
-            this.usersTableAdapter.Fill(this.riceProductionDB2DataSet.Users);
-
-        }
-
-
-        private void btn_AddUsers_Click(object sender, EventArgs e)
-        {
-            UsersAdd ua = new UsersAdd();
-            AddUserControl(ua);
-        }
-
-        private void AllFarmersControl(UserControl userControl)
-        {
-            userControl.Dock = DockStyle.Fill;
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(userControl);
-            userControl.BringToFront();
-        }
-
-        private void btn_AllFarmers_Click(object sender, EventArgs e)
-        {
-            FarmerManagement fm = new FarmerManagement();
-            
-            AllFarmersControl(fm);
-        }
-
-        private void SalesManagementControl(UserControl userControl)
-        {
-            userControl.Dock = DockStyle.Fill;
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(userControl);
-            userControl.BringToFront();
-        }
-
-        private void btn_Sales_Click(object sender, EventArgs e)
-        {
-            SalesManagement sm = new SalesManagement();
-            SalesManagementControl(sm);
-        }
-        private void StockManagementControl(UserControl userControl)
-        {
-            userControl.Dock = DockStyle.Fill;
-            panelContainer.Controls.Clear();
-            panelContainer.Controls.Add(userControl);
-            userControl.BringToFront();
-        }
-        private void btn_StockManagement_Click(object sender, EventArgs e)
-        {
-            StockManagement stm = new StockManagement();
-            StockManagementControl(stm);
+            // Show AdminHome as default on load
+            AdminHome ah = new AdminHome();
+            LoadUserControl(ah);
         }
     }
 }

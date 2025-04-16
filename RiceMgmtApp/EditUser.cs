@@ -29,9 +29,9 @@ namespace RiceMgmtApp
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"
-                    SELECT U.FullName, U.Username, U.Email, U.ContactNumber, U.RoleID, U.Status
-                    FROM Users U
-                    WHERE U.UserID = @UserID";
+            SELECT U.FullName, U.Username, U.Email, U.ContactNumber, U.RoleID, U.Status
+            FROM Users U
+            WHERE U.UserID = @UserID";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@UserID", userId);
@@ -46,8 +46,25 @@ namespace RiceMgmtApp
                     txtEmail.Text = reader["Email"].ToString();
                     txtContact.Text = reader["ContactNumber"].ToString();
 
-                    comboStatus.SelectedItem = reader["Status"].ToString();
-                    comboRole.SelectedValue = Convert.ToInt32(reader["RoleID"]);
+                    // Set default status to 'Active'
+                    string status = reader["Status"] != DBNull.Value ? reader["Status"].ToString() : "Active";
+
+                    // Make sure the status exists in the combobox items
+                    if (comboStatus.Items.Contains(status))
+                    {
+                        comboStatus.SelectedItem = status;
+                    }
+                    else
+                    {
+                        // Default to 'Active' if status is not valid
+                        comboStatus.SelectedItem = "Active";
+                    }
+
+                    // Handle RoleID selection
+                    if (reader["RoleID"] != DBNull.Value)
+                    {
+                        comboRole.SelectedValue = Convert.ToInt32(reader["RoleID"]);
+                    }
                 }
 
                 reader.Close();
@@ -109,17 +126,29 @@ namespace RiceMgmtApp
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // Make sure we have valid selections before saving
+            if (comboStatus.SelectedItem == null)
+            {
+                comboStatus.SelectedItem = "Active"; // Set default if null
+            }
+
+            if (comboRole.SelectedValue == null)
+            {
+                MessageBox.Show("Please select a role before saving.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 string query = @"
-                    UPDATE Users
-                    SET FullName = @FullName,
-                        Username = @Username,
-                        Email = @Email,
-                        ContactNumber = @Contact,
-                        RoleID = @RoleID,
-                        Status = @Status
-                    WHERE UserID = @UserID";
+            UPDATE Users
+            SET FullName = @FullName,
+                Username = @Username,
+                Email = @Email,
+                ContactNumber = @Contact,
+                RoleID = @RoleID,
+                Status = @Status
+            WHERE UserID = @UserID";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@FullName", txtFullName.Text);
@@ -136,7 +165,6 @@ namespace RiceMgmtApp
                 MessageBox.Show("User updated successfully.");
             }
 
-            // ✅ Redirect to UserManagement UserControl
             RedirectToUserManagement();
         }
 
