@@ -49,6 +49,7 @@
             this.btnExportPDF.TabIndex = 1;
             this.btnExportPDF.Text = "Export to PDF";
             this.btnExportPDF.UseVisualStyleBackColor = true;
+//            this.btnExportPDF.Click += new System.EventHandler(this.btnExportPDF_Click_1);
             // 
             // StockManagement
             // 

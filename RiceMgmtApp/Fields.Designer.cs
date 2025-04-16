@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
-            this.dgvFields = new System.Windows.Forms.DataGridView();
             this.btnExportPDF = new System.Windows.Forms.Button();
+            this.dgvFields = new System.Windows.Forms.DataGridView();
+            this.btnAddField = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFields)).BeginInit();
             this.SuspendLayout();
@@ -38,12 +39,23 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.RoyalBlue;
+            this.panel1.Controls.Add(this.btnAddField);
             this.panel1.Controls.Add(this.btnExportPDF);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(853, 51);
             this.panel1.TabIndex = 1;
+            // 
+            // btnExportPDF
+            // 
+            this.btnExportPDF.Location = new System.Drawing.Point(712, 19);
+            this.btnExportPDF.Name = "btnExportPDF";
+            this.btnExportPDF.Size = new System.Drawing.Size(107, 23);
+            this.btnExportPDF.TabIndex = 0;
+            this.btnExportPDF.Text = "Export PDF";
+            this.btnExportPDF.UseVisualStyleBackColor = true;
+            this.btnExportPDF.Click += new System.EventHandler(this.btnExportPDF_Click);
             // 
             // dgvFields
             // 
@@ -55,15 +67,14 @@
             this.dgvFields.TabIndex = 2;
             this.dgvFields.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFields_CellContentClick);
             // 
-            // btnExportPDF
+            // btnAddField
             // 
-            this.btnExportPDF.Location = new System.Drawing.Point(712, 19);
-            this.btnExportPDF.Name = "btnExportPDF";
-            this.btnExportPDF.Size = new System.Drawing.Size(107, 23);
-            this.btnExportPDF.TabIndex = 0;
-            this.btnExportPDF.Text = "Export PDF";
-            this.btnExportPDF.UseVisualStyleBackColor = true;
-            this.btnExportPDF.Click += new System.EventHandler(this.btnExportPDF_Click);
+            this.btnAddField.Location = new System.Drawing.Point(56, 19);
+            this.btnAddField.Name = "btnAddField";
+            this.btnAddField.Size = new System.Drawing.Size(75, 23);
+            this.btnAddField.TabIndex = 1;
+            this.btnAddField.Text = "Add Field";
+            this.btnAddField.UseVisualStyleBackColor = true;
             // 
             // Fields
             // 
@@ -83,5 +94,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dgvFields;
         private System.Windows.Forms.Button btnExportPDF;
+        private System.Windows.Forms.Button btnAddField;
     }
 }

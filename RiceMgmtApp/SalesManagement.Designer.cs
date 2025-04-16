@@ -59,6 +59,7 @@
             this.dataGridViewSales.Name = "dataGridViewSales";
             this.dataGridViewSales.Size = new System.Drawing.Size(889, 277);
             this.dataGridViewSales.TabIndex = 0;
+            this.dataGridViewSales.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSales_CellContentClick);
             // 
             // txtSalePrice
             // 

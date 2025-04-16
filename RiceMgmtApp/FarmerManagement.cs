@@ -64,11 +64,36 @@ namespace RiceMgmtApp
 
         private void StyleDataGridView()
         {
-            dgvFarmerManage.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgvFarmerManage.RowTemplate.Height = 30;
+            //dgvFarmerManage.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            //dgvFarmerManage.RowTemplate.Height = 30;
+            //dgvFarmerManage.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            //dgvFarmerManage.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            //dgvFarmerManage.EnableHeadersVisualStyles = false;
+
+
+            dgvFarmerManage.EnableHeadersVisualStyles = false;
             dgvFarmerManage.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dgvFarmerManage.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dgvFarmerManage.EnableHeadersVisualStyles = false;
+            dgvFarmerManage.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dgvFarmerManage.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dgvFarmerManage.DefaultCellStyle.BackColor = Color.White;
+            dgvFarmerManage.DefaultCellStyle.ForeColor = Color.Black;
+            dgvFarmerManage.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dgvFarmerManage.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvFarmerManage.DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue;
+            dgvFarmerManage.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dgvFarmerManage.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dgvFarmerManage.RowTemplate.Height = 28;
+            dgvFarmerManage.GridColor = Color.LightGray;
+            dgvFarmerManage.BorderStyle = BorderStyle.Fixed3D;
+            dgvFarmerManage.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvFarmerManage.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvFarmerManage.MultiSelect = false;
+            dgvFarmerManage.AllowUserToAddRows = false;
+            dgvFarmerManage.ReadOnly = true;
         }
 
         private void AddButtonsToGrid()
@@ -201,6 +226,11 @@ namespace RiceMgmtApp
                 ExportToExcel(sfd.FileName);
                 MessageBox.Show("Excel exported successfully.");
             }
+        }
+
+        private void dgvFarmerManage_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

@@ -93,7 +93,7 @@ namespace RiceMgmtApp
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "SELECT UserID, FullName FROM Users WHERE RoleID = 4";
+                string query = "SELECT UserID, FullName FROM Users WHERE RoleID = 4 OR RoleID = 3";
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -102,6 +102,7 @@ namespace RiceMgmtApp
                 cmbBuyer.ValueMember = "UserID";
             }
         }
+
 
         private void AddSale()
         {
@@ -224,7 +225,6 @@ namespace RiceMgmtApp
             txtQuantity.Clear();
         }
 
-        // Event handlers
         private void btnAdd_Click(object sender, EventArgs e)
         {
             AddSale();
@@ -279,6 +279,11 @@ namespace RiceMgmtApp
         private void txtSalePrice_TextChanged(object sender, EventArgs e)
         {
             // Optional: live validation or calculation can go here
+        }
+
+        private void dataGridViewSales_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Not used, can be removed or implemented if needed
         }
     }
 }

@@ -141,26 +141,26 @@ namespace RiceMgmtApp
             switch (roleId)
             {
                 case 1: // Admin
-                        //MessageBox.Show("Redirecting to Admin Panel...");
+                    MessageBox.Show("Redirecting to Admin Panel...");
                     AdminDashboard adminForm = new AdminDashboard(userId,roleId);
                     adminForm.Show();
                     this.Hide();
                     break;
                 case 2: // Farmer
-                        //MessageBox.Show("Redirecting to Farmer Dashboard...");
+                    MessageBox.Show("Redirecting to Farmer Dashboard...");
                     FarmerDashboard farmerForm = new FarmerDashboard(userId, roleId);
                     farmerForm.LoggedInUsername = username;
                     farmerForm.Show();
                     this.Hide();
                     break;
                 case 3: // Government Official
-                        //MessageBox.Show("Redirecting to Government Panel...");
+                    MessageBox.Show("Redirecting to Government Panel...");
                     GovtOfficialDashboard govtForm = new GovtOfficialDashboard();
                     govtForm.Show();
                     this.Hide();
                     break;
                 case 4: // Private Buyer
-                        //  MessageBox.Show("Redirecting to Private Buyer Panel...");
+                    MessageBox.Show("Redirecting to Private Buyer Panel...");
                     BuyerDashboard buyerForm = new BuyerDashboard();
                     buyerForm.Show();
                     this.Hide();

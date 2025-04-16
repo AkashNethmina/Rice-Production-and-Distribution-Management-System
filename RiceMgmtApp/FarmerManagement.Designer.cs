@@ -75,6 +75,7 @@
             this.dgvFarmerManage.Name = "dgvFarmerManage";
             this.dgvFarmerManage.Size = new System.Drawing.Size(853, 433);
             this.dgvFarmerManage.TabIndex = 2;
+            this.dgvFarmerManage.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFarmerManage_CellContentClick);
             // 
             // FarmerManagement
             // 

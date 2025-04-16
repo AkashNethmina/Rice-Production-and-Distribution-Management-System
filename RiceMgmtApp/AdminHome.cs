@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace RiceMgmtApp
 {
@@ -30,8 +31,8 @@ namespace RiceMgmtApp
 
                     lblTotalUsers.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users");
                     lblTotalFarmers.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users WHERE RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Farmer')");
-                    lblTotalSales.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Sales");
-                    lblPendingReports.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM DamageReports WHERE Status = 'Pending'");
+                    lblTotaGovOf.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users WHERE RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Government')");
+                    lblPrivateBuyer.Text = ExecuteScalarQuery(conn, "SELECT COUNT(*) FROM Users WHERE RoleID = (SELECT RoleID FROM Roles WHERE RoleName = 'Private Buyer')");
                 }
             }
             catch (Exception ex)
@@ -48,5 +49,7 @@ namespace RiceMgmtApp
                 return result != null ? result.ToString() : "0";
             }
         }
+
+        
     }
 }

@@ -63,27 +63,51 @@ namespace RiceMgmtApp
 
         private void StyleDataGridView()
         {
-            // General appearance
-            dataGridViewusers.BorderStyle = BorderStyle.None;
-            dataGridViewusers.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
-            dataGridViewusers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewusers.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
-            dataGridViewusers.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
-            dataGridViewusers.BackgroundColor = Color.White;
+           // // General appearance
+           // dataGridViewusers.BorderStyle = BorderStyle.None;
+           // dataGridViewusers.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(238, 239, 249);
+           // dataGridViewusers.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+           // dataGridViewusers.DefaultCellStyle.SelectionBackColor = Color.DarkTurquoise;
+           // dataGridViewusers.DefaultCellStyle.SelectionForeColor = Color.WhiteSmoke;
+           // dataGridViewusers.BackgroundColor = Color.White;
 
-            // Header style
+           // // Header style
+           // dataGridViewusers.EnableHeadersVisualStyles = false;
+           // dataGridViewusers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
+           // dataGridViewusers.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+           // dataGridViewusers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+           // //dataGridViewusers.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+
+           // // Row style
+           //// dataGridViewusers.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+           // dataGridViewusers.RowTemplate.Height = 30;
+
+           // // Column auto-sizing
+           // dataGridViewusers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
             dataGridViewusers.EnableHeadersVisualStyles = false;
-            dataGridViewusers.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
-            dataGridViewusers.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(20, 25, 72);
+            dataGridViewusers.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dataGridViewusers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            //dataGridViewusers.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewusers.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewusers.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            // Row style
-           // dataGridViewusers.DefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
-            dataGridViewusers.RowTemplate.Height = 30;
+            dataGridViewusers.DefaultCellStyle.BackColor = Color.White;
+            dataGridViewusers.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridViewusers.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dataGridViewusers.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewusers.DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue;
+            dataGridViewusers.DefaultCellStyle.SelectionForeColor = Color.Black;
 
-            // Column auto-sizing
+            dataGridViewusers.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dataGridViewusers.RowTemplate.Height = 28;
+            dataGridViewusers.GridColor = Color.LightGray;
+            dataGridViewusers.BorderStyle = BorderStyle.Fixed3D;
             dataGridViewusers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridViewusers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewusers.MultiSelect = false;
+            dataGridViewusers.AllowUserToAddRows = false;
+            dataGridViewusers.ReadOnly = true;
         }
 
         private void AddActionButtons()
