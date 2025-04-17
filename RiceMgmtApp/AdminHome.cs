@@ -50,6 +50,9 @@ namespace RiceMgmtApp
             }
         }
 
-        
+        private void AdminHome_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

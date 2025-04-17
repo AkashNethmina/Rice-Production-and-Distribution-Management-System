@@ -109,9 +109,10 @@ CREATE TABLE PriceMonitoring (
     Region NVARCHAR(100) NOT NULL,
     AvgPrice DECIMAL(10,2) NOT NULL,
     GovernmentPrice DECIMAL(10,2) NOT NULL,
-    PriceDeviation DECIMAL(10,2),
+    PriceDeviation AS (AvgPrice - GovernmentPrice) PERSISTED,
     CreatedAt DATETIME DEFAULT GETDATE()
 );
+
 
 -- Cultivation Table
 CREATE TABLE Cultivation (
@@ -126,6 +127,16 @@ CREATE TABLE Cultivation (
     CreatedAt DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
+
+CREATE TABLE Invoices (
+    InvoiceID INT IDENTITY(1,1) PRIMARY KEY,
+    SaleID INT NOT NULL,
+    InvoicePath NVARCHAR(200),
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (SaleID) REFERENCES Sales(SaleID) ON DELETE CASCADE
+);
+
+
 GO  -- Ensure a new batch
 CREATE TRIGGER trg_DeleteBuyer
 ON Users

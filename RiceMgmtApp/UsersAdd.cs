@@ -140,5 +140,10 @@ namespace RiceMgmtApp
             cmbRole.SelectedIndex = -1;
             txtUsername.Focus();
         }
+
+        private void txtFullName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

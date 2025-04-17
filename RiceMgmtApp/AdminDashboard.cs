@@ -124,5 +124,11 @@ namespace RiceMgmtApp
             AdminHome ah = new AdminHome();
             LoadUserControl(ah);
         }
+
+        private void btn_Cultivation_Click(object sender, EventArgs e)
+        {
+            Cultivation ca = new Cultivation();
+            LoadUserControl(ca);
+        }
     }
 }
