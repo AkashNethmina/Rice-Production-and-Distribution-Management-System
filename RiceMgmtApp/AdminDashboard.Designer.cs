@@ -39,6 +39,7 @@
             this.btn_StockManagement = new System.Windows.Forms.Button();
             this.btn_Sales = new System.Windows.Forms.Button();
             this.panel3side = new System.Windows.Forms.Panel();
+            this.btn_Cultivation = new System.Windows.Forms.Button();
             this.btn_Fields = new System.Windows.Forms.Button();
             this.btn_AllFarmers = new System.Windows.Forms.Button();
             this.btn_Farmers = new System.Windows.Forms.Button();
@@ -55,7 +56,6 @@
             this.usersTableAdapter1 = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
             this.usersTableAdapter2 = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btn_Cultivation = new System.Windows.Forms.Button();
             this.panelsideMenu.SuspendLayout();
             this.panel3side.SuspendLayout();
             this.panel2submenu.SuspendLayout();
@@ -118,6 +118,7 @@
             this.btn_DamageReporting.Text = "Damage Reporting";
             this.btn_DamageReporting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_DamageReporting.UseVisualStyleBackColor = true;
+            this.btn_DamageReporting.Click += new System.EventHandler(this.btn_DamageReporting_Click);
             // 
             // btn_ReportsAnalytics
             // 
@@ -150,6 +151,7 @@
             this.btn_PriceSetting.Text = "Price Setting";
             this.btn_PriceSetting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_PriceSetting.UseVisualStyleBackColor = true;
+            this.btn_PriceSetting.Click += new System.EventHandler(this.btn_PriceSetting_Click);
             // 
             // btn_StockManagement
             // 
@@ -196,6 +198,24 @@
             this.panel3side.Name = "panel3side";
             this.panel3side.Size = new System.Drawing.Size(233, 127);
             this.panel3side.TabIndex = 9;
+            // 
+            // btn_Cultivation
+            // 
+            this.btn_Cultivation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
+            this.btn_Cultivation.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_Cultivation.FlatAppearance.BorderSize = 0;
+            this.btn_Cultivation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Cultivation.Font = new System.Drawing.Font("Outfit SemiBold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Cultivation.ForeColor = System.Drawing.Color.Black;
+            this.btn_Cultivation.Location = new System.Drawing.Point(0, 87);
+            this.btn_Cultivation.Name = "btn_Cultivation";
+            this.btn_Cultivation.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
+            this.btn_Cultivation.Size = new System.Drawing.Size(233, 40);
+            this.btn_Cultivation.TabIndex = 6;
+            this.btn_Cultivation.Text = "Cultivation";
+            this.btn_Cultivation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Cultivation.UseVisualStyleBackColor = false;
+            this.btn_Cultivation.Click += new System.EventHandler(this.btn_Cultivation_Click);
             // 
             // btn_Fields
             // 
@@ -386,24 +406,6 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
-            // 
-            // btn_Cultivation
-            // 
-            this.btn_Cultivation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
-            this.btn_Cultivation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_Cultivation.FlatAppearance.BorderSize = 0;
-            this.btn_Cultivation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Cultivation.Font = new System.Drawing.Font("Outfit SemiBold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Cultivation.ForeColor = System.Drawing.Color.Black;
-            this.btn_Cultivation.Location = new System.Drawing.Point(0, 87);
-            this.btn_Cultivation.Name = "btn_Cultivation";
-            this.btn_Cultivation.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
-            this.btn_Cultivation.Size = new System.Drawing.Size(233, 40);
-            this.btn_Cultivation.TabIndex = 6;
-            this.btn_Cultivation.Text = "Cultivation";
-            this.btn_Cultivation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Cultivation.UseVisualStyleBackColor = false;
-            this.btn_Cultivation.Click += new System.EventHandler(this.btn_Cultivation_Click);
             // 
             // AdminDashboard
             // 

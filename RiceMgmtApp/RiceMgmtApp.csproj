@@ -468,6 +468,12 @@
     <Compile Include="GovtOfficialDashboard.Designer.cs">
       <DependentUpon>GovtOfficialDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="Price Monitoring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Price Monitoring.Designer.cs">
+      <DependentUpon>Price Monitoring.cs</DependentUpon>
+    </Compile>
     <Compile Include="profileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -542,6 +548,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GovtOfficialDashboard.resx">
       <DependentUpon>GovtOfficialDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Price Monitoring.resx">
+      <DependentUpon>Price Monitoring.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="profileControl.resx">
       <DependentUpon>profileControl.cs</DependentUpon>

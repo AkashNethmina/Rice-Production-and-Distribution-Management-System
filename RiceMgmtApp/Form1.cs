@@ -143,6 +143,7 @@ namespace RiceMgmtApp
                 case 1: // Admin
                     MessageBox.Show("Redirecting to Admin Panel...");
                     AdminDashboard adminForm = new AdminDashboard(userId,roleId);
+                    adminForm.LoggedInUsername = username;
                     adminForm.Show();
                     this.Hide();
                     break;
@@ -155,13 +156,15 @@ namespace RiceMgmtApp
                     break;
                 case 3: // Government Official
                     MessageBox.Show("Redirecting to Government Panel...");
-                    GovtOfficialDashboard govtForm = new GovtOfficialDashboard();
+                    GovtOfficialDashboard govtForm = new GovtOfficialDashboard(userId, roleId);
+                    govtForm.LoggedInUsername = username;
                     govtForm.Show();
                     this.Hide();
                     break;
                 case 4: // Private Buyer
                     MessageBox.Show("Redirecting to Private Buyer Panel...");
-                    BuyerDashboard buyerForm = new BuyerDashboard();
+                    BuyerDashboard buyerForm = new BuyerDashboard(userId, roleId);
+                    buyerForm.LoggedInUsername = username;
                     buyerForm.Show();
                     this.Hide();
                     break;
@@ -171,6 +174,9 @@ namespace RiceMgmtApp
             }
         }
 
+        private void txt_username_TextChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

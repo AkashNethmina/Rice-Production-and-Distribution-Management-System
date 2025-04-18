@@ -64,5 +64,16 @@ namespace RiceMgmtApp
             Fields fie = new Fields(currentUserId, currentUserRoleId);
             LoadControl(fie);
         }
+
+        private void panelsideMenu_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnPrice_Monitoring_Click(object sender, EventArgs e)
+        {
+            Price_Monitoring pm = new Price_Monitoring(_roleId);
+            LoadControl(pm);
+        }
     }
 }

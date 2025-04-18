@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows.Forms;
+using System.Drawing;
 using System.Configuration;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -21,6 +22,7 @@ namespace RiceMgmtApp
         private void Cultivation_Load(object sender, EventArgs e)
         {
             LoadCultivationData();
+            StyleCultivationGrid();
         }
 
         private void LoadCultivationData()
@@ -34,6 +36,34 @@ namespace RiceMgmtApp
                 dgvCultivation.DataSource = table;
             }
         }
+
+        private void StyleCultivationGrid()
+        {
+            dgvCultivation.EnableHeadersVisualStyles = false;
+            dgvCultivation.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
+            dgvCultivation.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dgvCultivation.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dgvCultivation.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dgvCultivation.DefaultCellStyle.BackColor = Color.White;
+            dgvCultivation.DefaultCellStyle.ForeColor = Color.Black;
+            dgvCultivation.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dgvCultivation.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvCultivation.DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue;
+            dgvCultivation.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dgvCultivation.AlternatingRowsDefaultCellStyle.BackColor = Color.LightGray;
+            dgvCultivation.RowTemplate.Height = 28;
+            dgvCultivation.GridColor = Color.LightGray;
+            dgvCultivation.BorderStyle = BorderStyle.Fixed3D;
+            dgvCultivation.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvCultivation.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvCultivation.MultiSelect = false;
+            dgvCultivation.AllowUserToAddRows = false;
+            dgvCultivation.ReadOnly = true;
+        }
+
 
         //private void btnAdd_Click(object sender, EventArgs e)
         //{
@@ -61,9 +91,9 @@ namespace RiceMgmtApp
         //    }
         //}
 
-       
 
-     
+
+
 
         private void btnDelete_Click(object sender, EventArgs e)
         {

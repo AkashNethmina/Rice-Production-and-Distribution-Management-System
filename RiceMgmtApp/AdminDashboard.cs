@@ -17,6 +17,8 @@ namespace RiceMgmtApp
         private int _userId;
         private int _roleId;
 
+        public string LoggedInUsername { get; set; }
+
         public AdminDashboard(int userId, int roleId)
         {
             InitializeComponent();
@@ -129,6 +131,17 @@ namespace RiceMgmtApp
         {
             Cultivation ca = new Cultivation();
             LoadUserControl(ca);
+        }
+
+        private void btn_DamageReporting_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_PriceSetting_Click(object sender, EventArgs e)
+        {
+            Price_Monitoring pm = new Price_Monitoring(_roleId);
+            LoadUserControl(pm);
         }
     }
 }

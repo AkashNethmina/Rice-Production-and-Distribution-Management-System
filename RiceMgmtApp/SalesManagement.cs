@@ -6,6 +6,10 @@ using System.IO;
 using System.Windows.Forms;
 using System.Text;
 
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
+
 namespace RiceMgmtApp
 {
     public partial class SalesManagement : UserControl
@@ -213,16 +217,16 @@ namespace RiceMgmtApp
                     decimal.TryParse(txtSalePrice.Text, out decimal price))
                 {
                     decimal total = quantity * price;
-                    lblTitle.Text = total.ToString("N2");
+                    txtTotalAmount.Text = total.ToString("N2");
                 }
                 else
                 {
-                    lblTitle.Text = "0.00";
+                    txtTotalAmount.Text = "0.00";
                 }
             }
             catch
             {
-                lblTitle.Text = "0.00";
+                txtTotalAmount.Text = "0.00";
             }
         }
 
@@ -231,12 +235,12 @@ namespace RiceMgmtApp
             dataGridViewSales.EnableHeadersVisualStyles = false;
             dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.Navy;
             dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
             dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
             dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
-            dataGridViewSales.DefaultCellStyle.Font = new Font("Segoe UI", 10);
+            dataGridViewSales.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
             dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightSkyBlue;
             dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
@@ -528,7 +532,7 @@ namespace RiceMgmtApp
             cmbPaymentStatus.SelectedIndex = -1;
             txtSalePrice.Clear();
             txtQuantity.Clear();
-            lblTitle.Text = string.Empty; // Fixed this line
+            txtTotalAmount.Text = string.Empty; // Fixed this line
             lblSelectedStock.Visible = false;
             lblSelectedStock.Tag = null;
             pnlInvoice.Visible = false;
@@ -635,11 +639,28 @@ namespace RiceMgmtApp
             {
                 try
                 {
-                    // For now, we'll save as text file
-                    // In a real app, you'd use a PDF library to create a proper PDF
-                    File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
+                    string fileExtension = Path.GetExtension(saveDialog.FileName).ToLower();
 
-                    // Update the invoice path in the database
+                    if (fileExtension == ".pdf")
+                    {
+                        // Create a PDF using iTextSharp
+                        using (FileStream fs = new FileStream(saveDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            Document doc = new Document(PageSize.A4);
+                            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+                            doc.Open();
+                            doc.Add(new Paragraph(rtbInvoicePreview.Text));
+                            doc.Close();
+                            writer.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Save as plain text
+                        File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
+                    }
+
+                    // Update invoice path in DB
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         string query = "UPDATE Invoices SET InvoicePath = @Path WHERE SaleID = @SaleID";
@@ -746,7 +767,7 @@ namespace RiceMgmtApp
                 txtQuantity.Text = row.Cells["Quantity"].Value?.ToString();
 
                 if (row.Cells["TotalAmount"].Value != null)
-                    lblTitle.Text = row.Cells["TotalAmount"].Value.ToString();
+                    txtTotalAmount.Text = row.Cells["TotalAmount"].Value.ToString();
 
                 cmbPaymentStatus.Text = row.Cells["PaymentStatus"].Value?.ToString();
 
