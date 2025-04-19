@@ -146,6 +146,7 @@
             this.btn_StockManagement.Text = "Stock Management";
             this.btn_StockManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_StockManagement.UseVisualStyleBackColor = true;
+            this.btn_StockManagement.Click += new System.EventHandler(this.btn_StockManagement_Click);
             // 
             // btn_Sales
             // 
@@ -222,6 +223,7 @@
             this.btn_Dashboard.Text = "Dashboard";
             this.btn_Dashboard.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_Dashboard.UseVisualStyleBackColor = true;
+            this.btn_Dashboard.Click += new System.EventHandler(this.btn_Dashboard_Click);
             // 
             // pictureBox1
             // 

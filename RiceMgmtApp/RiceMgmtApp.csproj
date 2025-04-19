@@ -426,6 +426,12 @@
     <Compile Include="BuyerDashboard.Designer.cs">
       <DependentUpon>BuyerDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="BuyPaddy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BuyPaddy.Designer.cs">
+      <DependentUpon>BuyPaddy.cs</DependentUpon>
+    </Compile>
     <Compile Include="Cultivation.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -443,6 +449,12 @@
     </Compile>
     <Compile Include="FarmerDashboard.Designer.cs">
       <DependentUpon>FarmerDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FarmerHome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FarmerHome.Designer.cs">
+      <DependentUpon>FarmerHome.cs</DependentUpon>
     </Compile>
     <Compile Include="FarmerManagement.cs">
       <SubType>UserControl</SubType>
@@ -462,6 +474,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GovernmentHome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GovernmentHome.Designer.cs">
+      <DependentUpon>GovernmentHome.cs</DependentUpon>
+    </Compile>
     <Compile Include="GovtOfficialDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -473,6 +491,12 @@
     </Compile>
     <Compile Include="Price Monitoring.Designer.cs">
       <DependentUpon>Price Monitoring.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PrivateBuyerHome.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PrivateBuyerHome.Designer.cs">
+      <DependentUpon>PrivateBuyerHome.cs</DependentUpon>
     </Compile>
     <Compile Include="profileControl.cs">
       <SubType>UserControl</SubType>
@@ -497,6 +521,12 @@
     </Compile>
     <Compile Include="SalesManagement.Designer.cs">
       <DependentUpon>SalesManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SellPady.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SellPady.Designer.cs">
+      <DependentUpon>SellPady.cs</DependentUpon>
     </Compile>
     <Compile Include="StockManagement.cs">
       <SubType>UserControl</SubType>
@@ -528,6 +558,9 @@
     <EmbeddedResource Include="BuyerDashboard.resx">
       <DependentUpon>BuyerDashboard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="BuyPaddy.resx">
+      <DependentUpon>BuyPaddy.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Cultivation.resx">
       <DependentUpon>Cultivation.cs</DependentUpon>
     </EmbeddedResource>
@@ -536,6 +569,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FarmerDashboard.resx">
       <DependentUpon>FarmerDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FarmerHome.resx">
+      <DependentUpon>FarmerHome.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FarmerManagement.resx">
       <DependentUpon>FarmerManagement.cs</DependentUpon>
@@ -546,11 +582,17 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GovernmentHome.resx">
+      <DependentUpon>GovernmentHome.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GovtOfficialDashboard.resx">
       <DependentUpon>GovtOfficialDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Price Monitoring.resx">
       <DependentUpon>Price Monitoring.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PrivateBuyerHome.resx">
+      <DependentUpon>PrivateBuyerHome.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="profileControl.resx">
       <DependentUpon>profileControl.cs</DependentUpon>
@@ -562,6 +604,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesManagement.resx">
       <DependentUpon>SalesManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SellPady.resx">
+      <DependentUpon>SellPady.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StockManagement.resx">
       <DependentUpon>StockManagement.cs</DependentUpon>

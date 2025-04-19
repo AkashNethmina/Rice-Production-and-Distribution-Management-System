@@ -1,20 +1,11 @@
-﻿using System.Windows.Forms;
-
-namespace RiceMgmtApp
+﻿namespace RiceMgmtApp
 {
-    partial class Price_Monitoring
+    partial class BuyPaddy
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-        private DataGridView dataGridViewPrices;
-        private ComboBox cmbCropType;
-        private NumericUpDown numThreshold;
-        private Button btnRefresh;
-        private Button btnSetPrice;
-        private Panel pnlAlerts;
-
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -26,13 +17,6 @@ namespace RiceMgmtApp
             {
                 components.Dispose();
             }
-
-            if (refreshTimer != null)
-            {
-                refreshTimer.Stop();
-                refreshTimer.Dispose();
-            }
-
             base.Dispose(disposing);
         }
 
@@ -46,18 +30,18 @@ namespace RiceMgmtApp
         {
             this.SuspendLayout();
             // 
-            // Price_Monitoring
+            // BuyPaddy
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "Price_Monitoring";
-            this.Size = new System.Drawing.Size(831, 458);
-            this.Load += new System.EventHandler(this.Price_Monitoring_Load);
+            this.AutoScroll = true;
+            this.Name = "BuyPaddy";
+            this.Size = new System.Drawing.Size(979, 515);
             this.ResumeLayout(false);
 
         }
-        #endregion
 
+        #endregion
 
     }
 }

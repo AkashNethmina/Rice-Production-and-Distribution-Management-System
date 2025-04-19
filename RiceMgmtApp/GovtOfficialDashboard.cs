@@ -53,5 +53,17 @@ namespace RiceMgmtApp
             fl.Show();
             this.Close(); // Close instead of Hide for better resource management
         }
+
+        private void btn_Dashboard_Click(object sender, EventArgs e)
+        {
+            GovernmentHome governmentHome = new GovernmentHome();
+            LoadControl(governmentHome);
+        }
+
+        private void btn_StockManagement_Click(object sender, EventArgs e)
+        {
+            StockManagement sm = new StockManagement(_userId, _roleId);
+            LoadControl(sm);
+        }
     }
 }

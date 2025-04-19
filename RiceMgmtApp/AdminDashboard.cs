@@ -109,7 +109,7 @@ namespace RiceMgmtApp
 
         private void btn_StockManagement_Click(object sender, EventArgs e)
         {
-            StockManagement stm = new StockManagement();
+            StockManagement stm = new StockManagement(_userId, _roleId);
             LoadUserControl(stm);
         }
 

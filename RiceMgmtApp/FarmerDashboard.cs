@@ -29,8 +29,8 @@ namespace RiceMgmtApp
         // Load Dashboard view
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-            AdminHome ah = new AdminHome();
-            LoadControl(ah);
+            FarmerHome farmerHome = new FarmerHome();
+            LoadControl(farmerHome);
         }
 
         // Load Profile view with logged-in username
@@ -74,6 +74,18 @@ namespace RiceMgmtApp
         {
             Price_Monitoring pm = new Price_Monitoring(_roleId);
             LoadControl(pm);
+        }
+
+        private void btn_Sales_Click(object sender, EventArgs e)
+        {
+            SellPady sellPady = new SellPady(_userId); // Pass _userId as the buyerID
+            LoadControl(sellPady);
+        }
+
+        private void btn_StockManagement_Click(object sender, EventArgs e)
+        {
+            StockManagement sm = new StockManagement(_userId, _roleId);
+            LoadControl(sm);
         }
     }
 }

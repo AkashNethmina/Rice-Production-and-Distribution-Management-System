@@ -55,14 +55,26 @@ namespace RiceMgmtApp
 
         private void btn_Sales_Click(object sender, EventArgs e)
         {
-            SalesManagement sm = new SalesManagement();
-            LoadControl(sm);
+            BuyPaddy buyPaddy = new BuyPaddy(_userId); // Pass _userId as the buyerID
+            LoadControl(buyPaddy);
         }
 
         private void btnPrice_Monitoring_Click(object sender, EventArgs e)
         {
             Price_Monitoring pm = new Price_Monitoring(_roleId);
             LoadControl(pm);
+        }
+
+        private void btn_Dashboard_Click_1(object sender, EventArgs e)
+        {
+            PrivateBuyerHome privateBuyerHome = new PrivateBuyerHome();
+            LoadControl(privateBuyerHome);
+        }
+
+        private void btn_StockManagement_Click(object sender, EventArgs e)
+        {
+            StockManagement sm = new StockManagement(_userId, _roleId);
+            LoadControl(sm);
         }
     }
 }

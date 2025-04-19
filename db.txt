@@ -77,11 +77,20 @@ CREATE TABLE Sales (
 CREATE TABLE Stock (
     StockID INT IDENTITY(1,1) PRIMARY KEY,
     FarmerID INT NOT NULL,
-    CropType NVARCHAR(50) NOT NULL, 
+    CropType NVARCHAR(50) NOT NULL CHECK (CropType IN (
+        'Red Nadu',
+        'White Nadu',
+        'White Samba',
+        'Red Samba',
+        'Keeri Samba',
+        'Red Raw Rice',
+        'White Raw Rice'
+    )),
     Quantity DECIMAL(10,2) NOT NULL,
     LastUpdated DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
+
 
 -- Damage Reports Table
 CREATE TABLE DamageReports (
@@ -106,7 +115,15 @@ CREATE TABLE Reports (
 -- Price Monitoring Table
 CREATE TABLE PriceMonitoring (
     PriceID INT IDENTITY(1,1) PRIMARY KEY,
-    Region NVARCHAR(100) NOT NULL,
+    CropType NVARCHAR(50) NOT NULL CHECK (CropType IN (
+        'Red Nadu',
+        'White Nadu',
+        'White Samba',
+        'Red Samba',
+        'Keeri Samba',
+        'Red Raw Rice',
+        'White Raw Rice'
+    )),
     AvgPrice DECIMAL(10,2) NOT NULL,
     GovernmentPrice DECIMAL(10,2) NOT NULL,
     PriceDeviation AS (AvgPrice - GovernmentPrice) PERSISTED,
@@ -167,3 +184,18 @@ BEGIN
     INNER JOIN inserted i ON c.CultivationID = i.CultivationID
     WHERE i.ActualYield IS NOT NULL;
 END;
+
+
+
+
+| Feature | Admin | Farmer | Private Buyer | Government |
+|---------|-------|--------|--------------|------------|
+| User Management | Full access | View own profile | View own profile | View all profiles |
+| Farmer Registration | Create/Edit | Create/Edit own | No access | View only |
+| Field Management | Full access | Own fields only | No access | View only |
+| Sales Records | Full access | Own sales only | Own purchases | Full access |
+| Stock Management | View only | Own stock only | Full access | Full access |
+| Price Setting | No access | No access | No access | Full access |
+| Reports & Analytics | Full access | Limited access | Limited access | Full access |
+| Damage Reporting | View & Approve | Create reports | No access | Review & Approve |
+| System Settings | Full access | No access | No access | Limited access |
