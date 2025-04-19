@@ -114,6 +114,7 @@
             this.btn_DamageReporting.Text = "Damage Reporting";
             this.btn_DamageReporting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_DamageReporting.UseVisualStyleBackColor = true;
+            this.btn_DamageReporting.Click += new System.EventHandler(this.btn_DamageReporting_Click);
             // 
             // btn_ReportsAnalytics
             // 

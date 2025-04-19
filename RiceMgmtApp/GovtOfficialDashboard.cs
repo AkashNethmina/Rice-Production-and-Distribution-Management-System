@@ -65,5 +65,11 @@ namespace RiceMgmtApp
             StockManagement sm = new StockManagement(_userId, _roleId);
             LoadControl(sm);
         }
+
+        private void btn_DamageReporting_Click(object sender, EventArgs e)
+        {
+            DamageReporting dr = new DamageReporting();
+            LoadControl(dr);
+        }
     }
 }

@@ -440,6 +440,12 @@
     <Compile Include="Cultivation.Designer.cs">
       <DependentUpon>Cultivation.cs</DependentUpon>
     </Compile>
+    <Compile Include="DamageReporting.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DamageReporting.Designer.cs">
+      <DependentUpon>DamageReporting.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditUser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -475,6 +481,12 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GovernmentAssistance.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GovernmentAssistance.Designer.cs">
+      <DependentUpon>GovernmentAssistance.cs</DependentUpon>
     </Compile>
     <Compile Include="GovernmentHome.cs">
       <SubType>UserControl</SubType>
@@ -566,6 +578,9 @@
     <EmbeddedResource Include="Cultivation.resx">
       <DependentUpon>Cultivation.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DamageReporting.resx">
+      <DependentUpon>DamageReporting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditUser.resx">
       <DependentUpon>EditUser.cs</DependentUpon>
     </EmbeddedResource>
@@ -583,6 +598,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GovernmentAssistance.resx">
+      <DependentUpon>GovernmentAssistance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GovernmentHome.resx">
       <DependentUpon>GovernmentHome.cs</DependentUpon>
