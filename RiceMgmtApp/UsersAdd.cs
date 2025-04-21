@@ -141,7 +141,7 @@ namespace RiceMgmtApp
             txtUsername.Focus();
         }
 
-        private void txtFullName_TextChanged(object sender, EventArgs e)
+        private void actionPanel_Paint(object sender, PaintEventArgs e)
         {
 
         }

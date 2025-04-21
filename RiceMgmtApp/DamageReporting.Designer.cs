@@ -34,8 +34,6 @@
             this.btnSubmitReport = new System.Windows.Forms.Button();
             this.txtDamageDetails = new System.Windows.Forms.TextBox();
             this.lblDamageDetails = new System.Windows.Forms.Label();
-            this.cmbDamageType = new System.Windows.Forms.ComboBox();
-            this.lblDamageType = new System.Windows.Forms.Label();
             this.lblReportDamage = new System.Windows.Forms.Label();
             this.pnlReviewActions = new System.Windows.Forms.Panel();
             this.btnReject = new System.Windows.Forms.Button();
@@ -84,8 +82,6 @@
             this.pnlReportCreation.Controls.Add(this.btnSubmitReport);
             this.pnlReportCreation.Controls.Add(this.txtDamageDetails);
             this.pnlReportCreation.Controls.Add(this.lblDamageDetails);
-            this.pnlReportCreation.Controls.Add(this.cmbDamageType);
-            this.pnlReportCreation.Controls.Add(this.lblDamageType);
             this.pnlReportCreation.Controls.Add(this.lblReportDamage);
             this.pnlReportCreation.Location = new System.Drawing.Point(20, 60);
             this.pnlReportCreation.Name = "pnlReportCreation";
@@ -122,25 +118,6 @@
             this.lblDamageDetails.Size = new System.Drawing.Size(85, 13);
             this.lblDamageDetails.TabIndex = 3;
             this.lblDamageDetails.Text = "Damage Details:";
-            // 
-            // cmbDamageType
-            // 
-            this.cmbDamageType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbDamageType.FormattingEnabled = true;
-            this.cmbDamageType.Location = new System.Drawing.Point(20, 65);
-            this.cmbDamageType.Name = "cmbDamageType";
-            this.cmbDamageType.Size = new System.Drawing.Size(332, 21);
-            this.cmbDamageType.TabIndex = 2;
-            this.cmbDamageType.SelectedIndexChanged += new System.EventHandler(this.cmbDamageType_SelectedIndexChanged);
-            // 
-            // lblDamageType
-            // 
-            this.lblDamageType.AutoSize = true;
-            this.lblDamageType.Location = new System.Drawing.Point(17, 45);
-            this.lblDamageType.Name = "lblDamageType";
-            this.lblDamageType.Size = new System.Drawing.Size(77, 13);
-            this.lblDamageType.TabIndex = 1;
-            this.lblDamageType.Text = "Damage Type:";
             // 
             // lblReportDamage
             // 
@@ -283,8 +260,6 @@
         private System.Windows.Forms.Button btnSubmitReport;
         private System.Windows.Forms.TextBox txtDamageDetails;
         private System.Windows.Forms.Label lblDamageDetails;
-        private System.Windows.Forms.ComboBox cmbDamageType;
-        private System.Windows.Forms.Label lblDamageType;
         private System.Windows.Forms.Label lblReportDamage;
         private System.Windows.Forms.Panel pnlReviewActions;
         private System.Windows.Forms.Button btnReject;

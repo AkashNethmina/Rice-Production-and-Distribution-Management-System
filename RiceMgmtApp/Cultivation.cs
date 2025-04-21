@@ -65,34 +65,6 @@ namespace RiceMgmtApp
         }
 
 
-        //private void btnAdd_Click(object sender, EventArgs e)
-        //{
-        //    using (UserControl ac = new AddEditCultivation())
-        //    {
-        //        if (ac.ShowDialog() == DialogResult.OK)
-        //        {
-        //            LoadCultivationData();
-        //        }
-        //    }
-        //}
-
-        //private void btnEdit_Click(object sender, EventArgs e)
-        //{
-        //    if (dgvCultivation.CurrentRow != null)
-        //    {
-        //        int id = Convert.ToInt32(dgvCultivation.CurrentRow.Cells["CultivationID"].Value);
-        //        using (UserControl ec = new AddEditCultivation(id))
-        //        {
-        //            if (ec.ShowDialog() == DialogResult.OK)
-        //            {
-        //                LoadCultivationData();
-        //            }
-        //        }
-        //    }
-        //}
-
-
-
 
 
         private void btnDelete_Click(object sender, EventArgs e)
@@ -166,6 +138,16 @@ namespace RiceMgmtApp
                     MessageBox.Show("Error exporting PDF: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

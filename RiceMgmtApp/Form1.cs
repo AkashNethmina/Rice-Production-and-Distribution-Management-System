@@ -3,14 +3,13 @@ using System.Data.SqlClient;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
-using Microsoft.VisualBasic.ApplicationServices;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace RiceMgmtApp
 {
     public partial class frm_login : Form
     {
-        private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+        // Store connection string in a more secure way in production
+        private readonly string _connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
 
         public frm_login()
         {
@@ -32,151 +31,153 @@ namespace RiceMgmtApp
             string username = txt_username.Text.Trim();
             string password = txt_password.Text.Trim();
 
+            // Validate inputs
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                MessageBox.Show("Please enter both username and password.", "Login Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Please enter both username and password.", "Login Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            using (SqlConnection con = new SqlConnection(connectionString))
+            try
             {
-                con.Open();
-                string query = "SELECT UserID, PasswordHash, RoleID, Status FROM Users WHERE Username = @Username";
-                using (SqlCommand cmd = new SqlCommand(query, con))
+                using (SqlConnection connection = new SqlConnection(_connectionString))
                 {
-                    cmd.Parameters.AddWithValue("@Username", username);
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    connection.Open();
+
+                    var userInfo = GetUserInfo(connection, username);
+
+                    if (userInfo == null)
                     {
-                        if (reader.Read())
-                        {
-                            int userId = reader.GetInt32(0);
-                            string storedHash = reader.GetString(1);
-                            int roleId = reader.GetInt32(2);
-                            string status = reader.GetString(3);
+                        MessageBox.Show("User not found.", "Login Failed",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
-                            if (status == "Suspended")
-                            {
-                                MessageBox.Show("Your account is suspended.", "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                return;
-                            }
+                    // Check account status
+                    if (userInfo.Status == "Suspended")
+                    {
+                        MessageBox.Show("Your account is suspended.", "Access Denied",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
 
-                            if (VerifyPassword(password, storedHash))
-                            {
-                                LogAuthAttempt(userId, "Success");
-                                // MessageBox.Show("Login successful!", "Welcome", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                                // Redirect user based on role
-                                // Update the call to RedirectUser to include the missing userId parameter
-                                if (VerifyPassword(password, storedHash))
-                                {
-                                    LogAuthAttempt(userId, "Success");
-                                    RedirectUser(roleId, userId); // Pass both roleId and userId
-                                }
-                                //RedirectUser(roleId);
-                            }
-                            else
-                            {
-                                LogAuthAttempt(userId, "Failure");
-                                MessageBox.Show("Incorrect password.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            }
-                        }
-                        else
-                        {
-                            MessageBox.Show("User not found.", "Login Failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
+                    // Verify password
+                    if (VerifyPassword(password, userInfo.PasswordHash))
+                    {
+                        LogAuthAttempt(connection, userInfo.UserId, "Success");
+                        RedirectUser(userInfo.RoleId, userInfo.UserId, username);
+                    }
+                    else
+                    {
+                        LogAuthAttempt(connection, userInfo.UserId, "Failure");
+                        MessageBox.Show("Incorrect password.", "Login Failed",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-        }
-
-        private string HashPassword(string password)
-        {
-            using (SHA256 sha256 = SHA256.Create())
+            catch (Exception ex)
             {
-                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                return BitConverter.ToString(bytes).Replace("-", "").ToLower();
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        //private bool VerifyPassword(string enteredPassword, string storedHash)
-        //{
-        //    string enteredHash = HashPassword(enteredPassword);
-        //    return enteredHash == storedHash;
-        //}
+        private UserInfo GetUserInfo(SqlConnection connection, string username)
+        {
+            string query = "SELECT UserID, PasswordHash, RoleID, Status FROM Users WHERE Username = @Username";
 
-        //private bool VerifyPassword(string enteredPassword, string storedHash)
-        //{
-        //    string enteredHash = HashPassword(enteredPassword);
-        //    // Debug - remove in production
-        //    Console.WriteLine($"Entered hash: {enteredHash}");
-        //    Console.WriteLine($"Stored hash: {storedHash}");
-        //    return enteredHash == storedHash;
-        //}
+            using (SqlCommand cmd = new SqlCommand(query, connection))
+            {
+                cmd.Parameters.AddWithValue("@Username", username);
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new UserInfo
+                        {
+                            UserId = reader.GetInt32(0),
+                            PasswordHash = reader.GetString(1),
+                            RoleId = reader.GetInt32(2),
+                            Status = reader.GetString(3)
+                        };
+                    }
+                }
+            }
+
+            return null;
+        }
 
         private bool VerifyPassword(string enteredPassword, string storedHash)
         {
             return BCrypt.Net.BCrypt.Verify(enteredPassword, storedHash);
         }
 
-
-        private void LogAuthAttempt(int userId, string status)
+        private void LogAuthAttempt(SqlConnection connection, int userId, string status)
         {
-            using (SqlConnection con = new SqlConnection(connectionString))
+            string query = "INSERT INTO AuthLogs (UserID, Status) VALUES (@UserID, @Status)";
+
+            using (SqlCommand cmd = new SqlCommand(query, connection))
             {
-                con.Open();
-                string query = "INSERT INTO AuthLogs (UserID, Status) VALUES (@UserID, @Status)";
-                using (SqlCommand cmd = new SqlCommand(query, con))
-                {
-                    cmd.Parameters.AddWithValue("@UserID", userId);
-                    cmd.Parameters.AddWithValue("@Status", status);
-                    cmd.ExecuteNonQuery();
-                }
+                cmd.Parameters.AddWithValue("@UserID", userId);
+                cmd.Parameters.AddWithValue("@Status", status);
+                cmd.ExecuteNonQuery();
             }
         }
 
-
-        private void RedirectUser(int roleId, int userId)
+        private void RedirectUser(int roleId, int userId, string username)
         {
-            string username = txt_username.Text.Trim(); // Get the logged-in username
+            Form dashboard = null;
+            string redirectMessage = string.Empty;
+
             switch (roleId)
             {
                 case 1: // Admin
-                    MessageBox.Show("Redirecting to Admin Panel...");
-                    AdminDashboard adminForm = new AdminDashboard(userId,roleId);
-                    adminForm.LoggedInUsername = username;
-                    adminForm.Show();
-                    this.Hide();
+                    redirectMessage = "Redirecting to Admin Panel...";
+                    dashboard = new AdminDashboard(userId, roleId);
                     break;
                 case 2: // Farmer
-                    MessageBox.Show("Redirecting to Farmer Dashboard...");
-                    FarmerDashboard farmerForm = new FarmerDashboard(userId, roleId);
-                    farmerForm.LoggedInUsername = username;
-                    farmerForm.Show();
-                    this.Hide();
+                    redirectMessage = "Redirecting to Farmer Dashboard...";
+                    dashboard = new FarmerDashboard(userId, roleId);
                     break;
                 case 3: // Government Official
-                    MessageBox.Show("Redirecting to Government Panel...");
-                    GovtOfficialDashboard govtForm = new GovtOfficialDashboard(userId, roleId);
-                    govtForm.LoggedInUsername = username;
-                    govtForm.Show();
-                    this.Hide();
+                    redirectMessage = "Redirecting to Government Panel...";
+                    dashboard = new GovtOfficialDashboard(userId, roleId);
                     break;
                 case 4: // Private Buyer
-                    MessageBox.Show("Redirecting to Private Buyer Panel...");
-                    BuyerDashboard buyerForm = new BuyerDashboard(userId, roleId);
-                    buyerForm.LoggedInUsername = username;
-                    buyerForm.Show();
-                    this.Hide();
+                    redirectMessage = "Redirecting to Private Buyer Panel...";
+                    dashboard = new BuyerDashboard(userId, roleId);
                     break;
                 default:
-                    MessageBox.Show("Unknown role. Contact support.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
+                    MessageBox.Show("Unknown role. Contact support.", "Error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+            }
+
+            if (dashboard != null)
+            {
+                MessageBox.Show(redirectMessage);
+
+                // Set username property using reflection to handle different form types
+                var usernameProperty = dashboard.GetType().GetProperty("LoggedInUsername");
+                if (usernameProperty != null)
+                {
+                    usernameProperty.SetValue(dashboard, username);
+                }
+
+                dashboard.Show();
+                this.Hide();
             }
         }
+    }
 
-        private void txt_username_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+    // Helper class to store user information
+    internal class UserInfo
+    {
+        public int UserId { get; set; }
+        public string PasswordHash { get; set; }
+        public int RoleId { get; set; }
+        public string Status { get; set; }
     }
 }
