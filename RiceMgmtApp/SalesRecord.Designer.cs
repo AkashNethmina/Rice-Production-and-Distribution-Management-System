@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-
-namespace RiceMgmtApp
+﻿namespace RiceMgmtApp
 {
-    partial class SellPady
+    partial class SalesRecord
     {
         /// <summary> 
         /// Required designer variable.
@@ -22,28 +20,27 @@ namespace RiceMgmtApp
             base.Dispose(disposing);
         }
 
-        // Remove the duplicate InitializeComponent method from the partial class SellPady.Designer.cs
-        // The following method already exists in the main SellPady class, so it should not be redefined here.
+        #region Component Designer generated code
+
+        /// <summary> 
+        /// Required method for Designer support - do not modify 
+        /// the contents of this method with the code editor.
+        /// </summary>
         private void InitializeComponent()
         {
             this.SuspendLayout();
             // 
-            // SellPady
+            // SalesRecord
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "SellPady";
+            this.Name = "SalesRecord";
             this.Size = new System.Drawing.Size(979, 515);
-            this.Load += new System.EventHandler(this.SellPady_Load);
+            this.Load += new System.EventHandler(this.SalesRecord_Load);
             this.ResumeLayout(false);
+
         }
 
-
-        // Ensure proper placement of #region and #endregion
-        #region Component Designer generated code
         #endregion
-
-
-        
     }
 }

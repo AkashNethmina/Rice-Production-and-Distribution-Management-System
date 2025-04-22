@@ -57,17 +57,27 @@ namespace RiceMgmtApp
         {
             if (cmbBuyerType.SelectedItem?.ToString() == "Government")
             {
-                // For government buyers, fetch the current government price
-                FetchGovernmentPrice();
                 // Filter only government buyers
                 LoadBuyerComboFiltered("Government");
+
+                // If crop type is already selected, fetch price
+                if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                {
+                    string cropType = stockInfo.Item2;
+                    FetchPriceForCropType(cropType, "Government");
+                }
             }
             else if (cmbBuyerType.SelectedItem?.ToString() == "Private")
             {
-                // For private buyers, allow price negotiation
-                txtSalePrice.ReadOnly = false;
                 // Filter only private buyers
                 LoadBuyerComboFiltered("Private");
+
+                // If crop type is already selected, fetch price
+                if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                {
+                    string cropType = stockInfo.Item2;
+                    FetchPriceForCropType(cropType, "Private");
+                }
             }
         }
 
@@ -180,8 +190,17 @@ namespace RiceMgmtApp
                                     lblSelectedStock.Text = $"Selected: {cropType} - {availableQuantity} kg";
                                     lblSelectedStock.Visible = true;
 
-                                    // Store selected stock ID for later reference
-                                    lblSelectedStock.Tag = row.Cells["StockID"].Value;
+                                    // Store selected stock ID and crop type for later reference
+                                    lblSelectedStock.Tag = new Tuple<int, string>(
+                                        Convert.ToInt32(row.Cells["StockID"].Value),
+                                        cropType
+                                    );
+
+                                    // Fetch and set price based on crop type and buyer type
+                                    if (cmbBuyerType.SelectedItem != null)
+                                    {
+                                        FetchPriceForCropType(cropType, cmbBuyerType.SelectedItem.ToString());
+                                    }
 
                                     stockForm.Close();
                                 }
@@ -206,6 +225,64 @@ namespace RiceMgmtApp
             catch (Exception ex)
             {
                 MessageBox.Show($"Error loading stock data: {ex.Message}");
+            }
+        }
+
+        private void FetchPriceForCropType(string cropType, string buyerType)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query;
+                    conn.Open();
+
+                    if (buyerType == "Government")
+                    {
+                        // For government buyers, fetch government price
+                        query = "SELECT GovernmentPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@CropType", cropType);
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                decimal govPrice = Convert.ToDecimal(result);
+                                txtSalePrice.Text = govPrice.ToString();
+                                txtSalePrice.ReadOnly = true; // Lock the price for government sales
+                            }
+                            else
+                            {
+                                MessageBox.Show($"No government price found for {cropType}. Please set up price monitoring data.");
+                                txtSalePrice.ReadOnly = false;
+                            }
+                        }
+                    }
+                    else if (buyerType == "Private")
+                    {
+                        // For private buyers, fetch average price as starting point but allow editing
+                        query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@CropType", cropType);
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                decimal avgPrice = Convert.ToDecimal(result);
+                                txtSalePrice.Text = avgPrice.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show($"No price data found for {cropType}. Please set up price monitoring data.");
+                            }
+                            txtSalePrice.ReadOnly = false; // Allow price negotiation for private sales
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching price information: {ex.Message}");
             }
         }
 
@@ -263,13 +340,16 @@ namespace RiceMgmtApp
             {
                 // Join with Users table to display farmer and buyer names
                 string query = @"SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, 
-                               s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
-                               s.SalePrice, s.Quantity, (s.SalePrice * s.Quantity) AS TotalAmount, 
-                               s.PaymentStatus, s.SaleDate 
-                               FROM Sales s
-                               INNER JOIN Users f ON s.FarmerID = f.UserID
-                               LEFT JOIN Users b ON s.BuyerID = b.UserID
-                               ORDER BY s.SaleDate DESC";
+       s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
+       s.CropType, s.SalePrice, s.Quantity, 
+       (s.SalePrice * s.Quantity) AS TotalAmount, 
+       s.PaymentStatus, s.SaleDate,
+       s.StockID  -- ✅ Added this line
+       FROM Sales s
+       INNER JOIN Users f ON s.FarmerID = f.UserID
+       LEFT JOIN Users b ON s.BuyerID = b.UserID
+       ORDER BY s.SaleDate DESC";
+
 
                 SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                 DataTable dt = new DataTable();
@@ -286,7 +366,9 @@ namespace RiceMgmtApp
                 if (dataGridViewSales.Columns.Contains("BuyerType"))
                     dataGridViewSales.Columns["BuyerType"].HeaderText = "Buyer Type";
                 if (dataGridViewSales.Columns.Contains("SalePrice"))
-                    dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
+                if (dataGridViewSales.Columns.Contains("CropType"))
+                    dataGridViewSales.Columns["CropType"].HeaderText = "Rice Type";
+                dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
                 if (dataGridViewSales.Columns.Contains("Quantity"))
                     dataGridViewSales.Columns["Quantity"].HeaderText = "Quantity (kg)";
                 if (dataGridViewSales.Columns.Contains("TotalAmount"))
@@ -301,6 +383,9 @@ namespace RiceMgmtApp
                     dataGridViewSales.Columns["FarmerID"].Visible = false;
                 if (dataGridViewSales.Columns.Contains("BuyerID"))
                     dataGridViewSales.Columns["BuyerID"].Visible = false;
+                if (dataGridViewSales.Columns.Contains("StockID"))
+                    dataGridViewSales.Columns["StockID"].Visible = false;
+
             }
         }
 
@@ -345,12 +430,15 @@ namespace RiceMgmtApp
                 return;
             }
 
-            int stockId = Convert.ToInt32(lblSelectedStock.Tag);
+            // Extract stock ID and crop type from the tag
+            var stockInfo = (Tuple<int, string>)lblSelectedStock.Tag;
+            int stockId = stockInfo.Item1;
+            string cropType = stockInfo.Item2;
             decimal saleQuantity = decimal.Parse(txtQuantity.Text);
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                SqlTransaction transaction = null; // Declare the transaction here
+                SqlTransaction transaction = null;
                 try
                 {
                     conn.Open();
@@ -370,10 +458,10 @@ namespace RiceMgmtApp
                         }
                     }
 
-                    // 2. Insert the sale
-                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate)
-                                              VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate);
-                                              SELECT SCOPE_IDENTITY();";
+                    // 2. Insert the sale (now including CropType)
+                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate, CropType, StockID)
+                                      VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate, @CropType, @StockID);
+                                      SELECT SCOPE_IDENTITY();";
 
                     int newSaleId;
                     using (SqlCommand insertCmd = new SqlCommand(insertSaleQuery, conn, transaction))
@@ -385,10 +473,14 @@ namespace RiceMgmtApp
                         insertCmd.Parameters.AddWithValue("@Quantity", saleQuantity);
                         insertCmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
                         insertCmd.Parameters.AddWithValue("@SaleDate", DateTime.Now);
+                        insertCmd.Parameters.AddWithValue("@CropType", cropType);
+                        insertCmd.Parameters.AddWithValue("@StockID", stockId);
+
 
                         newSaleId = Convert.ToInt32(insertCmd.ExecuteScalar());
                     }
 
+                    // Rest of the method remains the same...
                     // 3. Update the stock quantity
                     string updateStockQuery = "UPDATE Stock SET Quantity = Quantity - @SaleQuantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
                     using (SqlCommand updateCmd = new SqlCommand(updateStockQuery, conn, transaction))
@@ -435,28 +527,80 @@ namespace RiceMgmtApp
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"UPDATE Sales 
-                                 SET FarmerID = @FarmerID, BuyerID = @BuyerID, BuyerType = @BuyerType,
-                                     SalePrice = @SalePrice, Quantity = @Quantity, PaymentStatus = @PaymentStatus
-                                 WHERE SaleID = @SaleID";
+                conn.Open();
+                SqlTransaction transaction = null;
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                try
                 {
-                    cmd.Parameters.AddWithValue("@SaleID", saleId);
-                    cmd.Parameters.AddWithValue("@FarmerID", cmbFarmer.SelectedValue);
-                    cmd.Parameters.AddWithValue("@BuyerID", cmbBuyer.SelectedValue ?? DBNull.Value);
-                    cmd.Parameters.AddWithValue("@BuyerType", cmbBuyerType.Text);
-                    cmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtSalePrice.Text));
-                    cmd.Parameters.AddWithValue("@Quantity", decimal.Parse(txtQuantity.Text));
-                    cmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
+                    transaction = conn.BeginTransaction();
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    // Step 1: Get the current sale info including StockID
+                    int stockId;
+                    decimal oldQuantity = 0;
+                    string cropType;
+
+                    string getSaleInfoQuery = "SELECT Quantity, StockID, CropType FROM Sales WHERE SaleID = @SaleID";
+                    using (SqlCommand getCmd = new SqlCommand(getSaleInfoQuery, conn, transaction))
+                    {
+                        getCmd.Parameters.AddWithValue("@SaleID", saleId);
+                        using (SqlDataReader reader = getCmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                oldQuantity = reader.GetDecimal(0);
+                                stockId = reader.GetInt32(1);
+                                cropType = reader.GetString(2);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Sale record not found.");
+                                return;
+                            }
+                        }
+                    }
+
+                    // Step 2: Update sale
+                    decimal newQuantity = decimal.Parse(txtQuantity.Text);
+                    decimal quantityDiff = oldQuantity - newQuantity;
+
+                    string updateQuery = @"UPDATE Sales 
+                SET FarmerID = @FarmerID, BuyerID = @BuyerID, BuyerType = @BuyerType,
+                    SalePrice = @SalePrice, Quantity = @Quantity, PaymentStatus = @PaymentStatus
+                WHERE SaleID = @SaleID";
+
+                    using (SqlCommand cmd = new SqlCommand(updateQuery, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@SaleID", saleId);
+                        cmd.Parameters.AddWithValue("@FarmerID", cmbFarmer.SelectedValue);
+                        cmd.Parameters.AddWithValue("@BuyerID", cmbBuyer.SelectedValue ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("@BuyerType", cmbBuyerType.Text);
+                        cmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtSalePrice.Text));
+                        cmd.Parameters.AddWithValue("@Quantity", newQuantity);
+                        cmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Step 3: Adjust stock (add or subtract diff)
+                    string updateStockQuery = "UPDATE Stock SET Quantity = Quantity + @QuantityDiff, LastUpdated = GETDATE() WHERE StockID = @StockID";
+                    using (SqlCommand stockCmd = new SqlCommand(updateStockQuery, conn, transaction))
+                    {
+                        stockCmd.Parameters.AddWithValue("@QuantityDiff", quantityDiff); // Can be + or -
+                        stockCmd.Parameters.AddWithValue("@StockID", stockId);
+                        stockCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
                     MessageBox.Show("Sale updated successfully!");
                 }
-                LoadSalesData();
-                ClearInputs();
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    MessageBox.Show($"Error updating sale: {ex.Message}");
+                }
             }
+
+            LoadSalesData();
+            ClearInputs();
         }
 
         private void DeleteSale(int saleId)
@@ -466,17 +610,73 @@ namespace RiceMgmtApp
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = "DELETE FROM Sales WHERE SaleID = @SaleID";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                conn.Open();
+                SqlTransaction transaction = null;
+
+                try
                 {
-                    cmd.Parameters.AddWithValue("@SaleID", saleId);
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    transaction = conn.BeginTransaction();
+
+                    // Step 1: Get sale quantity and StockID
+                    decimal quantity = 0;
+                    int stockId;
+
+                    string getSaleQuery = "SELECT Quantity, StockID FROM Sales WHERE SaleID = @SaleID";
+                    using (SqlCommand getCmd = new SqlCommand(getSaleQuery, conn, transaction))
+                    {
+                        getCmd.Parameters.AddWithValue("@SaleID", saleId);
+                        using (SqlDataReader reader = getCmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                quantity = reader.GetDecimal(0);
+                                stockId = reader.GetInt32(1);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Sale record not found.");
+                                return;
+                            }
+                        }
+                    }
+
+                    // Step 2: Delete related invoice records first
+                    string deleteInvoiceQuery = "DELETE FROM Invoices WHERE SaleID = @SaleID";
+                    using (SqlCommand invoiceCmd = new SqlCommand(deleteInvoiceQuery, conn, transaction))
+                    {
+                        invoiceCmd.Parameters.AddWithValue("@SaleID", saleId);
+                        invoiceCmd.ExecuteNonQuery();
+                    }
+
+                    // Step 3: Delete the sale
+                    string deleteQuery = "DELETE FROM Sales WHERE SaleID = @SaleID";
+                    using (SqlCommand cmd = new SqlCommand(deleteQuery, conn, transaction))
+                    {
+                        cmd.Parameters.AddWithValue("@SaleID", saleId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Step 4: Add quantity back to stock
+                    string updateStockQuery = "UPDATE Stock SET Quantity = Quantity + @Quantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
+                    using (SqlCommand stockCmd = new SqlCommand(updateStockQuery, conn, transaction))
+                    {
+                        stockCmd.Parameters.AddWithValue("@Quantity", quantity);
+                        stockCmd.Parameters.AddWithValue("@StockID", stockId);
+                        stockCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
                     MessageBox.Show("Sale deleted successfully!");
                 }
-                LoadSalesData();
-                ClearInputs();
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    MessageBox.Show($"Error deleting sale: {ex.Message}");
+                }
             }
+
+            LoadSalesData();
+            ClearInputs();
         }
 
         private void SearchSales(string keyword)
@@ -560,19 +760,18 @@ namespace RiceMgmtApp
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType,
-                                    f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
-                                    b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
-                                    FROM Sales s
-                                    INNER JOIN Users f ON s.FarmerID = f.UserID
-                                    LEFT JOIN Users b ON s.BuyerID = b.UserID
-                                    WHERE s.SaleID = @SaleID";
-
+                    // Updated query to include CropType
+                    string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType, s.CropType,
+                            f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
+                            b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
+                            FROM Sales s
+                            INNER JOIN Users f ON s.FarmerID = f.UserID
+                            LEFT JOIN Users b ON s.BuyerID = b.UserID
+                            WHERE s.SaleID = @SaleID";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@SaleID", saleId);
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
-
                     if (reader.Read())
                     {
                         StringBuilder sb = new StringBuilder();
@@ -595,12 +794,15 @@ namespace RiceMgmtApp
                         sb.AppendLine($"Name: {reader["BuyerName"]}");
                         if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"ContactNumber: {reader["BuyerContactNumber"]}");
                         if (reader["BuyerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["BuyerEmail"]}");
-                       // if (reader["BuyerAddress"] != DBNull.Value) sb.AppendLine($"Address: {reader["BuyerAddress"]}");
+                        // if (reader["BuyerAddress"] != DBNull.Value) sb.AppendLine($"Address: {reader["BuyerAddress"]}");
 
                         sb.AppendLine("\n=============================================");
                         sb.AppendLine("TRANSACTION DETAILS:");
                         sb.AppendLine("=============================================");
-                        sb.AppendLine($"Product: Rice");
+
+                        // Updated to include CropType
+                        string cropType = reader["CropType"] != DBNull.Value ? reader["CropType"].ToString() : "Rice";
+                        sb.AppendLine($"Product: {cropType}");
                         sb.AppendLine($"Price per kg: {Convert.ToDecimal(reader["SalePrice"]):C}");
                         sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
                         sb.AppendLine($"Total Amount: {totalAmount:C}");
@@ -608,7 +810,6 @@ namespace RiceMgmtApp
                         sb.AppendLine("=============================================");
                         sb.AppendLine("\nThank you for your business!");
                         sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
-
                         rtbInvoicePreview.Text = sb.ToString();
                     }
                     reader.Close();
@@ -619,7 +820,6 @@ namespace RiceMgmtApp
                 MessageBox.Show($"Error generating invoice: {ex.Message}");
             }
         }
-
         private void BtnSaveInvoice_Click(object sender, EventArgs e)
         {
             if (selectedSaleId == -1 || string.IsNullOrEmpty(rtbInvoicePreview.Text))

@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnAddField = new System.Windows.Forms.Button();
             this.btnExportPDF = new System.Windows.Forms.Button();
             this.dgvFields = new System.Windows.Forms.DataGridView();
-            this.btnAddField = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFields)).BeginInit();
             this.SuspendLayout();
@@ -46,6 +46,16 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(853, 51);
             this.panel1.TabIndex = 1;
+            // 
+            // btnAddField
+            // 
+            this.btnAddField.Location = new System.Drawing.Point(56, 19);
+            this.btnAddField.Name = "btnAddField";
+            this.btnAddField.Size = new System.Drawing.Size(75, 23);
+            this.btnAddField.TabIndex = 1;
+            this.btnAddField.Text = "Add Field";
+            this.btnAddField.UseVisualStyleBackColor = true;
+            this.btnAddField.Click += new System.EventHandler(this.btnAddField_Click);
             // 
             // btnExportPDF
             // 
@@ -66,15 +76,6 @@
             this.dgvFields.Size = new System.Drawing.Size(853, 399);
             this.dgvFields.TabIndex = 2;
             this.dgvFields.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvFields_CellContentClick);
-            // 
-            // btnAddField
-            // 
-            this.btnAddField.Location = new System.Drawing.Point(56, 19);
-            this.btnAddField.Name = "btnAddField";
-            this.btnAddField.Size = new System.Drawing.Size(75, 23);
-            this.btnAddField.TabIndex = 1;
-            this.btnAddField.Text = "Add Field";
-            this.btnAddField.UseVisualStyleBackColor = true;
             // 
             // Fields
             // 

@@ -39,8 +39,9 @@
             this.btn_logout = new System.Windows.Forms.Button();
             this.btn_profile = new System.Windows.Forms.Button();
             this.btn_Dashboard = new System.Windows.Forms.Button();
-            this.panelContainer = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panelContainer = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
             this.panelsideMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -49,6 +50,7 @@
             // 
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
+            this.panelsideMenu.Controls.Add(this.button1);
             this.panelsideMenu.Controls.Add(this.btnPrice_Monitoring);
             this.panelsideMenu.Controls.Add(this.btn_DamageReporting);
             this.panelsideMenu.Controls.Add(this.btn_ReportsAnalytics);
@@ -145,7 +147,7 @@
             this.btn_Sales.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_Sales.Size = new System.Drawing.Size(250, 45);
             this.btn_Sales.TabIndex = 10;
-            this.btn_Sales.Text = "Sales Records";
+            this.btn_Sales.Text = "Pady Sales";
             this.btn_Sales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_Sales.UseVisualStyleBackColor = true;
             this.btn_Sales.Click += new System.EventHandler(this.btn_Sales_Click);
@@ -212,15 +214,6 @@
             this.btn_Dashboard.UseVisualStyleBackColor = true;
             this.btn_Dashboard.Click += new System.EventHandler(this.btn_Dashboard_Click);
             // 
-            // panelContainer
-            // 
-            this.panelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContainer.Location = new System.Drawing.Point(250, 0);
-            this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(974, 749);
-            this.panelContainer.TabIndex = 6;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
@@ -232,6 +225,33 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            // 
+            // panelContainer
+            // 
+            this.panelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
+            this.panelContainer.Location = new System.Drawing.Point(266, 27);
+            this.panelContainer.Name = "panelContainer";
+            this.panelContainer.Size = new System.Drawing.Size(944, 695);
+            this.panelContainer.TabIndex = 6;
+            // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Location = new System.Drawing.Point(0, 465);
+            this.button1.Name = "button1";
+            this.button1.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.button1.Size = new System.Drawing.Size(250, 45);
+            this.button1.TabIndex = 16;
+            this.button1.Text = "Pady Sales";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // FarmerDashboard
             // 
@@ -266,7 +286,8 @@
         private System.Windows.Forms.Button btn_profile;
         private System.Windows.Forms.Button btn_Dashboard;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Panel panelContainer;
         private System.Windows.Forms.Button btnPrice_Monitoring;
+        private System.Windows.Forms.Panel panelContainer;
+        private System.Windows.Forms.Button button1;
     }
 }

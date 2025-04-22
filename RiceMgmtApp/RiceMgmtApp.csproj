@@ -536,6 +536,12 @@
     <Compile Include="SalesManagement.Designer.cs">
       <DependentUpon>SalesManagement.cs</DependentUpon>
     </Compile>
+    <Compile Include="SalesRecord.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SalesRecord.Designer.cs">
+      <DependentUpon>SalesRecord.cs</DependentUpon>
+    </Compile>
     <Compile Include="SellPady.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -624,6 +630,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesManagement.resx">
       <DependentUpon>SalesManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SalesRecord.resx">
+      <DependentUpon>SalesRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SellPady.resx">
       <DependentUpon>SellPady.cs</DependentUpon>

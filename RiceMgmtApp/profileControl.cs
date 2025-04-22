@@ -142,5 +142,13 @@ namespace RiceMgmtApp
         {
             UpdateProfile(updatePassword: true); // Updates password (and profile if needed)
         }
+
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            bool isChecked = chkShowPassword.Checked;
+
+            txtNewPassword.UseSystemPasswordChar = !isChecked;
+            txtConfirmPassword.UseSystemPasswordChar = !isChecked;
+        }
     }
 }

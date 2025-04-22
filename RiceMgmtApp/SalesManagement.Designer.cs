@@ -74,8 +74,7 @@
             // 
             this.dataGridViewSales.AllowUserToAddRows = false;
             this.dataGridViewSales.AllowUserToDeleteRows = false;
-            this.dataGridViewSales.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewSales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewSales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewSales.Location = new System.Drawing.Point(15, 290);
@@ -83,7 +82,7 @@
             this.dataGridViewSales.Name = "dataGridViewSales";
             this.dataGridViewSales.ReadOnly = true;
             this.dataGridViewSales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewSales.Size = new System.Drawing.Size(970, 212);
+            this.dataGridViewSales.Size = new System.Drawing.Size(970, 299);
             this.dataGridViewSales.TabIndex = 0;
             this.dataGridViewSales.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSales_CellClick);
             // 
@@ -299,6 +298,8 @@
             // 
             // btnUpdate
             // 
+            this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(70)))), ((int)(((byte)(120)))));
             this.btnUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -327,6 +328,8 @@
             // 
             // btnClear
             // 
+            this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(160)))), ((int)(((byte)(160)))), ((int)(((byte)(160)))));
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnClear.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -341,6 +344,8 @@
             // 
             // btnGenerateInvoice
             // 
+            this.btnGenerateInvoice.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.btnGenerateInvoice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.btnGenerateInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGenerateInvoice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
@@ -415,9 +420,9 @@
             this.pnlInvoice.Controls.Add(this.rtbInvoicePreview);
             this.pnlInvoice.Controls.Add(this.btnSaveInvoice);
             this.pnlInvoice.Controls.Add(this.btnPrintInvoice);
-            this.pnlInvoice.Location = new System.Drawing.Point(15, 470);
+            this.pnlInvoice.Location = new System.Drawing.Point(15, 593);
             this.pnlInvoice.Name = "pnlInvoice";
-            this.pnlInvoice.Size = new System.Drawing.Size(970, 218);
+            this.pnlInvoice.Size = new System.Drawing.Size(970, 252);
             this.pnlInvoice.TabIndex = 4;
             this.pnlInvoice.Visible = false;
             // 
@@ -425,7 +430,7 @@
             // 
             this.lblInvoiceTitle.AutoSize = true;
             this.lblInvoiceTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblInvoiceTitle.Location = new System.Drawing.Point(14, 34);
+            this.lblInvoiceTitle.Location = new System.Drawing.Point(9, 16);
             this.lblInvoiceTitle.Name = "lblInvoiceTitle";
             this.lblInvoiceTitle.Size = new System.Drawing.Size(131, 21);
             this.lblInvoiceTitle.TabIndex = 0;
@@ -434,10 +439,10 @@
             // rtbInvoicePreview
             // 
             this.rtbInvoicePreview.Font = new System.Drawing.Font("Consolas", 9F);
-            this.rtbInvoicePreview.Location = new System.Drawing.Point(13, 58);
+            this.rtbInvoicePreview.Location = new System.Drawing.Point(13, 54);
             this.rtbInvoicePreview.Name = "rtbInvoicePreview";
             this.rtbInvoicePreview.ReadOnly = true;
-            this.rtbInvoicePreview.Size = new System.Drawing.Size(760, 155);
+            this.rtbInvoicePreview.Size = new System.Drawing.Size(760, 164);
             this.rtbInvoicePreview.TabIndex = 1;
             this.rtbInvoicePreview.Text = "";
             // 
@@ -447,7 +452,7 @@
             this.btnSaveInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSaveInvoice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSaveInvoice.ForeColor = System.Drawing.Color.White;
-            this.btnSaveInvoice.Location = new System.Drawing.Point(779, 58);
+            this.btnSaveInvoice.Location = new System.Drawing.Point(779, 54);
             this.btnSaveInvoice.Name = "btnSaveInvoice";
             this.btnSaveInvoice.Size = new System.Drawing.Size(180, 40);
             this.btnSaveInvoice.TabIndex = 2;
@@ -460,7 +465,7 @@
             this.btnPrintInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrintInvoice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnPrintInvoice.ForeColor = System.Drawing.Color.White;
-            this.btnPrintInvoice.Location = new System.Drawing.Point(779, 108);
+            this.btnPrintInvoice.Location = new System.Drawing.Point(779, 110);
             this.btnPrintInvoice.Name = "btnPrintInvoice";
             this.btnPrintInvoice.Size = new System.Drawing.Size(180, 40);
             this.btnPrintInvoice.TabIndex = 3;
@@ -479,7 +484,7 @@
             this.Controls.Add(this.dataGridViewSales);
             this.Controls.Add(this.pnlInvoice);
             this.Name = "SalesManagement";
-            this.Size = new System.Drawing.Size(1000, 703);
+            this.Size = new System.Drawing.Size(1000, 860);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSales)).EndInit();
             this.panelInput.ResumeLayout(false);
             this.panelInput.PerformLayout();

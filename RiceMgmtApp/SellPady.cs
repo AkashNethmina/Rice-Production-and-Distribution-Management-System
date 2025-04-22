@@ -17,7 +17,7 @@ namespace RiceMgmtApp
         private decimal availableQuantity = 0;
 
         // UI Controls
-        private Panel panelMain;
+        private TableLayoutPanel mainTableLayout;
         private Panel panelStock;
         private Panel panelSale;
         private Panel panelInvoice;
@@ -73,42 +73,65 @@ namespace RiceMgmtApp
 
         private void InitializeUIComponents()
         {
-            // Main panel
-            panelMain = new Panel
+            // Main TableLayoutPanel for responsive layout
+            mainTableLayout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                BackColor = Color.White
+                BackColor = Color.White,
+                ColumnCount = 1,
+                RowCount = 4,
+                Padding = new Padding(10),
+                AutoSize = true
             };
+
+            // Set row styles
+            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Title
+            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));  // Stock panel
+            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));  // Sale panel
+            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));  // Invoice panel
 
             // Title label
             lblTitle = new Label
             {
                 Text = "Sell Paddy",
                 Font = new Font("Segoe UI", 16, FontStyle.Bold),
-                Location = new Point(10, 10),
-                AutoSize = true
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                Margin = new Padding(0, 0, 0, 10)
             };
 
             // Stock panel
             panelStock = new Panel
             {
-                Location = new Point(10, 50),
-                Size = new Size(800, 200),
-                BorderStyle = BorderStyle.FixedSingle
+                Dock = DockStyle.Fill,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(0, 0, 0, 10)
             };
+
+            // Create a TableLayoutPanel for the stock section
+            TableLayoutPanel stockTableLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 2,
+                Padding = new Padding(10)
+            };
+
+            stockTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            stockTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             lblStockTitle = new Label
             {
                 Text = "Your Available Stock",
                 Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Location = new Point(10, 10),
-                AutoSize = true
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                Margin = new Padding(0, 0, 0, 10)
             };
 
             dgvStock = new DataGridView
             {
-                Location = new Point(10, 40),
-                Size = new Size(780, 150),
+                Dock = DockStyle.Fill,
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 ReadOnly = true,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
@@ -116,36 +139,68 @@ namespace RiceMgmtApp
                 BackgroundColor = Color.White
             };
 
+            stockTableLayout.Controls.Add(lblStockTitle, 0, 0);
+            stockTableLayout.Controls.Add(dgvStock, 0, 1);
+            panelStock.Controls.Add(stockTableLayout);
+
             // Sale panel
             panelSale = new Panel
             {
-                Location = new Point(10, 260),
-                Size = new Size(800, 220),
-                BorderStyle = BorderStyle.FixedSingle
+                Dock = DockStyle.Fill,
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(0, 0, 0, 10)
             };
+
+            // Create a TableLayoutPanel for the sale section
+            TableLayoutPanel saleTableLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 4,
+                RowCount = 6,
+                Padding = new Padding(10)
+            };
+
+            // Configure columns for responsiveness
+            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));  // Labels
+            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));  // Controls
+            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));  // Second set of labels
+            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));  // Second set of controls
+
+            // Configure rows
+            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Selected stock
+            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Buyer type
+            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Buyer
+            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Price/Total Amount
+            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Quantity/Payment Status
+            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Buttons
 
             lblSelectedStock = new Label
             {
                 Text = "No stock selected",
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = Color.Navy,
-                Location = new Point(10, 10),
+                Dock = DockStyle.Fill,
                 AutoSize = true
             };
+
+            // Set the selected stock label to span all columns
+            saleTableLayout.Controls.Add(lblSelectedStock, 0, 0);
+            saleTableLayout.SetColumnSpan(lblSelectedStock, 4);
 
             // Buyer Type
             lblBuyerType = new Label
             {
                 Text = "Buyer Type:",
-                Location = new Point(10, 40),
-                AutoSize = true
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             cmbBuyerType = new ComboBox
             {
-                Location = new Point(120, 40),
-                Size = new Size(200, 25),
-                DropDownStyle = ComboBoxStyle.DropDownList
+                Dock = DockStyle.Fill,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
             cmbBuyerType.Items.AddRange(new object[] { "Government", "Private" });
 
@@ -153,171 +208,211 @@ namespace RiceMgmtApp
             lblBuyer = new Label
             {
                 Text = "Buyer:",
-                Location = new Point(10, 70),
-                AutoSize = true
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             cmbBuyer = new ComboBox
             {
-                Location = new Point(120, 70),
-                Size = new Size(200, 25),
-                DropDownStyle = ComboBoxStyle.DropDownList
+                Dock = DockStyle.Fill,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             // Price
             lblPrice = new Label
             {
                 Text = "Price per kg:",
-                Location = new Point(10, 100),
-                AutoSize = true
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             txtSalePrice = new TextBox
             {
-                Location = new Point(120, 100),
-                Size = new Size(150, 25),
-                TextAlign = HorizontalAlignment.Right
-            };
-
-            // Quantity
-            lblQuantity = new Label
-            {
-                Text = "Quantity (kg):",
-                Location = new Point(10, 130),
-                AutoSize = true
-            };
-
-            txtQuantity = new TextBox
-            {
-                Location = new Point(120, 130),
-                Size = new Size(150, 25),
-                TextAlign = HorizontalAlignment.Right
+                Dock = DockStyle.Fill,
+                TextAlign = HorizontalAlignment.Right,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             // Total Amount
             lblTotalAmount = new Label
             {
                 Text = "Total Amount:",
-                Location = new Point(350, 100),
-                AutoSize = true
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             txtTotalAmount = new TextBox
             {
-                Location = new Point(450, 100),
-                Size = new Size(150, 25),
+                Dock = DockStyle.Fill,
                 ReadOnly = true,
-                TextAlign = HorizontalAlignment.Right
+                TextAlign = HorizontalAlignment.Right,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+            };
+
+            // Quantity
+            lblQuantity = new Label
+            {
+                Text = "Quantity (kg):",
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
+            };
+
+            txtQuantity = new TextBox
+            {
+                Dock = DockStyle.Fill,
+                TextAlign = HorizontalAlignment.Right,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             // Payment Status
             lblPaymentStatus = new Label
             {
                 Text = "Payment Status:",
-                Location = new Point(350, 130),
-                AutoSize = true
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
 
             cmbPaymentStatus = new ComboBox
             {
-                Location = new Point(450, 130),
-                Size = new Size(150, 25),
-                DropDownStyle = ComboBoxStyle.DropDownList
+                Dock = DockStyle.Fill,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
             };
             cmbPaymentStatus.Items.AddRange(new object[] { "Pending", "Completed", "Failed" });
             cmbPaymentStatus.SelectedIndex = 0;
+
+            // FlowLayoutPanel for buttons to ensure proper alignment
+            FlowLayoutPanel buttonPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false,
+                AutoSize = true
+            };
 
             // Buttons
             btnProcessSale = new Button
             {
                 Text = "Process Sale",
-                Location = new Point(450, 170),
-                Size = new Size(150, 30),
                 BackColor = Color.Navy,
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold)
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                Size = new Size(150, 30),
+                Margin = new Padding(5)
             };
 
             btnClear = new Button
             {
                 Text = "Clear",
-                Location = new Point(350, 170),
-                Size = new Size(80, 30)
+                Size = new Size(80, 30),
+                Margin = new Padding(5)
             };
 
             btnRefresh = new Button
             {
                 Text = "Refresh",
-                Location = new Point(250, 170),
-                Size = new Size(80, 30)
+                Size = new Size(80, 30),
+                Margin = new Padding(5)
             };
+
+            buttonPanel.Controls.Add(btnProcessSale);
+            buttonPanel.Controls.Add(btnClear);
+            buttonPanel.Controls.Add(btnRefresh);
+
+            // Add controls to saleTableLayout
+            saleTableLayout.Controls.Add(lblBuyerType, 0, 1);
+            saleTableLayout.Controls.Add(cmbBuyerType, 1, 1);
+            saleTableLayout.Controls.Add(lblBuyer, 0, 2);
+            saleTableLayout.Controls.Add(cmbBuyer, 1, 2);
+            saleTableLayout.Controls.Add(lblPrice, 0, 3);
+            saleTableLayout.Controls.Add(txtSalePrice, 1, 3);
+            saleTableLayout.Controls.Add(lblQuantity, 0, 4);
+            saleTableLayout.Controls.Add(txtQuantity, 1, 4);
+            saleTableLayout.Controls.Add(lblTotalAmount, 2, 3);
+            saleTableLayout.Controls.Add(txtTotalAmount, 3, 3);
+            saleTableLayout.Controls.Add(lblPaymentStatus, 2, 4);
+            saleTableLayout.Controls.Add(cmbPaymentStatus, 3, 4);
+            saleTableLayout.Controls.Add(buttonPanel, 0, 5);
+            saleTableLayout.SetColumnSpan(buttonPanel, 4);
+
+            panelSale.Controls.Add(saleTableLayout);
 
             // Invoice panel
             panelInvoice = new Panel
             {
-                Location = new Point(10, 490),
-                Size = new Size(800, 300),
+                Dock = DockStyle.Fill,
                 BorderStyle = BorderStyle.FixedSingle,
                 Visible = false
             };
 
+            // Create a TableLayoutPanel for the invoice section
+            TableLayoutPanel invoiceTableLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 1,
+                RowCount = 2,
+                Padding = new Padding(10)
+            };
+
+            invoiceTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
+            invoiceTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
+
             rtbInvoicePreview = new RichTextBox
             {
-                Location = new Point(10, 10),
-                Size = new Size(780, 240),
+                Dock = DockStyle.Fill,
                 ReadOnly = true,
                 BorderStyle = BorderStyle.None
+            };
+
+            FlowLayoutPanel invoiceButtonPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false,
+                AutoSize = true
             };
 
             btnSaveInvoice = new Button
             {
                 Text = "Save Invoice",
-                Location = new Point(580, 260),
-                Size = new Size(100, 30)
+                Size = new Size(100, 30),
+                Margin = new Padding(5)
             };
 
             btnPrintInvoice = new Button
             {
                 Text = "Print Invoice",
-                Location = new Point(690, 260),
-                Size = new Size(100, 30)
+                Size = new Size(100, 30),
+                Margin = new Padding(5)
             };
 
-            // Add controls to panels
-            panelStock.Controls.Add(lblStockTitle);
-            panelStock.Controls.Add(dgvStock);
+            invoiceButtonPanel.Controls.Add(btnPrintInvoice);
+            invoiceButtonPanel.Controls.Add(btnSaveInvoice);
 
-            panelSale.Controls.Add(lblSelectedStock);
-            panelSale.Controls.Add(lblBuyerType);
-            panelSale.Controls.Add(cmbBuyerType);
-            panelSale.Controls.Add(lblBuyer);
-            panelSale.Controls.Add(cmbBuyer);
-            panelSale.Controls.Add(lblPrice);
-            panelSale.Controls.Add(txtSalePrice);
-            panelSale.Controls.Add(lblQuantity);
-            panelSale.Controls.Add(txtQuantity);
-            panelSale.Controls.Add(lblTotalAmount);
-            panelSale.Controls.Add(txtTotalAmount);
-            panelSale.Controls.Add(lblPaymentStatus);
-            panelSale.Controls.Add(cmbPaymentStatus);
-            panelSale.Controls.Add(btnProcessSale);
-            panelSale.Controls.Add(btnClear);
-            panelSale.Controls.Add(btnRefresh);
+            invoiceTableLayout.Controls.Add(rtbInvoicePreview, 0, 0);
+            invoiceTableLayout.Controls.Add(invoiceButtonPanel, 0, 1);
 
-            panelInvoice.Controls.Add(rtbInvoicePreview);
-            panelInvoice.Controls.Add(btnSaveInvoice);
-            panelInvoice.Controls.Add(btnPrintInvoice);
+            panelInvoice.Controls.Add(invoiceTableLayout);
 
-            // Add panels to main panel
-            panelMain.Controls.Add(lblTitle);
-            panelMain.Controls.Add(panelStock);
-            panelMain.Controls.Add(panelSale);
-            panelMain.Controls.Add(panelInvoice);
+            // Add panels to mainTableLayout
+            mainTableLayout.Controls.Add(lblTitle, 0, 0);
+            mainTableLayout.Controls.Add(panelStock, 0, 1);
+            mainTableLayout.Controls.Add(panelSale, 0, 2);
+            mainTableLayout.Controls.Add(panelInvoice, 0, 3);
 
-            // Add main panel to UserControl
-            this.Controls.Add(panelMain);
+            // Add mainTableLayout to UserControl
+            this.Controls.Add(mainTableLayout);
 
-            // Set up events
+            // Handle form resize events
+            this.Resize += SellPady_Resize;
+
+            // Set up other events
             dgvStock.CellClick += DgvStock_CellClick;
             cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
             txtQuantity.TextChanged += CalculateTotalAmount;
@@ -327,6 +422,96 @@ namespace RiceMgmtApp
             btnRefresh.Click += BtnRefresh_Click;
             btnSaveInvoice.Click += BtnSaveInvoice_Click;
             btnPrintInvoice.Click += BtnPrintInvoice_Click;
+        }
+
+        private void SellPady_Resize(object sender, EventArgs e)
+        {
+            // Call the resize controls method to handle any specific resizing logic
+            ResizeControls();
+        }
+
+        private void ResizeControls()
+        {
+            // Adjust column widths in the DataGridView to fit available space
+            if (dgvStock != null && dgvStock.Columns.Count > 0)
+            {
+                // Ensure column widths are proportional to the grid width
+                foreach (DataGridViewColumn col in dgvStock.Columns)
+                {
+                    // You can customize column width percentages here
+                    // For example, make the first column narrower if it contains IDs
+                    if (col.Index == 0)
+                    {
+                        col.Width = (int)(dgvStock.Width * 0.1); // 10% width for ID column
+                    }
+                    else
+                    {
+                        // Distribute remaining columns evenly
+                        int remainingColumns = dgvStock.Columns.Count - 1;
+                        if (remainingColumns > 0)
+                        {
+                            col.Width = (int)(dgvStock.Width * 0.9 / remainingColumns);
+                        }
+                    }
+                }
+            }
+
+            // Adjust minimum sizes for text inputs if the form becomes very small
+            int minTextBoxWidth = 100;
+            if (txtSalePrice != null && txtSalePrice.Width < minTextBoxWidth)
+            {
+                txtSalePrice.MinimumSize = new Size(minTextBoxWidth, txtSalePrice.Height);
+            }
+
+            if (txtQuantity != null && txtQuantity.Width < minTextBoxWidth)
+            {
+                txtQuantity.MinimumSize = new Size(minTextBoxWidth, txtQuantity.Height);
+            }
+
+            if (txtTotalAmount != null && txtTotalAmount.Width < minTextBoxWidth)
+            {
+                txtTotalAmount.MinimumSize = new Size(minTextBoxWidth, txtTotalAmount.Height);
+            }
+
+            // Adjust font size based on form width for better readability
+            if (this.Width < 600)
+            {
+                // Smaller font for small form size
+                if (lblTitle != null)
+                    lblTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
+
+                if (lblStockTitle != null)
+                    lblStockTitle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
+            }
+            else
+            {
+                // Default font for normal form size
+                if (lblTitle != null)
+                    lblTitle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
+
+                if (lblStockTitle != null)
+                    lblStockTitle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
+            }
+
+            // Ensure buttons maintain minimum usable sizes
+            int minButtonWidth = 70;
+            if (btnProcessSale != null && btnProcessSale.Width < 130)
+            {
+                btnProcessSale.MinimumSize = new Size(130, btnProcessSale.Height);
+            }
+
+            if (btnClear != null && btnClear.Width < minButtonWidth)
+            {
+                btnClear.MinimumSize = new Size(minButtonWidth, btnClear.Height);
+            }
+
+            if (btnRefresh != null && btnRefresh.Width < minButtonWidth)
+            {
+                btnRefresh.MinimumSize = new Size(minButtonWidth, btnRefresh.Height);
+            }
+
+            // Force layout update to apply changes
+            this.PerformLayout();
         }
 
         private void SellPady_Load(object sender, EventArgs e)

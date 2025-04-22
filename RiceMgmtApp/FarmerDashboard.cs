@@ -93,5 +93,9 @@ namespace RiceMgmtApp
             DamageReporting damageReporting = new DamageReporting();
             LoadControl(damageReporting);
         }
+
+       
+
+        
     }
 }

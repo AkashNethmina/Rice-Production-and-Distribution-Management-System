@@ -135,6 +135,7 @@ CREATE TABLE PriceMonitoring (
 CREATE TABLE Cultivation (
     CultivationID INT IDENTITY(1,1) PRIMARY KEY,
     FarmerID INT NOT NULL,
+    FieldID INT NOT NULL,
     Season VARCHAR(10) CHECK (Season IN ('Yala', 'Maha')),
     Year INT,
     AcresCultivated DECIMAL(10,2),
