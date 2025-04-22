@@ -4,662 +4,272 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Configuration;
 using System.Text;
+
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 
 namespace RiceMgmtApp
 {
     public partial class SellPady : UserControl
     {
-        private readonly string connectionString;
-        private int farmerID;
-        private int selectedStockID = -1;
-        private decimal availableQuantity = 0;
-
-        // UI Controls
-        private TableLayoutPanel mainTableLayout;
-        private Panel panelStock;
-        private Panel panelSale;
-        private Panel panelInvoice;
-
-        private DataGridView dgvStock;
-        private Label lblTitle;
-        private Label lblStockTitle;
-        private Label lblSelectedStock;
-        private Label lblBuyerType;
-        private Label lblBuyer;
-        private Label lblPrice;
-        private Label lblQuantity;
-        private Label lblTotalAmount;
-        private Label lblPaymentStatus;
-
-        private ComboBox cmbBuyerType;
-        private ComboBox cmbBuyer;
-        private ComboBox cmbPaymentStatus;
-
-        private TextBox txtSalePrice;
-        private TextBox txtQuantity;
-        private TextBox txtTotalAmount;
-
-        private Button btnProcessSale;
-        private Button btnClear;
-        private Button btnRefresh;
-        private RichTextBox rtbInvoicePreview;
-        private Button btnSaveInvoice;
-        private Button btnPrintInvoice;
+        private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+        private readonly int currentFarmerId;
+        private int selectedSaleId = -1;
 
         public SellPady(int farmerID)
         {
             InitializeComponent();
-
-            // Get connection string from configuration if available, otherwise use default
-            try
-            {
-                this.connectionString = ConfigurationManager.ConnectionStrings["RiceMgmtApp.Properties.Settings.RiceProductionDB2ConnectionString"].ConnectionString;
-            }
-            catch
-            {
-                this.connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
-            }
-
-            this.farmerID = farmerID;
-
-            // Initialize the UI components
-            InitializeUIComponents();
-
-            // Subscribe to load event
+            this.currentFarmerId = farmerID;
             this.Load += SellPady_Load;
-        }
-
-        private void InitializeUIComponents()
-        {
-            // Main TableLayoutPanel for responsive layout
-            mainTableLayout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                BackColor = Color.White,
-                ColumnCount = 1,
-                RowCount = 4,
-                Padding = new Padding(10),
-                AutoSize = true
-            };
-
-            // Set row styles
-            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Title
-            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));  // Stock panel
-            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 30F));  // Sale panel
-            mainTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 40F));  // Invoice panel
-
-            // Title label
-            lblTitle = new Label
-            {
-                Text = "Sell Paddy",
-                Font = new Font("Segoe UI", 16, FontStyle.Bold),
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                Margin = new Padding(0, 0, 0, 10)
-            };
-
-            // Stock panel
-            panelStock = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(0, 0, 0, 10)
-            };
-
-            // Create a TableLayoutPanel for the stock section
-            TableLayoutPanel stockTableLayout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 2,
-                Padding = new Padding(10)
-            };
-
-            stockTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            stockTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-
-            lblStockTitle = new Label
-            {
-                Text = "Your Available Stock",
-                Font = new Font("Segoe UI", 12, FontStyle.Bold),
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                Margin = new Padding(0, 0, 0, 10)
-            };
-
-            dgvStock = new DataGridView
-            {
-                Dock = DockStyle.Fill,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                ReadOnly = true,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                AllowUserToAddRows = false,
-                BackgroundColor = Color.White
-            };
-
-            stockTableLayout.Controls.Add(lblStockTitle, 0, 0);
-            stockTableLayout.Controls.Add(dgvStock, 0, 1);
-            panelStock.Controls.Add(stockTableLayout);
-
-            // Sale panel
-            panelSale = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BorderStyle = BorderStyle.FixedSingle,
-                Margin = new Padding(0, 0, 0, 10)
-            };
-
-            // Create a TableLayoutPanel for the sale section
-            TableLayoutPanel saleTableLayout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 4,
-                RowCount = 6,
-                Padding = new Padding(10)
-            };
-
-            // Configure columns for responsiveness
-            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));  // Labels
-            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));  // Controls
-            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));  // Second set of labels
-            saleTableLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));  // Second set of controls
-
-            // Configure rows
-            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Selected stock
-            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Buyer type
-            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Buyer
-            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Price/Total Amount
-            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Quantity/Payment Status
-            saleTableLayout.RowStyles.Add(new RowStyle(SizeType.AutoSize));  // Buttons
-
-            lblSelectedStock = new Label
-            {
-                Text = "No stock selected",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = Color.Navy,
-                Dock = DockStyle.Fill,
-                AutoSize = true
-            };
-
-            // Set the selected stock label to span all columns
-            saleTableLayout.Controls.Add(lblSelectedStock, 0, 0);
-            saleTableLayout.SetColumnSpan(lblSelectedStock, 4);
-
-            // Buyer Type
-            lblBuyerType = new Label
-            {
-                Text = "Buyer Type:",
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            cmbBuyerType = new ComboBox
-            {
-                Dock = DockStyle.Fill,
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-            cmbBuyerType.Items.AddRange(new object[] { "Government", "Private" });
-
-            // Buyer
-            lblBuyer = new Label
-            {
-                Text = "Buyer:",
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            cmbBuyer = new ComboBox
-            {
-                Dock = DockStyle.Fill,
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            // Price
-            lblPrice = new Label
-            {
-                Text = "Price per kg:",
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            txtSalePrice = new TextBox
-            {
-                Dock = DockStyle.Fill,
-                TextAlign = HorizontalAlignment.Right,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            // Total Amount
-            lblTotalAmount = new Label
-            {
-                Text = "Total Amount:",
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            txtTotalAmount = new TextBox
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                TextAlign = HorizontalAlignment.Right,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            // Quantity
-            lblQuantity = new Label
-            {
-                Text = "Quantity (kg):",
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            txtQuantity = new TextBox
-            {
-                Dock = DockStyle.Fill,
-                TextAlign = HorizontalAlignment.Right,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            // Payment Status
-            lblPaymentStatus = new Label
-            {
-                Text = "Payment Status:",
-                Dock = DockStyle.Fill,
-                AutoSize = true,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-
-            cmbPaymentStatus = new ComboBox
-            {
-                Dock = DockStyle.Fill,
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top
-            };
-            cmbPaymentStatus.Items.AddRange(new object[] { "Pending", "Completed", "Failed" });
-            cmbPaymentStatus.SelectedIndex = 0;
-
-            // FlowLayoutPanel for buttons to ensure proper alignment
-            FlowLayoutPanel buttonPanel = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                AutoSize = true
-            };
-
-            // Buttons
-            btnProcessSale = new Button
-            {
-                Text = "Process Sale",
-                BackColor = Color.Navy,
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                Size = new Size(150, 30),
-                Margin = new Padding(5)
-            };
-
-            btnClear = new Button
-            {
-                Text = "Clear",
-                Size = new Size(80, 30),
-                Margin = new Padding(5)
-            };
-
-            btnRefresh = new Button
-            {
-                Text = "Refresh",
-                Size = new Size(80, 30),
-                Margin = new Padding(5)
-            };
-
-            buttonPanel.Controls.Add(btnProcessSale);
-            buttonPanel.Controls.Add(btnClear);
-            buttonPanel.Controls.Add(btnRefresh);
-
-            // Add controls to saleTableLayout
-            saleTableLayout.Controls.Add(lblBuyerType, 0, 1);
-            saleTableLayout.Controls.Add(cmbBuyerType, 1, 1);
-            saleTableLayout.Controls.Add(lblBuyer, 0, 2);
-            saleTableLayout.Controls.Add(cmbBuyer, 1, 2);
-            saleTableLayout.Controls.Add(lblPrice, 0, 3);
-            saleTableLayout.Controls.Add(txtSalePrice, 1, 3);
-            saleTableLayout.Controls.Add(lblQuantity, 0, 4);
-            saleTableLayout.Controls.Add(txtQuantity, 1, 4);
-            saleTableLayout.Controls.Add(lblTotalAmount, 2, 3);
-            saleTableLayout.Controls.Add(txtTotalAmount, 3, 3);
-            saleTableLayout.Controls.Add(lblPaymentStatus, 2, 4);
-            saleTableLayout.Controls.Add(cmbPaymentStatus, 3, 4);
-            saleTableLayout.Controls.Add(buttonPanel, 0, 5);
-            saleTableLayout.SetColumnSpan(buttonPanel, 4);
-
-            panelSale.Controls.Add(saleTableLayout);
-
-            // Invoice panel
-            panelInvoice = new Panel
-            {
-                Dock = DockStyle.Fill,
-                BorderStyle = BorderStyle.FixedSingle,
-                Visible = false
-            };
-
-            // Create a TableLayoutPanel for the invoice section
-            TableLayoutPanel invoiceTableLayout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 2,
-                Padding = new Padding(10)
-            };
-
-            invoiceTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 85F));
-            invoiceTableLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 15F));
-
-            rtbInvoicePreview = new RichTextBox
-            {
-                Dock = DockStyle.Fill,
-                ReadOnly = true,
-                BorderStyle = BorderStyle.None
-            };
-
-            FlowLayoutPanel invoiceButtonPanel = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
-                AutoSize = true
-            };
-
-            btnSaveInvoice = new Button
-            {
-                Text = "Save Invoice",
-                Size = new Size(100, 30),
-                Margin = new Padding(5)
-            };
-
-            btnPrintInvoice = new Button
-            {
-                Text = "Print Invoice",
-                Size = new Size(100, 30),
-                Margin = new Padding(5)
-            };
-
-            invoiceButtonPanel.Controls.Add(btnPrintInvoice);
-            invoiceButtonPanel.Controls.Add(btnSaveInvoice);
-
-            invoiceTableLayout.Controls.Add(rtbInvoicePreview, 0, 0);
-            invoiceTableLayout.Controls.Add(invoiceButtonPanel, 0, 1);
-
-            panelInvoice.Controls.Add(invoiceTableLayout);
-
-            // Add panels to mainTableLayout
-            mainTableLayout.Controls.Add(lblTitle, 0, 0);
-            mainTableLayout.Controls.Add(panelStock, 0, 1);
-            mainTableLayout.Controls.Add(panelSale, 0, 2);
-            mainTableLayout.Controls.Add(panelInvoice, 0, 3);
-
-            // Add mainTableLayout to UserControl
-            this.Controls.Add(mainTableLayout);
-
-            // Handle form resize events
-            this.Resize += SellPady_Resize;
-
-            // Set up other events
-            dgvStock.CellClick += DgvStock_CellClick;
-            cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
-            txtQuantity.TextChanged += CalculateTotalAmount;
-            txtSalePrice.TextChanged += CalculateTotalAmount;
-            btnProcessSale.Click += BtnProcessSale_Click;
-            btnClear.Click += BtnClear_Click;
-            btnRefresh.Click += BtnRefresh_Click;
-            btnSaveInvoice.Click += BtnSaveInvoice_Click;
-            btnPrintInvoice.Click += BtnPrintInvoice_Click;
-        }
-
-        private void SellPady_Resize(object sender, EventArgs e)
-        {
-            // Call the resize controls method to handle any specific resizing logic
-            ResizeControls();
-        }
-
-        private void ResizeControls()
-        {
-            // Adjust column widths in the DataGridView to fit available space
-            if (dgvStock != null && dgvStock.Columns.Count > 0)
-            {
-                // Ensure column widths are proportional to the grid width
-                foreach (DataGridViewColumn col in dgvStock.Columns)
-                {
-                    // You can customize column width percentages here
-                    // For example, make the first column narrower if it contains IDs
-                    if (col.Index == 0)
-                    {
-                        col.Width = (int)(dgvStock.Width * 0.1); // 10% width for ID column
-                    }
-                    else
-                    {
-                        // Distribute remaining columns evenly
-                        int remainingColumns = dgvStock.Columns.Count - 1;
-                        if (remainingColumns > 0)
-                        {
-                            col.Width = (int)(dgvStock.Width * 0.9 / remainingColumns);
-                        }
-                    }
-                }
-            }
-
-            // Adjust minimum sizes for text inputs if the form becomes very small
-            int minTextBoxWidth = 100;
-            if (txtSalePrice != null && txtSalePrice.Width < minTextBoxWidth)
-            {
-                txtSalePrice.MinimumSize = new Size(minTextBoxWidth, txtSalePrice.Height);
-            }
-
-            if (txtQuantity != null && txtQuantity.Width < minTextBoxWidth)
-            {
-                txtQuantity.MinimumSize = new Size(minTextBoxWidth, txtQuantity.Height);
-            }
-
-            if (txtTotalAmount != null && txtTotalAmount.Width < minTextBoxWidth)
-            {
-                txtTotalAmount.MinimumSize = new Size(minTextBoxWidth, txtTotalAmount.Height);
-            }
-
-            // Adjust font size based on form width for better readability
-            if (this.Width < 600)
-            {
-                // Smaller font for small form size
-                if (lblTitle != null)
-                    lblTitle.Font = new Font("Segoe UI", 14, FontStyle.Bold);
-
-                if (lblStockTitle != null)
-                    lblStockTitle.Font = new Font("Segoe UI", 10, FontStyle.Bold);
-            }
-            else
-            {
-                // Default font for normal form size
-                if (lblTitle != null)
-                    lblTitle.Font = new Font("Segoe UI", 16, FontStyle.Bold);
-
-                if (lblStockTitle != null)
-                    lblStockTitle.Font = new Font("Segoe UI", 12, FontStyle.Bold);
-            }
-
-            // Ensure buttons maintain minimum usable sizes
-            int minButtonWidth = 70;
-            if (btnProcessSale != null && btnProcessSale.Width < 130)
-            {
-                btnProcessSale.MinimumSize = new Size(130, btnProcessSale.Height);
-            }
-
-            if (btnClear != null && btnClear.Width < minButtonWidth)
-            {
-                btnClear.MinimumSize = new Size(minButtonWidth, btnClear.Height);
-            }
-
-            if (btnRefresh != null && btnRefresh.Width < minButtonWidth)
-            {
-                btnRefresh.MinimumSize = new Size(minButtonWidth, btnRefresh.Height);
-            }
-
-            // Force layout update to apply changes
-            this.PerformLayout();
         }
 
         private void SellPady_Load(object sender, EventArgs e)
         {
-            // Load farmer's stock
-            LoadFarmerStock();
+            // Initialize UI elements
+            LoadFarmerSalesData();
+            LoadBuyerCombo();
 
-            // Reset UI
-            ResetUI();
+            cmbBuyerType.Items.Clear();
+            cmbBuyerType.Items.AddRange(new[] { "Government", "Private" });
+            cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
+
+            cmbPaymentStatus.Items.Clear();
+            cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
+
+            // Set the farmer information
+            LoadFarmerInfo();
+
+            // Add stock-related functionality
+            btnViewStock.Click += BtnViewStock_Click;
+
+            // Add invoice-related functionality
+            btnGenerateInvoice.Click += btnGenerateInvoice_Click;
+            btnSaveInvoice.Click += btnSaveInvoice_Click;
+            btnPrintInvoice.Click += btnPrintInvoice_Click;
+
+            // Add event handlers for calculating total when quantity or price changes
+            txtQuantity.TextChanged += CalculateTotalAmount;
+            txtSalePrice.TextChanged += CalculateTotalAmount;
+
+            StyleSalesGrid();
         }
 
-        private void LoadFarmerStock()
+        private void LoadFarmerInfo()
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT StockID, CropType, Quantity, LastUpdated 
-                                    FROM Stock 
-                                    WHERE FarmerID = @FarmerID 
-                                    AND Quantity > 0";
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    adapter.SelectCommand.Parameters.AddWithValue("@FarmerID", farmerID);
-
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    dgvStock.DataSource = dt;
-
-                    // Format the grid
-                    if (dgvStock.Columns.Contains("StockID"))
-                        dgvStock.Columns["StockID"].HeaderText = "Stock ID";
-                    if (dgvStock.Columns.Contains("CropType"))
-                        dgvStock.Columns["CropType"].HeaderText = "Crop Type";
-                    if (dgvStock.Columns.Contains("Quantity"))
-                        dgvStock.Columns["Quantity"].HeaderText = "Available Quantity (kg)";
-                    if (dgvStock.Columns.Contains("LastUpdated"))
-                        dgvStock.Columns["LastUpdated"].HeaderText = "Last Updated";
+                    string query = "SELECT FullName FROM Users WHERE UserID = @FarmerID";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@FarmerID", currentFarmerId);
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        lblFarmerName.Text = result.ToString();
+                    }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading stock data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error loading farmer information: {ex.Message}");
             }
-        }
-
-        private void DgvStock_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dgvStock.Rows[e.RowIndex];
-                selectedStockID = Convert.ToInt32(row.Cells["StockID"].Value);
-                string cropType = row.Cells["CropType"].Value.ToString();
-                availableQuantity = Convert.ToDecimal(row.Cells["Quantity"].Value);
-
-                lblSelectedStock.Text = $"Selected: {cropType} - {availableQuantity} kg available";
-                txtQuantity.Text = availableQuantity.ToString();
-
-                // Enable the sales panel inputs
-                EnableSaleInputs(true);
-            }
-        }
-
-        private void EnableSaleInputs(bool enable)
-        {
-            cmbBuyerType.Enabled = enable;
-            cmbBuyer.Enabled = enable;
-            txtSalePrice.Enabled = enable;
-            txtQuantity.Enabled = enable;
-            cmbPaymentStatus.Enabled = enable;
-            btnProcessSale.Enabled = enable;
         }
 
         private void CmbBuyerType_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (cmbBuyerType.SelectedItem?.ToString() == "Government")
             {
-                // For government buyers, fetch the current government price
-                FetchGovernmentPrice();
                 // Filter only government buyers
                 LoadBuyerComboFiltered("Government");
+
+                // If crop type is already selected, fetch price
+                if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                {
+                    string cropType = stockInfo.Item2;
+                    FetchPriceForCropType(cropType, "Government");
+                }
             }
             else if (cmbBuyerType.SelectedItem?.ToString() == "Private")
             {
-                // For private buyers, allow price negotiation
-                txtSalePrice.ReadOnly = false;
                 // Filter only private buyers
                 LoadBuyerComboFiltered("Private");
+
+                // If crop type is already selected, fetch price
+                if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                {
+                    string cropType = stockInfo.Item2;
+                    FetchPriceForCropType(cropType, "Private");
+                }
             }
         }
 
         private void LoadBuyerComboFiltered(string buyerType)
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    int roleId = buyerType == "Government" ? 3 : 4; // 3 for Government, 4 for Private buyers
-                    string query = "SELECT UserID, FullName FROM Users WHERE RoleID = @RoleID";
-
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    adapter.SelectCommand.Parameters.AddWithValue("@RoleID", roleId);
-
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    cmbBuyer.DataSource = dt;
-                    cmbBuyer.DisplayMember = "FullName";
-                    cmbBuyer.ValueMember = "UserID";
-                    cmbBuyer.SelectedIndex = -1;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading buyer data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                string roleFilter = buyerType == "Government" ? "RoleID = 3" : "RoleID = 4";
+                string query = $"SELECT UserID, FullName FROM Users WHERE {roleFilter}";
+                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                cmbBuyer.DataSource = dt;
+                cmbBuyer.DisplayMember = "FullName";
+                cmbBuyer.ValueMember = "UserID";
+                cmbBuyer.SelectedIndex = -1;
             }
         }
 
-        private void FetchGovernmentPrice()
+        private void BtnViewStock_Click(object sender, EventArgs e)
+        {
+            ShowFarmerStock();
+        }
+
+        private void ShowFarmerStock()
         {
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT TOP 1 GovernmentPrice FROM PriceMonitoring ORDER BY CreatedAt DESC";
+                    string query = "SELECT StockID, CropType, Quantity, LastUpdated FROM Stock WHERE FarmerID = @FarmerID AND Quantity > 0";
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    adapter.SelectCommand.Parameters.AddWithValue("@FarmerID", currentFarmerId);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
 
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    if (dt.Rows.Count > 0)
                     {
-                        object result = cmd.ExecuteScalar();
-                        if (result != null && result != DBNull.Value)
+                        // Show the stock in a separate form or dialog
+                        using (Form stockForm = new Form())
                         {
-                            decimal govPrice = Convert.ToDecimal(result);
-                            txtSalePrice.Text = govPrice.ToString();
-                            txtSalePrice.ReadOnly = true; // Lock the price for government sales
+                            stockForm.Text = "My Available Stock";
+                            stockForm.Size = new Size(600, 400);
+                            stockForm.StartPosition = FormStartPosition.CenterParent;
+
+                            DataGridView dgvStock = new DataGridView
+                            {
+                                Dock = DockStyle.Fill,
+                                DataSource = dt,
+                                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                                ReadOnly = true
+                            };
+
+                            Button btnSelect = new Button
+                            {
+                                Text = "Select Stock",
+                                Dock = DockStyle.Bottom,
+                                Height = 40
+                            };
+
+                            btnSelect.Click += (s, ev) =>
+                            {
+                                if (dgvStock.SelectedRows.Count > 0)
+                                {
+                                    DataGridViewRow row = dgvStock.SelectedRows[0];
+                                    decimal availableQuantity = Convert.ToDecimal(row.Cells["Quantity"].Value);
+                                    string cropType = row.Cells["CropType"].Value.ToString();
+
+                                    // Set the maximum available quantity
+                                    txtQuantity.Text = availableQuantity.ToString();
+                                    lblSelectedStock.Text = $"Selected: {cropType} - {availableQuantity} kg";
+                                    lblSelectedStock.Visible = true;
+
+                                    // Store selected stock ID and crop type for later reference
+                                    lblSelectedStock.Tag = new Tuple<int, string>(
+                                        Convert.ToInt32(row.Cells["StockID"].Value),
+                                        cropType
+                                    );
+
+                                    // Fetch and set price based on crop type and buyer type
+                                    if (cmbBuyerType.SelectedItem != null)
+                                    {
+                                        FetchPriceForCropType(cropType, cmbBuyerType.SelectedItem.ToString());
+                                    }
+
+                                    stockForm.Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Please select a stock item.");
+                                }
+                            };
+
+                            stockForm.Controls.Add(dgvStock);
+                            stockForm.Controls.Add(btnSelect);
+
+                            stockForm.ShowDialog();
                         }
-                        else
+                    }
+                    else
+                    {
+                        MessageBox.Show("You don't have any available stock to sell.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading stock data: {ex.Message}");
+            }
+        }
+
+        private void FetchPriceForCropType(string cropType, string buyerType)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query;
+                    conn.Open();
+
+                    if (buyerType == "Government")
+                    {
+                        // For government buyers, fetch government price
+                        query = "SELECT GovernmentPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
-                            MessageBox.Show("No government price found. Please contact the administrator.");
-                            txtSalePrice.ReadOnly = false;
+                            cmd.Parameters.AddWithValue("@CropType", cropType);
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                decimal govPrice = Convert.ToDecimal(result);
+                                txtSalePrice.Text = govPrice.ToString();
+                                txtSalePrice.ReadOnly = true; // Lock the price for government sales
+                            }
+                            else
+                            {
+                                MessageBox.Show($"No government price found for {cropType}. Please contact the administrator.");
+                                txtSalePrice.ReadOnly = false;
+                            }
+                        }
+                    }
+                    else if (buyerType == "Private")
+                    {
+                        // For private buyers, fetch average price as starting point but allow editing
+                        query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@CropType", cropType);
+                            object result = cmd.ExecuteScalar();
+                            if (result != null && result != DBNull.Value)
+                            {
+                                decimal avgPrice = Convert.ToDecimal(result);
+                                txtSalePrice.Text = avgPrice.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show($"No price data found for {cropType}.");
+                            }
+                            txtSalePrice.ReadOnly = false; // Allow price negotiation for private sales
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error fetching government price: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error fetching price information: {ex.Message}");
             }
         }
 
@@ -684,134 +294,232 @@ namespace RiceMgmtApp
             }
         }
 
-        private void BtnProcessSale_Click(object sender, EventArgs e)
+        private void StyleSalesGrid()
+        {
+            dataGridViewSales.EnableHeadersVisualStyles = false;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.ForestGreen;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
+            dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridViewSales.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightGreen;
+            dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dataGridViewSales.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
+            dataGridViewSales.RowTemplate.Height = 28;
+            dataGridViewSales.GridColor = Color.LightGray;
+            dataGridViewSales.BorderStyle = BorderStyle.Fixed3D;
+            dataGridViewSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridViewSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewSales.MultiSelect = false;
+            dataGridViewSales.AllowUserToAddRows = false;
+            dataGridViewSales.ReadOnly = true;
+        }
+
+        private void LoadFarmerSalesData()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                // Join with Users table to display buyer names, limit to current farmer
+                string query = @"SELECT s.SaleID, s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
+                           s.CropType, s.SalePrice, s.Quantity, 
+                           (s.SalePrice * s.Quantity) AS TotalAmount, 
+                           s.PaymentStatus, s.SaleDate,
+                           s.StockID
+                           FROM Sales s
+                           LEFT JOIN Users b ON s.BuyerID = b.UserID
+                           WHERE s.FarmerID = @FarmerID
+                           ORDER BY s.SaleDate DESC";
+
+
+                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@FarmerID", currentFarmerId);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                dataGridViewSales.DataSource = dt;
+
+                // Rename and reorder columns for better display
+                if (dataGridViewSales.Columns.Contains("SaleID"))
+                    dataGridViewSales.Columns["SaleID"].HeaderText = "Sale ID";
+                if (dataGridViewSales.Columns.Contains("BuyerName"))
+                    dataGridViewSales.Columns["BuyerName"].HeaderText = "Buyer";
+                if (dataGridViewSales.Columns.Contains("BuyerType"))
+                    dataGridViewSales.Columns["BuyerType"].HeaderText = "Buyer Type";
+                if (dataGridViewSales.Columns.Contains("CropType"))
+                    dataGridViewSales.Columns["CropType"].HeaderText = "Rice Type";
+                if (dataGridViewSales.Columns.Contains("SalePrice"))
+                    dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
+                if (dataGridViewSales.Columns.Contains("Quantity"))
+                    dataGridViewSales.Columns["Quantity"].HeaderText = "Quantity (kg)";
+                if (dataGridViewSales.Columns.Contains("TotalAmount"))
+                    dataGridViewSales.Columns["TotalAmount"].HeaderText = "Total Amount";
+                if (dataGridViewSales.Columns.Contains("PaymentStatus"))
+                    dataGridViewSales.Columns["PaymentStatus"].HeaderText = "Payment Status";
+                if (dataGridViewSales.Columns.Contains("SaleDate"))
+                    dataGridViewSales.Columns["SaleDate"].HeaderText = "Sale Date";
+
+                // Hide IDs as they're not needed in the view
+                if (dataGridViewSales.Columns.Contains("BuyerID"))
+                    dataGridViewSales.Columns["BuyerID"].Visible = false;
+                if (dataGridViewSales.Columns.Contains("StockID"))
+                    dataGridViewSales.Columns["StockID"].Visible = false;
+            }
+        }
+
+        private void LoadBuyerCombo()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT UserID, FullName FROM Users WHERE RoleID IN (3, 4)";
+                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+                cmbBuyer.DataSource = dt;
+                cmbBuyer.DisplayMember = "FullName";
+                cmbBuyer.ValueMember = "UserID";
+                cmbBuyer.SelectedIndex = -1;
+            }
+        }
+
+        private void ProcessSale()
         {
             if (!ValidateInputs()) return;
 
-            // Process the sale
-            ProcessSale();
+            // Check if stock is selected
+            if (lblSelectedStock.Tag == null)
+            {
+                MessageBox.Show("Please select stock before processing the sale.");
+                return;
+            }
+
+            // Extract stock ID and crop type from the tag
+            var stockInfo = (Tuple<int, string>)lblSelectedStock.Tag;
+            int stockId = stockInfo.Item1;
+            string cropType = stockInfo.Item2;
+            decimal saleQuantity = decimal.Parse(txtQuantity.Text);
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlTransaction transaction = null;
+                try
+                {
+                    conn.Open();
+                    transaction = conn.BeginTransaction();
+
+                    // 1. Check if there's enough stock
+                    string checkStockQuery = "SELECT Quantity FROM Stock WHERE StockID = @StockID";
+                    using (SqlCommand checkCmd = new SqlCommand(checkStockQuery, conn, transaction))
+                    {
+                        checkCmd.Parameters.AddWithValue("@StockID", stockId);
+                        decimal availableQuantity = Convert.ToDecimal(checkCmd.ExecuteScalar());
+
+                        if (availableQuantity < saleQuantity)
+                        {
+                            MessageBox.Show($"Insufficient stock. Available: {availableQuantity} kg");
+                            return;
+                        }
+                    }
+
+                    // 2. Insert the sale
+                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate, CropType, StockID)
+                                      VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate, @CropType, @StockID);
+                                      SELECT SCOPE_IDENTITY();";
+
+                    int newSaleId;
+                    using (SqlCommand insertCmd = new SqlCommand(insertSaleQuery, conn, transaction))
+                    {
+                        insertCmd.Parameters.AddWithValue("@FarmerID", currentFarmerId);
+                        insertCmd.Parameters.AddWithValue("@BuyerID", cmbBuyer.SelectedValue ?? DBNull.Value);
+                        insertCmd.Parameters.AddWithValue("@BuyerType", cmbBuyerType.Text);
+                        insertCmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtSalePrice.Text));
+                        insertCmd.Parameters.AddWithValue("@Quantity", saleQuantity);
+                        insertCmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
+                        insertCmd.Parameters.AddWithValue("@SaleDate", DateTime.Now);
+                        insertCmd.Parameters.AddWithValue("@CropType", cropType);
+                        insertCmd.Parameters.AddWithValue("@StockID", stockId);
+
+                        newSaleId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                    }
+
+                    // 3. Update the stock quantity
+                    string updateStockQuery = "UPDATE Stock SET Quantity = Quantity - @SaleQuantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
+                    using (SqlCommand updateCmd = new SqlCommand(updateStockQuery, conn, transaction))
+                    {
+                        updateCmd.Parameters.AddWithValue("@SaleQuantity", saleQuantity);
+                        updateCmd.Parameters.AddWithValue("@StockID", stockId);
+                        updateCmd.ExecuteNonQuery();
+                    }
+
+                    // 4. Create invoice record
+                    string invoicePath = $"Invoice_{newSaleId}_{DateTime.Now:yyyyMMdd}.pdf";
+                    string insertInvoiceQuery = "INSERT INTO Invoices (SaleID, InvoicePath, CreatedAt) VALUES (@SaleID, @InvoicePath, GETDATE())";
+                    using (SqlCommand invoiceCmd = new SqlCommand(insertInvoiceQuery, conn, transaction))
+                    {
+                        invoiceCmd.Parameters.AddWithValue("@SaleID", newSaleId);
+                        invoiceCmd.Parameters.AddWithValue("@InvoicePath", invoicePath);
+                        invoiceCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    MessageBox.Show("Sale processed successfully!");
+
+                    // Set the selected sale ID for invoice generation
+                    selectedSaleId = newSaleId;
+
+                    // Show the invoice panel and generate invoice preview
+                    pnlInvoice.Visible = true;
+                    GenerateInvoicePreview(newSaleId);
+                }
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    MessageBox.Show($"Error processing sale: {ex.Message}");
+                }
+            }
+
+            LoadFarmerSalesData();
+            ClearInputs();
         }
 
         private bool ValidateInputs()
         {
-            if (selectedStockID == -1)
+            if (cmbBuyer.SelectedIndex == -1 ||
+                cmbBuyerType.SelectedIndex == -1 || cmbPaymentStatus.SelectedIndex == -1 ||
+                string.IsNullOrWhiteSpace(txtSalePrice.Text) || string.IsNullOrWhiteSpace(txtQuantity.Text))
             {
-                MessageBox.Show("Please select a stock item first.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please fill all required fields.");
                 return false;
             }
 
-            if (cmbBuyerType.SelectedIndex == -1)
+            if (!decimal.TryParse(txtSalePrice.Text, out _) || !decimal.TryParse(txtQuantity.Text, out _))
             {
-                MessageBox.Show("Please select a buyer type.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (cmbBuyer.SelectedIndex == -1)
-            {
-                MessageBox.Show("Please select a buyer.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtSalePrice.Text) || !decimal.TryParse(txtSalePrice.Text, out _))
-            {
-                MessageBox.Show("Please enter a valid sale price.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(txtQuantity.Text) || !decimal.TryParse(txtQuantity.Text, out decimal qty))
-            {
-                MessageBox.Show("Please enter a valid quantity.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (qty <= 0)
-            {
-                MessageBox.Show("Quantity must be greater than zero.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
-            }
-
-            if (qty > availableQuantity)
-            {
-                MessageBox.Show($"Quantity exceeds available stock. Maximum available: {availableQuantity} kg",
-                                "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Sale Price and Quantity must be valid numbers.");
                 return false;
             }
 
             return true;
         }
 
-        private void ProcessSale()
+        private void ClearInputs()
         {
-            int buyerId = Convert.ToInt32(cmbBuyer.SelectedValue);
-            string buyerType = cmbBuyerType.SelectedItem.ToString();
-            decimal salePrice = decimal.Parse(txtSalePrice.Text);
-            decimal quantity = decimal.Parse(txtQuantity.Text);
-            string paymentStatus = cmbPaymentStatus.SelectedItem.ToString();
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlTransaction transaction = null;
-
-                try
-                {
-                    conn.Open();
-                    transaction = conn.BeginTransaction();
-
-                    // 1. Insert sale record
-                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate)
-                                              VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate);
-                                              SELECT SCOPE_IDENTITY();";
-
-                    int newSaleId;
-                    using (SqlCommand cmd = new SqlCommand(insertSaleQuery, conn, transaction))
-                    {
-                        cmd.Parameters.AddWithValue("@FarmerID", farmerID);
-                        cmd.Parameters.AddWithValue("@BuyerID", buyerId);
-                        cmd.Parameters.AddWithValue("@BuyerType", buyerType);
-                        cmd.Parameters.AddWithValue("@SalePrice", salePrice);
-                        cmd.Parameters.AddWithValue("@Quantity", quantity);
-                        cmd.Parameters.AddWithValue("@PaymentStatus", paymentStatus);
-                        cmd.Parameters.AddWithValue("@SaleDate", DateTime.Now);
-
-                        newSaleId = Convert.ToInt32(cmd.ExecuteScalar());
-                    }
-
-                    // 2. Update stock quantity
-                    string updateStockQuery = "UPDATE Stock SET Quantity = Quantity - @SaleQuantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
-                    using (SqlCommand cmd = new SqlCommand(updateStockQuery, conn, transaction))
-                    {
-                        cmd.Parameters.AddWithValue("@SaleQuantity", quantity);
-                        cmd.Parameters.AddWithValue("@StockID", selectedStockID);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    // 3. Create invoice record
-                    string invoicePath = $"Invoice_{newSaleId}_{DateTime.Now:yyyyMMdd}.pdf";
-                    string insertInvoiceQuery = "INSERT INTO Invoices (SaleID, InvoicePath, CreatedAt) VALUES (@SaleID, @InvoicePath, GETDATE())";
-                    using (SqlCommand cmd = new SqlCommand(insertInvoiceQuery, conn, transaction))
-                    {
-                        cmd.Parameters.AddWithValue("@SaleID", newSaleId);
-                        cmd.Parameters.AddWithValue("@InvoicePath", invoicePath);
-                        cmd.ExecuteNonQuery();
-                    }
-
-                    transaction.Commit();
-                    MessageBox.Show("Sale processed successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Generate invoice preview
-                    GenerateInvoicePreview(newSaleId);
-                    panelInvoice.Visible = true;
-
-                    // Refresh stock data
-                    LoadFarmerStock();
-                }
-                catch (Exception ex)
-                {
-                    transaction?.Rollback();
-                    MessageBox.Show($"Error processing sale: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            cmbBuyer.SelectedIndex = -1;
+            cmbBuyerType.SelectedIndex = -1;
+            cmbPaymentStatus.SelectedIndex = -1;
+            txtSalePrice.Clear();
+            txtQuantity.Clear();
+            txtTotalAmount.Clear();
+            lblSelectedStock.Visible = false;
+            lblSelectedStock.Tag = null;
+            pnlInvoice.Visible = false;
+            rtbInvoicePreview.Clear();
         }
+
+       
 
         private void GenerateInvoicePreview(int saleId)
         {
@@ -819,141 +527,228 @@ namespace RiceMgmtApp
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType,
-                                    f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
-                                    b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
-                                    FROM Sales s
-                                    INNER JOIN Users f ON s.FarmerID = f.UserID
-                                    LEFT JOIN Users b ON s.BuyerID = b.UserID
-                                    WHERE s.SaleID = @SaleID";
-
+                    string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType, s.CropType,
+                            f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
+                            b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
+                            FROM Sales s
+                            INNER JOIN Users f ON s.FarmerID = f.UserID
+                            LEFT JOIN Users b ON s.BuyerID = b.UserID
+                            WHERE s.SaleID = @SaleID AND s.FarmerID = @FarmerID";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@SaleID", saleId);
+                    cmd.Parameters.AddWithValue("@FarmerID", currentFarmerId);
                     conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
                     {
-                        cmd.Parameters.AddWithValue("@SaleID", saleId);
-                        using (SqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                StringBuilder sb = new StringBuilder();
-                                decimal totalAmount = Convert.ToDecimal(reader["SalePrice"]) * Convert.ToDecimal(reader["Quantity"]);
+                        StringBuilder sb = new StringBuilder();
+                        decimal totalAmount = Convert.ToDecimal(reader["SalePrice"]) * Convert.ToDecimal(reader["Quantity"]);
 
-                                sb.AppendLine("RICE PRODUCTION SYSTEM");
-                                sb.AppendLine("SALES INVOICE");
-                                sb.AppendLine("=============================================");
-                                sb.AppendLine($"Invoice #: INV-{saleId:D5}");
-                                sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
-                                sb.AppendLine("=============================================");
-                                sb.AppendLine("\nSELLER INFORMATION:");
-                                sb.AppendLine($"Name: {reader["FarmerName"]}");
-                                if (reader["FarmerContactNumber"] != DBNull.Value) sb.AppendLine($"ContactNumber: {reader["FarmerContactNumber"]}");
-                                if (reader["FarmerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["FarmerEmail"]}");
+                        sb.AppendLine("RICE PRODUCTION SYSTEM");
+                        sb.AppendLine("SALES INVOICE");
+                        sb.AppendLine("=============================================");
+                        sb.AppendLine($"Invoice #: INV-{saleId:D5}");
+                        sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
+                        sb.AppendLine("=============================================");
+                        sb.AppendLine("\nSELLER INFORMATION:");
+                        sb.AppendLine($"Name: {reader["FarmerName"]}");
+                        if (reader["FarmerContactNumber"] != DBNull.Value) sb.AppendLine($"Contact: {reader["FarmerContactNumber"]}");
+                        if (reader["FarmerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["FarmerEmail"]}");
 
-                                sb.AppendLine("\nBUYER INFORMATION:");
-                                sb.AppendLine($"Type: {reader["BuyerType"]}");
-                                sb.AppendLine($"Name: {reader["BuyerName"]}");
-                                if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"ContactNumber: {reader["BuyerContactNumber"]}");
-                                if (reader["BuyerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["BuyerEmail"]}");
+                        sb.AppendLine("\nBUYER INFORMATION:");
+                        sb.AppendLine($"Type: {reader["BuyerType"]}");
+                        sb.AppendLine($"Name: {reader["BuyerName"]}");
+                        if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"Contact: {reader["BuyerContactNumber"]}");
+                        if (reader["BuyerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["BuyerEmail"]}");
 
-                                sb.AppendLine("\n=============================================");
-                                sb.AppendLine("TRANSACTION DETAILS:");
-                                sb.AppendLine("=============================================");
-                                sb.AppendLine($"Product: Rice");
-                                sb.AppendLine($"Price per kg: {Convert.ToDecimal(reader["SalePrice"]):C}");
-                                sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
-                                sb.AppendLine($"Total Amount: {totalAmount:C}");
-                                sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
-                                sb.AppendLine("=============================================");
-                                sb.AppendLine("\nThank you for your business!");
-                                sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
+                        sb.AppendLine("\n=============================================");
+                        sb.AppendLine("TRANSACTION DETAILS:");
+                        sb.AppendLine("=============================================");
 
-                                rtbInvoicePreview.Text = sb.ToString();
-                            }
-                        }
+                        string cropType = reader["CropType"] != DBNull.Value ? reader["CropType"].ToString() : "Rice";
+                        sb.AppendLine($"Product: {cropType}");
+                        sb.AppendLine($"Price per kg: {Convert.ToDecimal(reader["SalePrice"]):C}");
+                        sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
+                        sb.AppendLine($"Total Amount: {totalAmount:C}");
+                        sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
+                        sb.AppendLine("=============================================");
+                        sb.AppendLine("\nThank you for your business!");
+                        sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
+                        rtbInvoicePreview.Text = sb.ToString();
                     }
+                    else
+                    {
+                        MessageBox.Show("Invoice data not found or you don't have permission to view this sale.");
+                    }
+                    reader.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error generating invoice: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error generating invoice: {ex.Message}");
             }
         }
 
-        private void BtnSaveInvoice_Click(object sender, EventArgs e)
+        private void dataGridViewSales_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (string.IsNullOrEmpty(rtbInvoicePreview.Text))
+            if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
             {
-                MessageBox.Show("No invoice to save.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
+            }
+        }
+
+
+        private void SellPady_Resize(object sender, EventArgs e)
+        {
+            // Adjust font sizes based on container size if needed
+            float scaleFactor = Math.Min(this.Width / 900f, this.Height / 650f);
+            if (scaleFactor < 0.8f) scaleFactor = 0.8f;
+            if (scaleFactor > 1.5f) scaleFactor = 1.5f;
+
+            // Optionally adjust font sizes based on scale factor
+            AdjustControlFonts(this.Controls, scaleFactor);
+
+            // Force layout recalculation
+            this.PerformLayout();
+        }
+
+        private void AdjustControlFonts(Control.ControlCollection controls, float scaleFactor)
+        {
+            foreach (Control control in controls)
+            {
+                // Skip certain controls if needed
+                if (control is DataGridView) continue;
+
+                // Adjust font size
+                control.Font = new System.Drawing.Font(control.Font.FontFamily,
+                                                       control.Font.Size * scaleFactor,
+                                                       control.Font.Style);
+
+                // Recursively adjust child controls
+                if (control.Controls.Count > 0)
+                {
+                    AdjustControlFonts(control.Controls, scaleFactor);
+                }
+            }
+        }
+
+        private void btnCreateSale_Click(object sender, EventArgs e)
+        {
+            ProcessSale();
+        }
+
+        
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearInputs();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadFarmerSalesData();
+        }
+
+        private void btnGenerateInvoice_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewSales.SelectedRows.Count > 0)
+            {
+                int saleId = Convert.ToInt32(dataGridViewSales.SelectedRows[0].Cells["SaleID"].Value);
+                selectedSaleId = saleId;
+                GenerateInvoicePreview(saleId);
+                pnlInvoice.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Please select a sale to generate an invoice.");
+            }
+        }
+
+        private void btnSaveInvoice_Click(object sender, EventArgs e)
+        {
+            if (selectedSaleId == -1 || string.IsNullOrEmpty(rtbInvoicePreview.Text))
+            {
+                MessageBox.Show("Please generate an invoice first.");
                 return;
             }
 
             SaveFileDialog saveDialog = new SaveFileDialog
             {
-                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
-                DefaultExt = "txt",
-                FileName = $"Invoice_{DateTime.Now:yyyyMMdd}"
+                Filter = "PDF Files (*.pdf)|*.pdf|Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
+                DefaultExt = "pdf",
+                FileName = $"Invoice_{selectedSaleId}_{DateTime.Now:yyyyMMdd}"
             };
 
             if (saveDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
-                    MessageBox.Show("Invoice saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string fileExtension = Path.GetExtension(saveDialog.FileName).ToLower();
+
+                    if (fileExtension == ".pdf")
+                    {
+                        // Create a PDF using iTextSharp
+                        using (FileStream fs = new FileStream(saveDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            Document doc = new Document(PageSize.A4);
+                            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+                            doc.Open();
+                            doc.Add(new Paragraph(rtbInvoicePreview.Text));
+                            doc.Close();
+                            writer.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Save as plain text
+                        File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
+                    }
+
+                    // Update invoice path in DB
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        string query = "UPDATE Invoices SET InvoicePath = @Path WHERE SaleID = @SaleID";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Path", saveDialog.FileName);
+                            cmd.Parameters.AddWithValue("@SaleID", selectedSaleId);
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show("Invoice saved successfully!");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error saving invoice: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error saving invoice: {ex.Message}");
                 }
             }
         }
 
-        private void BtnPrintInvoice_Click(object sender, EventArgs e)
+        private void btnPrintInvoice_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(rtbInvoicePreview.Text))
+            if (selectedSaleId == -1 || string.IsNullOrEmpty(rtbInvoicePreview.Text))
             {
-                MessageBox.Show("No invoice to print.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Please generate an invoice first.");
                 return;
             }
 
             PrintDialog printDialog = new PrintDialog();
             if (printDialog.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Printing functionality would be implemented here.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                // In a real application, implement printing here using a PrintDocument object
+                MessageBox.Show("Printing functionality would be implemented here.");
+                // In a real application, you would implement printing here
+                // This would typically use a PrintDocument object
             }
         }
 
-        private void BtnClear_Click(object sender, EventArgs e)
-        {
-            ResetUI();
-        }
-
-        private void BtnRefresh_Click(object sender, EventArgs e)
-        {
-            LoadFarmerStock();
-            ResetUI();
-        }
-
-        private void ResetUI()
-        {
-            selectedStockID = -1;
-            availableQuantity = 0;
-            lblSelectedStock.Text = "No stock selected";
-
-            cmbBuyerType.SelectedIndex = -1;
-            cmbBuyer.DataSource = null;
-            txtSalePrice.Clear();
-            txtQuantity.Clear();
-            txtTotalAmount.Clear();
-            cmbPaymentStatus.SelectedIndex = 0;
-
-            panelInvoice.Visible = false;
-            rtbInvoicePreview.Clear();
-
-            EnableSaleInputs(false);
-        }
-
-       
+        //private void dataGridViewSales_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
+        //    {
+        //        selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
+        //    }
+        //}
     }
 }

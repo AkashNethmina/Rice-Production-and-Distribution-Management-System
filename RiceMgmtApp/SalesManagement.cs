@@ -97,36 +97,7 @@ namespace RiceMgmtApp
             }
         }
 
-        private void FetchGovernmentPrice()
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string query = "SELECT TOP 1 GovernmentPrice FROM PriceMonitoring ORDER BY CreatedAt DESC";
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        object result = cmd.ExecuteScalar();
-                        if (result != null && result != DBNull.Value)
-                        {
-                            decimal govPrice = Convert.ToDecimal(result);
-                            txtSalePrice.Text = govPrice.ToString();
-                            txtSalePrice.ReadOnly = true; // Lock the price for government sales
-                        }
-                        else
-                        {
-                            MessageBox.Show("No government price found. Please set up price monitoring data.");
-                            txtSalePrice.ReadOnly = false;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error fetching government price: {ex.Message}");
-            }
-        }
+        
 
         private void BtnViewStock_Click(object sender, EventArgs e)
         {
@@ -976,14 +947,6 @@ namespace RiceMgmtApp
                 lblSelectedStock.Visible = false;
             }
         }
-
-        private void panelInput_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        // This method would be part of the Designer-generated code in a real project
-        // It's included here for reference on what controls you'd need to add to your form
 
     }
 }
