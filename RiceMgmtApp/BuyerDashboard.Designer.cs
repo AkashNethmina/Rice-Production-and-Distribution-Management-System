@@ -97,6 +97,7 @@
             this.btn_DamageReporting.Text = "Damage Reporting";
             this.btn_DamageReporting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_DamageReporting.UseVisualStyleBackColor = true;
+            this.btn_DamageReporting.Click += new System.EventHandler(this.btn_DamageReporting_Click);
             // 
             // btn_ReportsAnalytics
             // 
@@ -113,6 +114,7 @@
             this.btn_ReportsAnalytics.Text = "Reports and Analytics";
             this.btn_ReportsAnalytics.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_ReportsAnalytics.UseVisualStyleBackColor = true;
+            this.btn_ReportsAnalytics.Click += new System.EventHandler(this.btn_ReportsAnalytics_Click);
             // 
             // btn_StockManagement
             // 

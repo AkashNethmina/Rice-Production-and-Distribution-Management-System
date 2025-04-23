@@ -118,6 +118,15 @@ namespace RiceMgmtApp
             fl.Show();
             this.Close(); // Close instead of Hide for better resource management
         }
+        private void btn_logout_MouseEnter(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
+        }
+
+        private void btn_logout_MouseLeave(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
+        }
 
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
@@ -468,6 +477,25 @@ namespace RiceMgmtApp
             }
         }
 
-        #endregion
+        private void btn_ReportsAnalytics_Click(object sender, EventArgs e)
+        {
+            DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
+            LoadUserControl(dataAnalytics_Reports);
+        }
+
+        private void btn_Farmers_Click(object sender, EventArgs e)
+        {
+            Fields fields = new Fields(_userId, _roleId); // Pass the required parameters
+            LoadUserControl(fields);
+        }
+
+        // Update the constructor call in GovtOfficialDashboard
+        private void btn_Sales_Click(object sender, EventArgs e)
+        {
+            SalesManagement salesManagement = new SalesManagement(); // Use the parameterless constructor
+            LoadUserControl(salesManagement);
+        }
     }
+    #endregion
 }
+    

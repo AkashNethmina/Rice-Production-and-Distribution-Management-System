@@ -94,8 +94,10 @@ namespace RiceMgmtApp
             LoadControl(damageReporting);
         }
 
-       
-
-        
+        private void btn_ReportsAnalytics_Click(object sender, EventArgs e)
+        {
+            DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
+            LoadControl(dataAnalytics_Reports);
+        }
     }
 }

@@ -189,6 +189,16 @@ namespace RiceMgmtApp
             this.Hide();
         }
 
+        private void btn_logout_MouseEnter(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
+        }
+
+        private void btn_logout_MouseLeave(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
+        }
+
         private void AdminDashboard_Load(object sender, EventArgs e)
         {
             // Configure based on screen resolution
@@ -541,7 +551,12 @@ namespace RiceMgmtApp
             btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
         }
 
-        #endregion
+        private void btn_ReportsAnalytics_Click(object sender, EventArgs e)
+        {
+            // Pass the required parameters _userId and _roleId to the constructor
+            DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
+            LoadUserControl(dataAnalytics_Reports);
+        }
     }
 
     // Loading progress bar for visual feedback
@@ -642,4 +657,7 @@ namespace RiceMgmtApp
             }
         }
     }
+    #endregion
+
 }
+    

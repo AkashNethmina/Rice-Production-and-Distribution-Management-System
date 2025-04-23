@@ -743,12 +743,6 @@ namespace RiceMgmtApp
             }
         }
 
-        //private void dataGridViewSales_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        //{
-        //    if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
-        //    {
-        //        selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
-        //    }
-        //}
+       
     }
 }
