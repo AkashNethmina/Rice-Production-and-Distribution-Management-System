@@ -49,6 +49,15 @@ namespace RiceMgmtApp
             fl.Show();
             this.Close(); // Close instead of Hide for better resource management
         }
+        private void btn_logout_MouseEnter(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
+        }
+
+        private void btn_logout_MouseLeave(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
+        }
 
         private void FarmerDashboard_Load(object sender, EventArgs e)
         {

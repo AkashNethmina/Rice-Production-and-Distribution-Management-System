@@ -109,6 +109,15 @@ namespace RiceMgmtApp
             fl.Show();
             this.Close();
         }
+        private void btn_logout_MouseEnter(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
+        }
+
+        private void btn_logout_MouseLeave(object sender, EventArgs e)
+        {
+            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
+        }
 
         private void btn_Sales_Click(object sender, EventArgs e)
         {
@@ -448,6 +457,8 @@ namespace RiceMgmtApp
             DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
             LoadUserControl(dataAnalytics_Reports);
         }
+
+        
     }
 
     // Make sure to include these classes if they're not already defined elsewhere
