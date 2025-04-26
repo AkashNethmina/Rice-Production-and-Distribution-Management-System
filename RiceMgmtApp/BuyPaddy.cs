@@ -4,7 +4,6 @@ using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using System.Configuration;
 using System.Text;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
@@ -21,11 +20,11 @@ namespace RiceMgmtApp
 
         public BuyPaddy(int buyerID)
         {
-            // Initialize the UI components
             InitializeComponent();
             this.currentBuyerId = buyerID;
             this.Load += BuyPaddy_Load;
         }
+       
 
         private void BuyPaddy_Load(object sender, EventArgs e)
         {
@@ -47,7 +46,7 @@ namespace RiceMgmtApp
             btnRefresh.Click += btnRefresh_Click;
 
             // Add purchase history functionality
-            dataGridViewPurchases.CellClick += dataGridViewPurchases_CellClick;
+            dataGridViewSales.CellClick += dataGridViewSales_CellClick;
 
             // Add invoice-related functionality
             btnGenerateInvoice.Click += btnGenerateInvoice_Click;
@@ -84,7 +83,7 @@ namespace RiceMgmtApp
                     object result = cmd.ExecuteScalar();
                     if (result != null)
                     {
-                        lblBuyerName.Text = result.ToString();
+                        //lblBuyerName.Text = result.ToString();
                     }
                     else
                     {
@@ -167,91 +166,108 @@ namespace RiceMgmtApp
 
         private void StylePurchaseGrid()
         {
-            dataGridViewPurchases.EnableHeadersVisualStyles = false;
-            dataGridViewPurchases.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkBlue;
-            dataGridViewPurchases.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridViewPurchases.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
-            dataGridViewPurchases.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewSales.EnableHeadersVisualStyles = false;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkBlue;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            dataGridViewPurchases.DefaultCellStyle.BackColor = Color.White;
-            dataGridViewPurchases.DefaultCellStyle.ForeColor = Color.Black;
-            dataGridViewPurchases.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
-            dataGridViewPurchases.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewPurchases.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue;
-            dataGridViewPurchases.DefaultCellStyle.SelectionForeColor = Color.Black;
+            dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
+            dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridViewSales.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue;
+            dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
 
-            dataGridViewPurchases.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue;
-            dataGridViewPurchases.RowTemplate.Height = 28;
-            dataGridViewPurchases.GridColor = Color.LightGray;
-            dataGridViewPurchases.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewPurchases.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewSales.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue;
+            dataGridViewSales.RowTemplate.Height = 28;
+            dataGridViewSales.GridColor = Color.LightGray;
+            dataGridViewSales.BorderStyle = BorderStyle.Fixed3D;
+            dataGridViewSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            dataGridViewPurchases.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewPurchases.MultiSelect = false;
-            dataGridViewPurchases.AllowUserToAddRows = false;
-            dataGridViewPurchases.ReadOnly = true;
+            dataGridViewSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewSales.MultiSelect = false;
+            dataGridViewSales.AllowUserToAddRows = false;
+            dataGridViewSales.ReadOnly = true;
         }
 
         private void LoadBuyerPurchasesData()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Join with Users table to display farmer names, limit to current buyer
-                string query = @"SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, s.BuyerType, 
-                           s.CropType, s.SalePrice, s.Quantity, 
-                           (s.SalePrice * s.Quantity) AS TotalAmount, 
-                           s.PaymentStatus, s.SaleDate
-                           FROM Sales s
-                           LEFT JOIN Users f ON s.FarmerID = f.UserID
-                           WHERE s.BuyerID = @BuyerID AND s.BuyerType = 'Private'
-                           ORDER BY s.SaleDate DESC";
+                string query = @"
+            SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, s.BuyerType,
+                   s.CropType, s.SalePrice, s.Quantity,
+                   (s.SalePrice * s.Quantity) AS TotalAmount,
+                   s.PaymentStatus, s.SaleDate
+            FROM Sales s
+            LEFT JOIN Users f ON s.FarmerID = f.UserID
+            WHERE s.BuyerID = @BuyerID AND s.BuyerType = 'Private'
+            ORDER BY s.SaleDate DESC";
 
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                adapter.SelectCommand.Parameters.AddWithValue("@BuyerID", currentBuyerId);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                dataGridViewPurchases.DataSource = dt;
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    dataGridViewSales.DataSource = dt;
+                }
 
-                // Rename and reorder columns for better display
-                if (dataGridViewPurchases.Columns.Contains("SaleID"))
-                    dataGridViewPurchases.Columns["SaleID"].HeaderText = "Purchase ID";
-                if (dataGridViewPurchases.Columns.Contains("FarmerName"))
-                    dataGridViewPurchases.Columns["FarmerName"].HeaderText = "Farmer";
-                if (dataGridViewPurchases.Columns.Contains("BuyerType"))
-                    dataGridViewPurchases.Columns["BuyerType"].HeaderText = "Buyer Type";
-                if (dataGridViewPurchases.Columns.Contains("CropType"))
-                    dataGridViewPurchases.Columns["CropType"].HeaderText = "Rice Type";
-                if (dataGridViewPurchases.Columns.Contains("SalePrice"))
-                    dataGridViewPurchases.Columns["SalePrice"].HeaderText = "Price/kg";
-                if (dataGridViewPurchases.Columns.Contains("Quantity"))
-                    dataGridViewPurchases.Columns["Quantity"].HeaderText = "Quantity (kg)";
-                if (dataGridViewPurchases.Columns.Contains("TotalAmount"))
-                    dataGridViewPurchases.Columns["TotalAmount"].HeaderText = "Total Amount";
-                if (dataGridViewPurchases.Columns.Contains("PaymentStatus"))
-                    dataGridViewPurchases.Columns["PaymentStatus"].HeaderText = "Payment Status";
-                if (dataGridViewPurchases.Columns.Contains("SaleDate"))
-                    dataGridViewPurchases.Columns["SaleDate"].HeaderText = "Purchase Date";
+                // Rename and format columns for display
+                if (dataGridViewSales.Columns["SaleID"] != null)
+                    dataGridViewSales.Columns["SaleID"].HeaderText = "Purchase ID";
 
-                // Hide IDs as they're not needed in the view
-                if (dataGridViewPurchases.Columns.Contains("FarmerID"))
-                    dataGridViewPurchases.Columns["FarmerID"].Visible = false;
+                if (dataGridViewSales.Columns["FarmerName"] != null)
+                    dataGridViewSales.Columns["FarmerName"].HeaderText = "Farmer";
+
+                if (dataGridViewSales.Columns["BuyerType"] != null)
+                    dataGridViewSales.Columns["BuyerType"].HeaderText = "Buyer Type";
+
+                if (dataGridViewSales.Columns["CropType"] != null)
+                    dataGridViewSales.Columns["CropType"].HeaderText = "Rice Type";
+
+                if (dataGridViewSales.Columns["SalePrice"] != null)
+                    dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
+
+                if (dataGridViewSales.Columns["Quantity"] != null)
+                    dataGridViewSales.Columns["Quantity"].HeaderText = "Quantity (kg)";
+
+                if (dataGridViewSales.Columns["TotalAmount"] != null)
+                    dataGridViewSales.Columns["TotalAmount"].HeaderText = "Total Amount";
+
+                if (dataGridViewSales.Columns["PaymentStatus"] != null)
+                    dataGridViewSales.Columns["PaymentStatus"].HeaderText = "Payment Status";
+
+                if (dataGridViewSales.Columns["SaleDate"] != null)
+                    dataGridViewSales.Columns["SaleDate"].HeaderText = "Purchase Date";
+
+                // Hide FarmerID column
+                if (dataGridViewSales.Columns["FarmerID"] != null)
+                    dataGridViewSales.Columns["FarmerID"].Visible = false;
             }
         }
+
 
         private void dataGridViewFarmers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && dataGridViewFarmers.Rows[e.RowIndex].Cells["UserID"].Value != null)
+            if (e.RowIndex >= 0)
             {
-                selectedFarmerId = Convert.ToInt32(dataGridViewFarmers.Rows[e.RowIndex].Cells["UserID"].Value);
-                string farmerName = dataGridViewFarmers.Rows[e.RowIndex].Cells["FullName"].Value.ToString();
-                lblSelectedFarmer.Text = $"Selected Farmer: {farmerName}";
-                lblSelectedFarmer.Visible = true;
+                var row = dataGridViewFarmers.Rows[e.RowIndex];
+                if (row.Cells["UserID"].Value != null && row.Cells["FullName"].Value != null)
+                {
+                    selectedFarmerId = Convert.ToInt32(row.Cells["UserID"].Value);
+                    string farmerName = row.Cells["FullName"].Value.ToString();
+                    lblSelectedFarmer.Text = $"Selected Farmer: {farmerName}";
+                    lblSelectedFarmer.Visible = true;
 
-                // Clear any previous stock selection
-                lblSelectedStock.Visible = false;
-                lblSelectedStock.Tag = null;
+                    // Clear previous stock selection
+                    lblSelectedStock.Visible = false;
+                    lblSelectedStock.Tag = null;
+                }
             }
         }
+
 
         private void ShowFarmerStock(int farmerId)
         {
@@ -387,7 +403,6 @@ namespace RiceMgmtApp
                 txtTotalAmount.Text = "0.00";
             }
         }
-
         private void ProcessPurchase()
         {
             if (!ValidateInputs()) return;
@@ -540,12 +555,11 @@ namespace RiceMgmtApp
             pnlInvoice.Visible = false;
             rtbInvoicePreview.Clear();
         }
-
-        private void dataGridViewPurchases_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridViewSales_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && dataGridViewPurchases.Rows[e.RowIndex].Cells["SaleID"].Value != null)
+            if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
             {
-                selectedSaleId = Convert.ToInt32(dataGridViewPurchases.Rows[e.RowIndex].Cells["SaleID"].Value);
+                selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
             }
         }
 
@@ -616,15 +630,15 @@ namespace RiceMgmtApp
             }
         }
 
-       
-        
-       
+
+
+
         private void btnCreateSale_Click(object sender, EventArgs e)
         {
             ProcessPurchase();
         }
 
-      
+
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
@@ -735,9 +749,9 @@ namespace RiceMgmtApp
 
         private void btnGenerateInvoice_Click(object sender, EventArgs e)
         {
-            if (dataGridViewPurchases.SelectedRows.Count > 0)
+            if (dataGridViewSales.SelectedRows.Count > 0)
             {
-                int saleId = Convert.ToInt32(dataGridViewPurchases.SelectedRows[0].Cells["SaleID"].Value);
+                int saleId = Convert.ToInt32(dataGridViewSales.SelectedRows[0].Cells["SaleID"].Value);
                 selectedSaleId = saleId;
                 GenerateInvoicePreview(saleId);
                 pnlInvoice.Visible = true;
@@ -746,11 +760,6 @@ namespace RiceMgmtApp
             {
                 MessageBox.Show("Please select a purchase to generate an invoice.");
             }
-        }
-
-        private void btnSaveInvoice_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

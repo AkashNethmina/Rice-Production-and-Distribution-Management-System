@@ -74,6 +74,27 @@ CREATE TABLE Sales (
     FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE, 
     FOREIGN KEY (BuyerID) REFERENCES Users(UserID) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
+-- RequestTable with NO ACTION on BuyerID to prevent cascade conflicts
+CREATE TABLE RequestPaddy (
+    RequestPaddyID INT IDENTITY(1,1) PRIMARY KEY,
+    FarmerID INT NOT NULL,
+    BuyerID INT NULL, 
+    StockID INT NOT NULL,
+    BuyerType NVARCHAR(50) CHECK (BuyerType IN ('Private')), 
+    RequestPrice DECIMAL(10,2) NOT NULL,
+    Quantity DECIMAL(10,2) NOT NULL,
+    RequestStatus NVARCHAR(20) 
+        CHECK (RequestStatus IN ('Pending', 'Under Review', 'Approved', 'Rejected')) 
+        DEFAULT 'Pending',
+    RequestDate DATETIME DEFAULT GETDATE(),
+
+    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (BuyerID) REFERENCES Users(UserID) 
+        ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (StockID) REFERENCES Stock(StockID) 
+        ON DELETE NO ACTION ON UPDATE NO ACTION -- changed to avoid multiple cascade paths
+);
+
 -- Stock Table
 CREATE TABLE Stock (
     StockID INT IDENTITY(1,1) PRIMARY KEY,
@@ -201,3 +222,25 @@ END;
 | Reports & Analytics | Full access | Limited access | Limited access | Full access |
 | Damage Reporting | View & Approve | Create reports | No access | Review & Approve |
 | System Settings | Full access | No access | No access | Limited access |
+
+
+
+
+flowchart TD
+    A[Start] --> B[Private Buyer Request Paddy
+    B --> C[Submit Request]
+    C --> D[System notifies Farmer]
+    D --> E[Farmer  reviews report]
+    E --> F{Verification needed?}
+    F -->|Yes| G[Schedule field visit]
+    F -->|No| H[Make assessment decision]
+    G --> I[Conduct field inspection]
+    I --> J[Document findings]
+    J --> H
+    H --> K{Approve compensation?}
+    K -->|Yes| L[Calculate compensation amount]
+    K -->|No| M[Reject claim with reason]
+    L --> N[Process compensation payment]
+    N --> O[Notify farmer]
+    M --> O
+    O --> P[End]

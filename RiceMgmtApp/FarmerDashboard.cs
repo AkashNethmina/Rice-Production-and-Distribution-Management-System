@@ -26,10 +26,10 @@ namespace RiceMgmtApp
             control.BringToFront();
         }
 
-        // Load Dashboard view
+        // Update the instantiation of FarmerHome in btn_Dashboard_Click
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-            FarmerHome farmerHome = new FarmerHome();
+            FarmerHome farmerHome = new FarmerHome(_userId); // Pass _userId as the farmerId
             LoadControl(farmerHome);
         }
 
@@ -97,9 +97,11 @@ namespace RiceMgmtApp
             LoadControl(sm);
         }
 
+        // Update the instantiation of DamageReporting in FarmerDashboard.cs
         private void btn_DamageReporting_Click(object sender, EventArgs e)
         {
             DamageReporting damageReporting = new DamageReporting();
+            damageReporting.SetUserContext(_userId, _roleId); // Set user context after instantiation
             LoadControl(damageReporting);
         }
 
@@ -107,6 +109,12 @@ namespace RiceMgmtApp
         {
             DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
             LoadControl(dataAnalytics_Reports);
+        }
+
+        private void RequestPaddy_Click(object sender, EventArgs e)
+        {
+            RequestPaddy requestPaddy = new RequestPaddy(_userId, _roleId);
+            LoadControl(requestPaddy);
         }
     }
 }

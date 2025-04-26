@@ -137,10 +137,8 @@ namespace RiceMgmtApp
 
         private void btn_StockManagement_Click(object sender, EventArgs e)
         {
-            StockManagement sm = new StockManagement(_userId, _roleId);
-            LoadUserControl(sm);
-            SetActiveButton(btn_StockManagement);
-            UpdateBreadcrumb("Stock Management");
+            RequestPaddy requestPaddy = new RequestPaddy(_userId, _roleId);
+            LoadUserControl(requestPaddy);
         }
 
         private void BuyerDashboard_Load(object sender, EventArgs e)

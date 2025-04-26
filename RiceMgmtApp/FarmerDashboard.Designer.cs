@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FarmerDashboard));
             this.panelsideMenu = new System.Windows.Forms.Panel();
+            this.RequestPaddy = new System.Windows.Forms.Button();
             this.btnPrice_Monitoring = new System.Windows.Forms.Button();
             this.btn_DamageReporting = new System.Windows.Forms.Button();
             this.btn_ReportsAnalytics = new System.Windows.Forms.Button();
@@ -49,6 +50,7 @@
             // 
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
+            this.panelsideMenu.Controls.Add(this.RequestPaddy);
             this.panelsideMenu.Controls.Add(this.btnPrice_Monitoring);
             this.panelsideMenu.Controls.Add(this.btn_DamageReporting);
             this.panelsideMenu.Controls.Add(this.btn_ReportsAnalytics);
@@ -66,6 +68,23 @@
             this.panelsideMenu.Size = new System.Drawing.Size(250, 749);
             this.panelsideMenu.TabIndex = 4;
             this.panelsideMenu.Paint += new System.Windows.Forms.PaintEventHandler(this.panelsideMenu_Paint);
+            // 
+            // RequestPaddy
+            // 
+            this.RequestPaddy.Dock = System.Windows.Forms.DockStyle.Top;
+            this.RequestPaddy.FlatAppearance.BorderSize = 0;
+            this.RequestPaddy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.RequestPaddy.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RequestPaddy.ForeColor = System.Drawing.Color.White;
+            this.RequestPaddy.Location = new System.Drawing.Point(10, 465);
+            this.RequestPaddy.Name = "RequestPaddy";
+            this.RequestPaddy.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.RequestPaddy.Size = new System.Drawing.Size(230, 45);
+            this.RequestPaddy.TabIndex = 16;
+            this.RequestPaddy.Text = "Requests";
+            this.RequestPaddy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.RequestPaddy.UseVisualStyleBackColor = true;
+            this.RequestPaddy.Click += new System.EventHandler(this.RequestPaddy_Click);
             // 
             // btnPrice_Monitoring
             // 
@@ -248,7 +267,8 @@
             // 
             // FarmerDashboard
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            //this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
             this.ClientSize = new System.Drawing.Size(1224, 749);
@@ -281,5 +301,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button btnPrice_Monitoring;
         private System.Windows.Forms.Panel panelContainer;
+        private System.Windows.Forms.Button RequestPaddy;
     }
 }

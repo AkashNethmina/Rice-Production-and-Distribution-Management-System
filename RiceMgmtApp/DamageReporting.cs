@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RiceMgmtApp
@@ -23,6 +17,7 @@ namespace RiceMgmtApp
         {
             InitializeComponent();
             this.Load += DamageReporting_Load;
+            
         }
 
         public void SetUserContext(int userID, int roleID)
@@ -36,45 +31,51 @@ namespace RiceMgmtApp
         {
             InitializeUI();
             LoadDamageReports();
+            ConfigureUIBasedOnRole(); // Show/hide UI based on user role
+            dgvDamageReports.SelectionChanged += dgvDamageReports_SelectionChanged;
         }
 
         private void InitializeUI()
         {
+            // Set up DataGridView
             dgvDamageReports.AutoGenerateColumns = false;
             dgvDamageReports.Columns.Clear();
 
+            // Report ID column
             dgvDamageReports.Columns.Add("ReportID", "Report ID");
             dgvDamageReports.Columns["ReportID"].DataPropertyName = "ReportID";
             dgvDamageReports.Columns["ReportID"].Width = 70;
 
+            // Farmer name column
             dgvDamageReports.Columns.Add("FarmerName", "Farmer");
             dgvDamageReports.Columns["FarmerName"].DataPropertyName = "FarmerName";
             dgvDamageReports.Columns["FarmerName"].Width = 120;
 
+            // Report details column
             dgvDamageReports.Columns.Add("ReportDetails", "Details");
             dgvDamageReports.Columns["ReportDetails"].DataPropertyName = "ReportDetails";
             dgvDamageReports.Columns["ReportDetails"].Width = 200;
 
-            //dgvDamageReports.Columns.Add("Status", "Status");
-            //dgvDamageReports.Columns["Status"].DataPropertyName = "Status";
-            //dgvDamageReports.Columns["Status"].Width = 100;
-            DataGridViewTextBoxColumn statusCol = new DataGridViewTextBoxColumn();
-            statusCol.Name = "Status"; // This is what you use in .Cells["Status"]
-            statusCol.HeaderText = "Status";
-            statusCol.DataPropertyName = "Status";
-            statusCol.Width = 100;
+            // Status column (as TextBoxColumn for future customization)
+            DataGridViewTextBoxColumn statusCol = new DataGridViewTextBoxColumn
+            {
+                Name = "Status",
+                HeaderText = "Status",
+                DataPropertyName = "Status",
+                Width = 100
+            };
             dgvDamageReports.Columns.Add(statusCol);
+            
 
-
+            // CreatedAt column with date formatting
             dgvDamageReports.Columns.Add("CreatedAt", "Reported On");
             dgvDamageReports.Columns["CreatedAt"].DataPropertyName = "CreatedAt";
             dgvDamageReports.Columns["CreatedAt"].Width = 120;
             dgvDamageReports.Columns["CreatedAt"].DefaultCellStyle.Format = "dd-MMM-yyyy";
 
-            //cmbDamageType.Items.Clear();
-            //cmbDamageType.Items.AddRange(new string[] { "Flood", "Drought", "Pests", "Disease", "Storm", "Other" });
-           // cmbDamageType.SelectedIndex = 0;
+            
 
+            // Set up status filter
             cmbStatusFilter.Items.Clear();
             cmbStatusFilter.Items.AddRange(new string[] { "All", "Pending", "Under Review", "Approved", "Rejected" });
             cmbStatusFilter.SelectedIndex = 0;
@@ -82,29 +83,29 @@ namespace RiceMgmtApp
 
         private void ConfigureUIBasedOnRole()
         {
-            if (currentUserRole == 2) // Farmer
+            // Configure UI elements based on user role
+            switch (currentUserRole)
             {
-                pnlReportCreation.Visible = true;
-                pnlReviewActions.Visible = false;
-                btnRefreshReports.Visible = true;
-            }
-            else if (currentUserRole == 3) // Government official
-            {
-                pnlReportCreation.Visible = false;
-                pnlReviewActions.Visible = true;
-                btnRefreshReports.Visible = true;
-            }
-            else if (currentUserRole == 1) // Admin
-            {
-                pnlReportCreation.Visible = true;
-                pnlReviewActions.Visible = true;
-                btnRefreshReports.Visible = true;
-            }
-            else
-            {
-                pnlReportCreation.Visible = false;
-                pnlReviewActions.Visible = false;
-                btnRefreshReports.Visible = true;
+                case 1: // Admin
+                    pnlReportCreation.Visible = false;
+                    pnlReviewActions.Visible = true;
+                    btnRefreshReports.Visible = true;
+                    break;
+                case 2: // Farmer
+                    pnlReportCreation.Visible = true;
+                    pnlReviewActions.Visible = false;
+                    btnRefreshReports.Visible = true;
+                    break;
+                case 3: // Government official
+                    pnlReportCreation.Visible = false;
+                    pnlReviewActions.Visible = true;
+                    btnRefreshReports.Visible = true;
+                    break;
+                default:
+                    pnlReportCreation.Visible = false;
+                    pnlReviewActions.Visible = false;
+                    btnRefreshReports.Visible = false;
+                    break;
             }
         }
 
@@ -122,6 +123,7 @@ namespace RiceMgmtApp
                 if (filterByStatus)
                     query.Append(" AND dr.Status = @Status");
 
+                // Farmers can only see their own reports
                 if (currentUserRole == 2)
                     query.Append(" AND dr.FarmerID = @UserID");
 
@@ -131,10 +133,10 @@ namespace RiceMgmtApp
                 using (SqlCommand cmd = new SqlCommand(query.ToString(), conn))
                 {
                     if (filterByStatus)
-                        cmd.Parameters.Add("@Status", SqlDbType.VarChar).Value = cmbStatusFilter.SelectedItem.ToString();
+                        cmd.Parameters.AddWithValue("@Status", cmbStatusFilter.SelectedItem.ToString());
 
                     if (currentUserRole == 2)
-                        cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = currentUserID;
+                        cmd.Parameters.AddWithValue("@UserID", currentUserID);
 
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     DataTable dt = new DataTable();
@@ -148,6 +150,8 @@ namespace RiceMgmtApp
             }
         }
 
+
+
         private void btnSubmitReport_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtDamageDetails.Text))
@@ -156,7 +160,7 @@ namespace RiceMgmtApp
                 return;
             }
 
-            if (currentUserRole != 2) // Only Farmers (role 2) are allowed to report
+            if (currentUserRole != 2) // Only Farmers 
             {
                 MessageBox.Show("Only farmers are allowed to submit damage reports.", MsgBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -164,6 +168,8 @@ namespace RiceMgmtApp
 
             try
             {
+                
+
                 string details = $" Details: {txtDamageDetails.Text}";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -186,8 +192,8 @@ namespace RiceMgmtApp
 
                     // Insert the damage report
                     string insertQuery = @"
-                INSERT INTO DamageReports (FarmerID, ReportDetails, Status, CreatedAt)
-                VALUES (@FarmerID, @ReportDetails, 'Pending', GETDATE())";
+                        INSERT INTO DamageReports (FarmerID, ReportDetails, Status, CreatedAt)
+                        VALUES (@FarmerID, @ReportDetails, 'Pending', GETDATE())";
 
                     using (SqlCommand insertCmd = new SqlCommand(insertQuery, conn))
                     {
@@ -217,44 +223,37 @@ namespace RiceMgmtApp
             LoadDamageReports();
         }
 
-        //private void dgvDamageReports_SelectionChanged(object sender, EventArgs e)
-        //{
-        //    bool hasSelection = dgvDamageReports.SelectedRows.Count > 0;
-        //    btnApprove.Enabled = hasSelection && (currentUserRole == 1 || currentUserRole == 3);
-        //    btnReject.Enabled = hasSelection && (currentUserRole == 1 || currentUserRole == 3);
-        //    btnReview.Enabled = hasSelection && (currentUserRole == 1 || currentUserRole == 3);
-
-        //    if (hasSelection)
-        //    {
-        //        string status = dgvDamageReports.SelectedRows[0].Cells["Status"].Value.ToString();
-        //        bool canAct = (status == "Pending" || status == "Under Review");
-
-        //        btnApprove.Enabled = canAct && (currentUserRole == 1 || currentUserRole == 3);
-        //        btnReject.Enabled = canAct && (currentUserRole == 1 || currentUserRole == 3);
-        //    }
-        //}
-
         private void dgvDamageReports_SelectionChanged(object sender, EventArgs e)
         {
             bool hasSelection = dgvDamageReports.SelectedRows.Count > 0;
 
+            // Disable all action buttons by default
             btnApprove.Enabled = false;
             btnReject.Enabled = false;
             btnReview.Enabled = false;
 
+            // Only Admin (1) and Gov Official (3) roles can take action
             if (hasSelection && (currentUserRole == 1 || currentUserRole == 3))
             {
                 var selectedRow = dgvDamageReports.SelectedRows[0];
 
-                if (selectedRow.Cells["Status"]?.Value != null)
-                if (selectedRow.Cells["Status"] != null && selectedRow.Cells["Status"].Value != null)
+                // Check if the column "Status" exists in the grid
+                if (dgvDamageReports.Columns.Contains("Status"))
                 {
-                    string status = selectedRow.Cells["Status"].Value.ToString();
-                    bool canAct = (status == "Pending" || status == "Under Review");
+                    var statusCell = selectedRow.Cells["Status"];
+                    if (statusCell != null && statusCell.Value != null)
+                    {
+                        string status = statusCell.Value.ToString();
 
-                    btnApprove.Enabled = canAct;
-                    btnReject.Enabled = canAct;
-                    btnReview.Enabled = (status == "Pending");
+                        // Allow actions only for "Pending" or "Under Review" statuses
+                        bool canAct = (status == "Pending" || status == "Under Review");
+
+                        btnApprove.Enabled = canAct;
+                        btnReject.Enabled = canAct;
+
+                        // Can only review if currently "Pending"
+                        btnReview.Enabled = (status == "Pending");
+                    }
                 }
             }
         }
@@ -279,7 +278,14 @@ namespace RiceMgmtApp
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@ReportID", reportID);
-                        cmd.ExecuteNonQuery();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected == 0)
+                        {
+                            MessageBox.Show("Report could not be approved. It may have been deleted or already processed.",
+                                MsgBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
                     }
                 }
 
@@ -297,8 +303,8 @@ namespace RiceMgmtApp
             if (dgvDamageReports.SelectedRows.Count == 0) return;
             int reportID = Convert.ToInt32(dgvDamageReports.SelectedRows[0].Cells["ReportID"].Value);
 
-            string reason = Microsoft.VisualBasic.Interaction.InputBox("Please provide a reason for rejection:", "Reject Report", "");
-            if (string.IsNullOrWhiteSpace(reason)) return;
+            DialogResult result = MessageBox.Show("Are you sure you want to reject this report?", "Reject Report", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result != DialogResult.Yes) return;
 
             try
             {
@@ -306,15 +312,21 @@ namespace RiceMgmtApp
                 {
                     conn.Open();
                     string query = @"
-                        UPDATE DamageReports 
-                        SET Status = 'Rejected', ResolvedAt = GETDATE(), ReportDetails = ReportDetails + ' | Rejection Reason: ' + @Reason
-                        WHERE ReportID = @ReportID";
+                UPDATE DamageReports 
+                SET Status = 'Rejected', ResolvedAt = GETDATE()
+                WHERE ReportID = @ReportID";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@ReportID", reportID);
-                        cmd.Parameters.AddWithValue("@Reason", reason);
-                        cmd.ExecuteNonQuery();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected == 0)
+                        {
+                            MessageBox.Show("Report could not be rejected. It may have been deleted or already processed.",
+                                MsgBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
                     }
                 }
 
@@ -326,6 +338,7 @@ namespace RiceMgmtApp
                 MessageBox.Show("Error rejecting report: " + ex.Message, MsgBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnReview_Click(object sender, EventArgs e)
         {
@@ -345,7 +358,14 @@ namespace RiceMgmtApp
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@ReportID", reportID);
-                        cmd.ExecuteNonQuery();
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        if (rowsAffected == 0)
+                        {
+                            MessageBox.Show("Report status could not be updated. It may have been deleted or is no longer pending.",
+                                MsgBoxTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
                     }
                 }
 
@@ -358,9 +378,5 @@ namespace RiceMgmtApp
             }
         }
 
-        private void cmbDamageType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Reserved for future logic if needed
-        }
     }
 }

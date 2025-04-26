@@ -308,9 +308,19 @@ namespace RiceMgmtApp
 
         private void dataGridViewusers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            // Make sure the clicked row and column indexes are valid
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+            if (e.RowIndex >= dataGridViewusers.Rows.Count) return;
+            if (e.ColumnIndex >= dataGridViewusers.Columns.Count) return;
 
-            int userId = Convert.ToInt32(dataGridViewusers.Rows[e.RowIndex].Cells["UserID"].Value);
+            // Also check if it's not a new row (which can happen)
+            if (dataGridViewusers.Rows[e.RowIndex].IsNewRow) return;
+
+            // Now safely access
+            var userIdCell = dataGridViewusers.Rows[e.RowIndex].Cells["UserID"];
+            if (userIdCell == null || userIdCell.Value == null) return; // extra safety
+
+            int userId = Convert.ToInt32(userIdCell.Value);
             string columnName = dataGridViewusers.Columns[e.ColumnIndex].Name;
 
             switch (columnName)
@@ -324,6 +334,7 @@ namespace RiceMgmtApp
                     break;
             }
         }
+
 
         private void ConfirmAndDeleteUser(int userId)
         {

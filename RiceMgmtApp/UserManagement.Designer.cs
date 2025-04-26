@@ -1,4 +1,6 @@
-﻿namespace RiceMgmtApp
+﻿using RiceMgmtApp.Properties;
+
+namespace RiceMgmtApp
 {
     partial class UserManagement
     {
@@ -29,7 +31,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.topPanel = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
+            this.controlPanel = new System.Windows.Forms.Panel();
+            this.searchPanel = new System.Windows.Forms.Panel();
+            this.txtSearch = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.exportPanel = new System.Windows.Forms.Panel();
             this.btn_exportExcel = new System.Windows.Forms.Button();
             this.btn_exportPdf = new System.Windows.Forms.Button();
             this.usersBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
@@ -41,7 +49,10 @@
             this.dataGridViewusers = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.panel1.SuspendLayout();
+            this.topPanel.SuspendLayout();
+            this.controlPanel.SuspendLayout();
+            this.searchPanel.SuspendLayout();
+            this.exportPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).BeginInit();
@@ -49,38 +60,110 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewusers)).BeginInit();
             this.SuspendLayout();
             // 
-            // panel1
+            // topPanel
             // 
-            this.panel1.BackColor = System.Drawing.SystemColors.MenuHighlight;
-            this.panel1.Controls.Add(this.btn_exportExcel);
-            this.panel1.Controls.Add(this.btn_exportPdf);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(972, 47);
-            this.panel1.TabIndex = 0;
+            this.topPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(56)))), ((int)(((byte)(142)))), ((int)(((byte)(60)))));
+            this.topPanel.Controls.Add(this.lblTitle);
+            this.topPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.topPanel.Location = new System.Drawing.Point(0, 0);
+            this.topPanel.Name = "topPanel";
+            this.topPanel.Size = new System.Drawing.Size(972, 50);
+            this.topPanel.TabIndex = 0;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.ForeColor = System.Drawing.Color.White;
+            this.lblTitle.Location = new System.Drawing.Point(12, 12);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(175, 25);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "User Management";
+            // 
+            // controlPanel
+            // 
+            this.controlPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(245)))), ((int)(((byte)(233)))));
+            this.controlPanel.Controls.Add(this.searchPanel);
+            this.controlPanel.Controls.Add(this.exportPanel);
+            this.controlPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.controlPanel.Location = new System.Drawing.Point(0, 50);
+            this.controlPanel.Name = "controlPanel";
+            this.controlPanel.Size = new System.Drawing.Size(972, 60);
+            this.controlPanel.TabIndex = 1;
+            // 
+            // searchPanel
+            // 
+            this.searchPanel.Controls.Add(this.txtSearch);
+            this.searchPanel.Controls.Add(this.btnSearch);
+            this.searchPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.searchPanel.Location = new System.Drawing.Point(0, 0);
+            this.searchPanel.Name = "searchPanel";
+            this.searchPanel.Size = new System.Drawing.Size(343, 60);
+            this.searchPanel.TabIndex = 1;
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(12, 17);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(250, 27);
+            this.txtSearch.TabIndex = 0;
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
+            this.btnSearch.FlatAppearance.BorderSize = 0;
+            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearch.ForeColor = System.Drawing.Color.White;
+            this.btnSearch.Location = new System.Drawing.Point(268, 17);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(58, 27);
+            this.btnSearch.TabIndex = 1;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = false;
+            // 
+            // exportPanel
+            // 
+            this.exportPanel.Controls.Add(this.btn_exportExcel);
+            this.exportPanel.Controls.Add(this.btn_exportPdf);
+            this.exportPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.exportPanel.Location = new System.Drawing.Point(772, 0);
+            this.exportPanel.Name = "exportPanel";
+            this.exportPanel.Size = new System.Drawing.Size(200, 60);
+            this.exportPanel.TabIndex = 0;
             // 
             // btn_exportExcel
             // 
-            this.btn_exportExcel.Location = new System.Drawing.Point(804, 14);
+            this.btn_exportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_exportExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
+            this.btn_exportExcel.FlatAppearance.BorderSize = 0;
+            this.btn_exportExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_exportExcel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_exportExcel.ForeColor = System.Drawing.Color.White;
+            this.btn_exportExcel.Location = new System.Drawing.Point(23, 14);
             this.btn_exportExcel.Name = "btn_exportExcel";
-            this.btn_exportExcel.Size = new System.Drawing.Size(75, 23);
-            this.btn_exportExcel.TabIndex = 1;
-            this.btn_exportExcel.Text = "EXCEL";
-            this.btn_exportExcel.UseVisualStyleBackColor = true;
+            this.btn_exportExcel.Size = new System.Drawing.Size(75, 32);
+            this.btn_exportExcel.TabIndex = 0;
+            this.btn_exportExcel.Text = "Excel";
+            this.btn_exportExcel.UseVisualStyleBackColor = false;
             this.btn_exportExcel.Click += new System.EventHandler(this.btn_exportExcel_Click);
             // 
             // btn_exportPdf
             // 
-            this.btn_exportPdf.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_exportPdf.Location = new System.Drawing.Point(885, 14);
+            this.btn_exportPdf.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btn_exportPdf.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(211)))), ((int)(((byte)(47)))), ((int)(((byte)(47)))));
+            this.btn_exportPdf.FlatAppearance.BorderSize = 0;
+            this.btn_exportPdf.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_exportPdf.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_exportPdf.ForeColor = System.Drawing.Color.White;
+            this.btn_exportPdf.Location = new System.Drawing.Point(113, 14);
             this.btn_exportPdf.Name = "btn_exportPdf";
-            this.btn_exportPdf.Size = new System.Drawing.Size(75, 23);
-            this.btn_exportPdf.TabIndex = 0;
+            this.btn_exportPdf.Size = new System.Drawing.Size(75, 32);
+            this.btn_exportPdf.TabIndex = 1;
             this.btn_exportPdf.Text = "PDF";
-            this.btn_exportPdf.UseVisualStyleBackColor = true;
+            this.btn_exportPdf.UseVisualStyleBackColor = false;
             this.btn_exportPdf.Click += new System.EventHandler(this.btn_exportPdf_Click);
             // 
             // usersBindingSource1
@@ -112,13 +195,20 @@
             this.dataGridViewusers.AllowUserToAddRows = false;
             this.dataGridViewusers.AllowUserToDeleteRows = false;
             this.dataGridViewusers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewusers.BackgroundColor = System.Drawing.Color.White;
+            this.dataGridViewusers.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridViewusers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dataGridViewusers.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
             this.dataGridViewusers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewusers.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.dataGridViewusers.Location = new System.Drawing.Point(0, 99);
+            this.dataGridViewusers.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataGridViewusers.Location = new System.Drawing.Point(0, 110);
             this.dataGridViewusers.Name = "dataGridViewusers";
             this.dataGridViewusers.ReadOnly = true;
-            this.dataGridViewusers.Size = new System.Drawing.Size(972, 373);
-            this.dataGridViewusers.TabIndex = 1;
+            this.dataGridViewusers.RowHeadersVisible = false;
+            this.dataGridViewusers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewusers.Size = new System.Drawing.Size(972, 304);
+            this.dataGridViewusers.TabIndex = 2;
+            this.dataGridViewusers.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewusers_CellClick);
             // 
             // contextMenuStrip1
             // 
@@ -132,14 +222,22 @@
             // 
             // UserManagement
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.dataGridViewusers);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.controlPanel);
+            this.Controls.Add(this.topPanel);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserManagement";
-            this.Size = new System.Drawing.Size(972, 472);
+            this.Size = new System.Drawing.Size(972, 517);
             this.Load += new System.EventHandler(this.UserManagement_Load);
-            this.panel1.ResumeLayout(false);
+            this.topPanel.ResumeLayout(false);
+            this.topPanel.PerformLayout();
+            this.controlPanel.ResumeLayout(false);
+            this.searchPanel.ResumeLayout(false);
+            this.searchPanel.PerformLayout();
+            this.exportPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).EndInit();
@@ -151,21 +249,28 @@
 
         #endregion
 
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel topPanel;
         private System.Windows.Forms.BindingSource usersBindingSource;
         private System.Windows.Forms.BindingSource riceProductionDB2DataSetBindingSource;
         private RiceProductionDB2DataSet riceProductionDB2DataSet;
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter;
-       // private System.Windows.Forms.DataGridViewTextBoxColumn roleIDDataGridViewTextBoxColumn;
+        // private System.Windows.Forms.DataGridViewTextBoxColumn roleIDDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource usersBindingSource1;
         private Microsoft.Data.SqlClient.SqlDataAdapter sqlDataAdapter1;
         private System.Windows.Forms.DataGridView dataGridViewusers;
-     //   private System.Windows.Forms.TextBox searchBox;
+        //   private System.Windows.Forms.TextBox searchBox;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
-       // private System.Windows.Forms.Button exportPdfBtn;
-       // private System.Windows.Forms.Button exportExcelBtn;
+        // private System.Windows.Forms.Button exportPdfBtn;
+        // private System.Windows.Forms.Button exportExcelBtn;
         private System.Windows.Forms.Button btn_exportPdf;
         private System.Windows.Forms.Button btn_exportExcel;
+        private System.Windows.Forms.Panel controlPanel;
+        private System.Windows.Forms.Panel searchPanel;
+        private System.Windows.Forms.TextBox txtSearch;
+        private System.Windows.Forms.Button btnSearch;
+        private System.Windows.Forms.Panel exportPanel;
+        private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Button btnAddUser;
     }
 }

@@ -1,697 +1,765 @@
-    private void InitializeComponent()
+using System;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using System.Text;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+
+namespace RiceMgmtApp
 {
-    System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-    System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-    this.panel1 = new System.Windows.Forms.Panel();
-    this.lblTitle = new System.Windows.Forms.Label();
-    this.lblBuyerName = new System.Windows.Forms.Label();
-    this.tabControl1 = new System.Windows.Forms.TabControl();
-    this.tabPurchase = new System.Windows.Forms.TabPage();
-    this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-    this.panel2 = new System.Windows.Forms.Panel();
-    this.lblSelectedStock = new System.Windows.Forms.Label();
-    this.lblSelectedFarmer = new System.Windows.Forms.Label();
-    this.btnViewStock = new System.Windows.Forms.Button();
-    this.dataGridViewFarmers = new System.Windows.Forms.DataGridView();
-    this.panel3 = new System.Windows.Forms.Panel();
-    this.pnlInvoice = new System.Windows.Forms.Panel();
-    this.rtbInvoicePreview = new System.Windows.Forms.RichTextBox();
-    this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-    this.btnGenerateInvoice = new System.Windows.Forms.Button();
-    this.btnSaveInvoice = new System.Windows.Forms.Button();
-    this.btnPrintInvoice = new System.Windows.Forms.Button();
-    this.lblInvoiceTitle = new System.Windows.Forms.Label();
-    this.panel4 = new System.Windows.Forms.Panel();
-    this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-    this.lblPaymentStatus = new System.Windows.Forms.Label();
-    this.lblQuantity = new System.Windows.Forms.Label();
-    this.lblPurchasePrice = new System.Windows.Forms.Label();
-    this.lblTotalAmount = new System.Windows.Forms.Label();
-    this.cmbPaymentStatus = new System.Windows.Forms.ComboBox();
-    this.txtQuantity = new System.Windows.Forms.TextBox();
-    this.txtPurchasePrice = new System.Windows.Forms.TextBox();
-    this.txtTotalAmount = new System.Windows.Forms.TextBox();
-    this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
-    this.btnRefresh = new System.Windows.Forms.Button();
-    this.btnClear = new System.Windows.Forms.Button();
-    this.btnCreatePurchase = new System.Windows.Forms.Button();
-    this.lblPurchaseDetails = new System.Windows.Forms.Label();
-    this.tabHistory = new System.Windows.Forms.TabPage();
-    this.panel5 = new System.Windows.Forms.Panel();
-    this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-    this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
-    this.button1 = new System.Windows.Forms.Button();
-    this.button2 = new System.Windows.Forms.Button();
-    this.button3 = new System.Windows.Forms.Button();
-    this.label1 = new System.Windows.Forms.Label();
-    this.dataGridViewPurchases = new System.Windows.Forms.DataGridView();
-    this.panel1.SuspendLayout();
-    this.tabControl1.SuspendLayout();
-    this.tabPurchase.SuspendLayout();
-    ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-    this.splitContainer1.Panel1.SuspendLayout();
-    this.splitContainer1.Panel2.SuspendLayout();
-    this.splitContainer1.SuspendLayout();
-    this.panel2.SuspendLayout();
-    ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFarmers)).BeginInit();
-    this.panel3.SuspendLayout();
-    this.pnlInvoice.SuspendLayout();
-    this.flowLayoutPanel1.SuspendLayout();
-    this.panel4.SuspendLayout();
-    this.tableLayoutPanel1.SuspendLayout();
-    this.flowLayoutPanel2.SuspendLayout();
-    this.tabHistory.SuspendLayout();
-    this.panel5.SuspendLayout();
-    this.flowLayoutPanel3.SuspendLayout();
-    ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPurchases)).BeginInit();
-    this.SuspendLayout();
-    // 
-    // panel1
-    // 
-    this.panel1.BackColor = System.Drawing.Color.SteelBlue;
-    this.panel1.Controls.Add(this.lblTitle);
-    this.panel1.Controls.Add(this.lblBuyerName);
-    this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-    this.panel1.Location = new System.Drawing.Point(0, 0);
-    this.panel1.Name = "panel1";
-    this.panel1.Size = new System.Drawing.Size(1100, 52);
-    this.panel1.TabIndex = 0;
-    // 
-    // lblTitle
-    // 
-    this.lblTitle.AutoSize = true;
-    this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-    this.lblTitle.ForeColor = System.Drawing.Color.White;
-    this.lblTitle.Location = new System.Drawing.Point(12, 10);
-    this.lblTitle.Name = "lblTitle";
-    this.lblTitle.Size = new System.Drawing.Size(178, 30);
-    this.lblTitle.TabIndex = 0;
-    this.lblTitle.Text = "Purchase Paddy";
-    // 
-    // lblBuyerName
-    // 
-    this.lblBuyerName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-    this.lblBuyerName.Font = new System.Drawing.Font("Segoe UI", 12F);
-    this.lblBuyerName.ForeColor = System.Drawing.Color.White;
-    this.lblBuyerName.Location = new System.Drawing.Point(843, 16);
-    this.lblBuyerName.Name = "lblBuyerName";
-    this.lblBuyerName.Size = new System.Drawing.Size(243, 20);
-    this.lblBuyerName.TabIndex = 1;
-    this.lblBuyerName.Text = "Buyer Name";
-    this.lblBuyerName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-    // 
-    // tabControl1
-    // 
-    this.tabControl1.Controls.Add(this.tabPurchase);
-    this.tabControl1.Controls.Add(this.tabHistory);
-    this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.tabControl1.Font = new System.Drawing.Font("Segoe UI", 10F);
-    this.tabControl1.Location = new System.Drawing.Point(0, 52);
-    this.tabControl1.Name = "tabControl1";
-    this.tabControl1.SelectedIndex = 0;
-    this.tabControl1.Size = new System.Drawing.Size(1100, 790);
-    this.tabControl1.TabIndex = 1;
-    // 
-    // tabPurchase
-    // 
-    this.tabPurchase.Controls.Add(this.splitContainer1);
-    this.tabPurchase.Location = new System.Drawing.Point(4, 26);
-    this.tabPurchase.Name = "tabPurchase";
-    this.tabPurchase.Padding = new System.Windows.Forms.Padding(3);
-    this.tabPurchase.Size = new System.Drawing.Size(1092, 760);
-    this.tabPurchase.TabIndex = 0;
-    this.tabPurchase.Text = "Purchase Paddy";
-    this.tabPurchase.UseVisualStyleBackColor = true;
-    // 
-    // splitContainer1
-    // 
-    this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-    this.splitContainer1.Location = new System.Drawing.Point(3, 3);
-    this.splitContainer1.Name = "splitContainer1";
-    // 
-    // splitContainer1.Panel1
-    // 
-    this.splitContainer1.Panel1.Controls.Add(this.panel2);
-    this.splitContainer1.Panel1MinSize = 300;
-    // 
-    // splitContainer1.Panel2
-    // 
-    this.splitContainer1.Panel2.Controls.Add(this.panel3);
-    this.splitContainer1.Size = new System.Drawing.Size(1086, 754);
-    this.splitContainer1.SplitterDistance = 360;
-    this.splitContainer1.TabIndex = 0;
-    // 
-    // panel2
-    // 
-    this.panel2.Controls.Add(this.lblSelectedStock);
-    this.panel2.Controls.Add(this.lblSelectedFarmer);
-    this.panel2.Controls.Add(this.btnViewStock);
-    this.panel2.Controls.Add(this.dataGridViewFarmers);
-    this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.panel2.Location = new System.Drawing.Point(0, 0);
-    this.panel2.Name = "panel2";
-    this.panel2.Padding = new System.Windows.Forms.Padding(5);
-    this.panel2.Size = new System.Drawing.Size(360, 754);
-    this.panel2.TabIndex = 0;
-    // 
-    // lblSelectedStock
-    // 
-    this.lblSelectedStock.AutoSize = true;
-    this.lblSelectedStock.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-    this.lblSelectedStock.ForeColor = System.Drawing.Color.Green;
-    this.lblSelectedStock.Location = new System.Drawing.Point(9, 336);
-    this.lblSelectedStock.Name = "lblSelectedStock";
-    this.lblSelectedStock.Size = new System.Drawing.Size(83, 15);
-    this.lblSelectedStock.TabIndex = 3;
-    this.lblSelectedStock.Text = "Selected Stock:";
-    this.lblSelectedStock.Visible = false;
-    // 
-    // lblSelectedFarmer
-    // 
-    this.lblSelectedFarmer.AutoSize = true;
-    this.lblSelectedFarmer.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-    this.lblSelectedFarmer.ForeColor = System.Drawing.Color.Green;
-    this.lblSelectedFarmer.Location = new System.Drawing.Point(9, 319);
-    this.lblSelectedFarmer.Name = "lblSelectedFarmer";
-    this.lblSelectedFarmer.Size = new System.Drawing.Size(93, 15);
-    this.lblSelectedFarmer.TabIndex = 2;
-    this.lblSelectedFarmer.Text = "Selected Farmer:";
-    this.lblSelectedFarmer.Visible = false;
-    // 
-    // btnViewStock
-    // 
-    this.btnViewStock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-    this.btnViewStock.BackColor = System.Drawing.Color.DarkBlue;
-    this.btnViewStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnViewStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-    this.btnViewStock.ForeColor = System.Drawing.Color.White;
-    this.btnViewStock.Location = new System.Drawing.Point(231, 319);
-    this.btnViewStock.Name = "btnViewStock";
-    this.btnViewStock.Size = new System.Drawing.Size(111, 30);
-    this.btnViewStock.TabIndex = 1;
-    this.btnViewStock.Text = "View Stock";
-    this.btnViewStock.UseVisualStyleBackColor = false;
-    this.btnViewStock.Click += new System.EventHandler(this.btnViewStock_Click);
-    // 
-    // dataGridViewFarmers
-    // 
-    this.dataGridViewFarmers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-    | System.Windows.Forms.AnchorStyles.Right)));
-    this.dataGridViewFarmers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-    this.dataGridViewFarmers.BackgroundColor = System.Drawing.Color.White;
-    dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-    dataGridViewCellStyle1.BackColor = System.Drawing.Color.DarkBlue;
-    dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
-    dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-    dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-    dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-    dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-    this.dataGridViewFarmers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-    this.dataGridViewFarmers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-    this.dataGridViewFarmers.Location = new System.Drawing.Point(8, 8);
-    this.dataGridViewFarmers.Name = "dataGridViewFarmers";
-    this.dataGridViewFarmers.RowTemplate.Height = 25;
-    this.dataGridViewFarmers.Size = new System.Drawing.Size(344, 305);
-    this.dataGridViewFarmers.TabIndex = 0;
-    // 
-    // panel3
-    // 
-    this.panel3.Controls.Add(this.pnlInvoice);
-    this.panel3.Controls.Add(this.panel4);
-    this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.panel3.Location = new System.Drawing.Point(0, 0);
-    this.panel3.Name = "panel3";
-    this.panel3.Size = new System.Drawing.Size(722, 754);
-    this.panel3.TabIndex = 1;
-    // 
-    // pnlInvoice
-    // 
-    this.pnlInvoice.Controls.Add(this.rtbInvoicePreview);
-    this.pnlInvoice.Controls.Add(this.flowLayoutPanel1);
-    this.pnlInvoice.Controls.Add(this.lblInvoiceTitle);
-    this.pnlInvoice.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.pnlInvoice.Location = new System.Drawing.Point(0, 171);
-    this.pnlInvoice.Name = "pnlInvoice";
-    this.pnlInvoice.Padding = new System.Windows.Forms.Padding(10);
-    this.pnlInvoice.Size = new System.Drawing.Size(722, 583);
-    this.pnlInvoice.TabIndex = 1;
-    this.pnlInvoice.Visible = false;
-    // 
-    // rtbInvoicePreview
-    // 
-    this.rtbInvoicePreview.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.rtbInvoicePreview.Font = new System.Drawing.Font("Consolas", 9F);
-    this.rtbInvoicePreview.Location = new System.Drawing.Point(10, 29);
-    this.rtbInvoicePreview.Name = "rtbInvoicePreview";
-    this.rtbInvoicePreview.ReadOnly = true;
-    this.rtbInvoicePreview.Size = new System.Drawing.Size(702, 502);
-    this.rtbInvoicePreview.TabIndex = 4;
-    this.rtbInvoicePreview.Text = "";
-    // 
-    // flowLayoutPanel1
-    // 
-    this.flowLayoutPanel1.AutoSize = true;
-    this.flowLayoutPanel1.Controls.Add(this.btnGenerateInvoice);
-    this.flowLayoutPanel1.Controls.Add(this.btnSaveInvoice);
-    this.flowLayoutPanel1.Controls.Add(this.btnPrintInvoice);
-    this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-    this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-    this.flowLayoutPanel1.Location = new System.Drawing.Point(10, 531);
-    this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-    this.flowLayoutPanel1.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-    this.flowLayoutPanel1.Size = new System.Drawing.Size(702, 42);
-    this.flowLayoutPanel1.TabIndex = 5;
-    // 
-    // btnGenerateInvoice
-    // 
-    this.btnGenerateInvoice.BackColor = System.Drawing.Color.DarkBlue;
-    this.btnGenerateInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnGenerateInvoice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.btnGenerateInvoice.ForeColor = System.Drawing.Color.White;
-    this.btnGenerateInvoice.Location = new System.Drawing.Point(584, 8);
-    this.btnGenerateInvoice.Name = "btnGenerateInvoice";
-    this.btnGenerateInvoice.Size = new System.Drawing.Size(115, 26);
-    this.btnGenerateInvoice.TabIndex = 1;
-    this.btnGenerateInvoice.Text = "Generate Invoice";
-    this.btnGenerateInvoice.UseVisualStyleBackColor = false;
-    // 
-    // btnSaveInvoice
-    // 
-    this.btnSaveInvoice.BackColor = System.Drawing.Color.DarkBlue;
-    this.btnSaveInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnSaveInvoice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.btnSaveInvoice.ForeColor = System.Drawing.Color.White;
-    this.btnSaveInvoice.Location = new System.Drawing.Point(507, 8);
-    this.btnSaveInvoice.Name = "btnSaveInvoice";
-    this.btnSaveInvoice.Size = new System.Drawing.Size(71, 26);
-    this.btnSaveInvoice.TabIndex = 2;
-    this.btnSaveInvoice.Text = "Save";
-    this.btnSaveInvoice.UseVisualStyleBackColor = false;
-    // 
-    // btnPrintInvoice
-    // 
-    this.btnPrintInvoice.BackColor = System.Drawing.Color.DarkBlue;
-    this.btnPrintInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnPrintInvoice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.btnPrintInvoice.ForeColor = System.Drawing.Color.White;
-    this.btnPrintInvoice.Location = new System.Drawing.Point(430, 8);
-    this.btnPrintInvoice.Name = "btnPrintInvoice";
-    this.btnPrintInvoice.Size = new System.Drawing.Size(71, 26);
-    this.btnPrintInvoice.TabIndex = 3;
-    this.btnPrintInvoice.Text = "Print";
-    this.btnPrintInvoice.UseVisualStyleBackColor = false;
-    // 
-    // lblInvoiceTitle
-    // 
-    this.lblInvoiceTitle.AutoSize = true;
-    this.lblInvoiceTitle.Dock = System.Windows.Forms.DockStyle.Top;
-    this.lblInvoiceTitle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-    this.lblInvoiceTitle.Location = new System.Drawing.Point(10, 10);
-    this.lblInvoiceTitle.Name = "lblInvoiceTitle";
-    this.lblInvoiceTitle.Size = new System.Drawing.Size(121, 19);
-    this.lblInvoiceTitle.TabIndex = 0;
-    this.lblInvoiceTitle.Text = "Purchase Invoice";
-    // 
-    // panel4
-    // 
-    this.panel4.Controls.Add(this.tableLayoutPanel1);
-    this.panel4.Controls.Add(this.flowLayoutPanel2);
-    this.panel4.Controls.Add(this.lblPurchaseDetails);
-    this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-    this.panel4.Location = new System.Drawing.Point(0, 0);
-    this.panel4.Name = "panel4";
-    this.panel4.Padding = new System.Windows.Forms.Padding(10);
-    this.panel4.Size = new System.Drawing.Size(722, 171);
-    this.panel4.TabIndex = 0;
-    // 
-    // tableLayoutPanel1
-    // 
-    this.tableLayoutPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-    | System.Windows.Forms.AnchorStyles.Right)));
-    this.tableLayoutPanel1.ColumnCount = 2;
-    this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-    this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 70F));
-    this.tableLayoutPanel1.Controls.Add(this.lblPaymentStatus, 0, 0);
-    this.tableLayoutPanel1.Controls.Add(this.lblQuantity, 0, 1);
-    this.tableLayoutPanel1.Controls.Add(this.lblPurchasePrice, 0, 2);
-    this.tableLayoutPanel1.Controls.Add(this.lblTotalAmount, 0, 3);
-    this.tableLayoutPanel1.Controls.Add(this.cmbPaymentStatus, 1, 0);
-    this.tableLayoutPanel1.Controls.Add(this.txtQuantity, 1, 1);
-    this.tableLayoutPanel1.Controls.Add(this.txtPurchasePrice, 1, 2);
-    this.tableLayoutPanel1.Controls.Add(this.txtTotalAmount, 1, 3);
-    this.tableLayoutPanel1.Location = new System.Drawing.Point(13, 32);
-    this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-    this.tableLayoutPanel1.RowCount = 4;
-    this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-    this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-    this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-    this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-    this.tableLayoutPanel1.Size = new System.Drawing.Size(696, 100);
-    this.tableLayoutPanel1.TabIndex = 12;
-    // 
-    // lblPaymentStatus
-    // 
-    this.lblPaymentStatus.Anchor = System.Windows.Forms.AnchorStyles.Left;
-    this.lblPaymentStatus.AutoSize = true;
-    this.lblPaymentStatus.Location = new System.Drawing.Point(3, 3);
-    this.lblPaymentStatus.Name = "lblPaymentStatus";
-    this.lblPaymentStatus.Size = new System.Drawing.Size(108, 19);
-    this.lblPaymentStatus.TabIndex = 1;
-    this.lblPaymentStatus.Text = "Payment Status:";
-    // 
-    // lblQuantity
-    // 
-    this.lblQuantity.Anchor = System.Windows.Forms.AnchorStyles.Left;
-    this.lblQuantity.AutoSize = true;
-    this.lblQuantity.Location = new System.Drawing.Point(3, 28);
-    this.lblQuantity.Name = "lblQuantity";
-    this.lblQuantity.Size = new System.Drawing.Size(93, 19);
-    this.lblQuantity.TabIndex = 3;
-    this.lblQuantity.Text = "Quantity (kg):";
-    // 
-    // lblPurchasePrice
-    // 
-    this.lblPurchasePrice.Anchor = System.Windows.Forms.AnchorStyles.Left;
-    this.lblPurchasePrice.AutoSize = true;
-    this.lblPurchasePrice.Location = new System.Drawing.Point(3, 53);
-    this.lblPurchasePrice.Name = "lblPurchasePrice";
-    this.lblPurchasePrice.Size = new System.Drawing.Size(120, 19);
-    this.lblPurchasePrice.TabIndex = 5;
-    this.lblPurchasePrice.Text = "Purchase Price/kg:";
-    // 
-    // lblTotalAmount
-    // 
-    this.lblTotalAmount.Anchor = System.Windows.Forms.AnchorStyles.Left;
-    this.lblTotalAmount.AutoSize = true;
-    this.lblTotalAmount.Location = new System.Drawing.Point(3, 78);
-    this.lblTotalAmount.Name = "lblTotalAmount";
-    this.lblTotalAmount.Size = new System.Drawing.Size(95, 19);
-    this.lblTotalAmount.TabIndex = 7;
-    this.lblTotalAmount.Text = "Total Amount:";
-    // 
-    // cmbPaymentStatus
-    // 
-    this.cmbPaymentStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-    this.cmbPaymentStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-    this.cmbPaymentStatus.FormattingEnabled = true;
-    this.cmbPaymentStatus.Items.AddRange(new object[] {
-    "Pending",
-    "Completed"});
-    this.cmbPaymentStatus.Location = new System.Drawing.Point(211, 3);
-    this.cmbPaymentStatus.Name = "cmbPaymentStatus";
-    this.cmbPaymentStatus.Size = new System.Drawing.Size(482, 25);
-    this.cmbPaymentStatus.TabIndex = 2;
-    // 
-    // txtQuantity
-    // 
-    this.txtQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-    this.txtQuantity.Location = new System.Drawing.Point(211, 28);
-    this.txtQuantity.Name = "txtQuantity";
-    this.txtQuantity.Size = new System.Drawing.Size(482, 25);
-    this.txtQuantity.TabIndex = 4;
-    // 
-    // txtPurchasePrice
-    // 
-    this.txtPurchasePrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-    this.txtPurchasePrice.Location = new System.Drawing.Point(211, 53);
-    this.txtPurchasePrice.Name = "txtPurchasePrice";
-    this.txtPurchasePrice.Size = new System.Drawing.Size(482, 25);
-    this.txtPurchasePrice.TabIndex = 6;
-    // 
-    // txtTotalAmount
-    // 
-    this.txtTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-    this.txtTotalAmount.Location = new System.Drawing.Point(211, 78);
-    this.txtTotalAmount.Name = "txtTotalAmount";
-    this.txtTotalAmount.ReadOnly = true;
-    this.txtTotalAmount.Size = new System.Drawing.Size(482, 25);
-    this.txtTotalAmount.TabIndex = 8;
-    // 
-    // flowLayoutPanel2
-    // 
-    this.flowLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-    this.flowLayoutPanel2.AutoSize = true;
-    this.flowLayoutPanel2.Controls.Add(this.btnRefresh);
-    this.flowLayoutPanel2.Controls.Add(this.btnClear);
-    this.flowLayoutPanel2.Controls.Add(this.btnCreatePurchase);
-    this.flowLayoutPanel2.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-    this.flowLayoutPanel2.Location = new System.Drawing.Point(428, 135);
-    this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-    this.flowLayoutPanel2.Size = new System.Drawing.Size(281, 33);
-    this.flowLayoutPanel2.TabIndex = 13;
-    // 
-    // btnRefresh
-    // 
-    this.btnRefresh.BackColor = System.Drawing.Color.SteelBlue;
-    this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.btnRefresh.ForeColor = System.Drawing.Color.White;
-    this.btnRefresh.Location = new System.Drawing.Point(207, 3);
-    this.btnRefresh.Name = "btnRefresh";
-    this.btnRefresh.Size = new System.Drawing.Size(71, 26);
-    this.btnRefresh.TabIndex = 11;
-    this.btnRefresh.Text = "Refresh";
-    this.btnRefresh.UseVisualStyleBackColor = false;
-    this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-    // 
-    // btnClear
-    // 
-    this.btnClear.BackColor = System.Drawing.Color.SteelBlue;
-    this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnClear.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.btnClear.ForeColor = System.Drawing.Color.White;
-    this.btnClear.Location = new System.Drawing.Point(130, 3);
-    this.btnClear.Name = "btnClear";
-    this.btnClear.Size = new System.Drawing.Size(71, 26);
-    this.btnClear.TabIndex = 10;
-    this.btnClear.Text = "Clear";
-    this.btnClear.UseVisualStyleBackColor = false;
-    this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-    // 
-    // btnCreatePurchase
-    // 
-    this.btnCreatePurchase.BackColor = System.Drawing.Color.Green;
-    this.btnCreatePurchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.btnCreatePurchase.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.btnCreatePurchase.ForeColor = System.Drawing.Color.White;
-    this.btnCreatePurchase.Location = new System.Drawing.Point(3, 3);
-    this.btnCreatePurchase.Name = "btnCreatePurchase";
-    this.btnCreatePurchase.Size = new System.Drawing.Size(121, 26);
-    this.btnCreatePurchase.TabIndex = 9;
-    this.btnCreatePurchase.Text = "Create Purchase";
-    this.btnCreatePurchase.UseVisualStyleBackColor = false;
-    this.btnCreatePurchase.Click += new System.EventHandler(this.btnCreatePurchase_Click);
-    // 
-    // lblPurchaseDetails
-    // 
-    this.lblPurchaseDetails.AutoSize = true;
-    this.lblPurchaseDetails.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-    this.lblPurchaseDetails.Location = new System.Drawing.Point(13, 10);
-    this.lblPurchaseDetails.Name = "lblPurchaseDetails";
-    this.lblPurchaseDetails.Size = new System.Drawing.Size(118, 19);
-    this.lblPurchaseDetails.TabIndex = 0;
-    this.lblPurchaseDetails.Text = "Purchase Details";
-    // 
-    // tabHistory
-    // 
-    this.tabHistory.Controls.Add(this.panel5);
-    this.tabHistory.Controls.Add(this.dataGridViewPurchases);
-    this.tabHistory.Location = new System.Drawing.Point(4, 26);
-    this.tabHistory.Name = "tabHistory";
-    this.tabHistory.Padding = new System.Windows.Forms.Padding(3);
-    this.tabHistory.Size = new System.Drawing.Size(1092, 760);
-    this.tabHistory.TabIndex = 1;
-    this.tabHistory.Text = "Purchase History";
-    this.tabHistory.UseVisualStyleBackColor = true;
-    // 
-    // panel5
-    // 
-    this.panel5.Controls.Add(this.richTextBox1);
-    this.panel5.Controls.Add(this.flowLayoutPanel3);
-    this.panel5.Controls.Add(this.label1);
-    this.panel5.Location = new System.Drawing.Point(3, 399);
-    this.panel5.Name = "panel5";
-    this.panel5.Padding = new System.Windows.Forms.Padding(10);
-    this.panel5.Size = new System.Drawing.Size(1086, 358);
-    this.panel5.TabIndex = 3;
-    this.panel5.Visible = false;
-    // 
-    // richTextBox1
-    // 
-    this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-    this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9F);
-    this.richTextBox1.Location = new System.Drawing.Point(10, 29);
-    this.richTextBox1.Name = "richTextBox1";
-    this.richTextBox1.ReadOnly = true;
-    this.richTextBox1.Size = new System.Drawing.Size(1066, 277);
-    this.richTextBox1.TabIndex = 4;
-    this.richTextBox1.Text = "";
-    // 
-    // flowLayoutPanel3
-    // 
-    this.flowLayoutPanel3.AutoSize = true;
-    this.flowLayoutPanel3.Controls.Add(this.button1);
-    this.flowLayoutPanel3.Controls.Add(this.button2);
-    this.flowLayoutPanel3.Controls.Add(this.button3);
-    this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-    this.flowLayoutPanel3.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-    this.flowLayoutPanel3.Location = new System.Drawing.Point(10, 306);
-    this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-    this.flowLayoutPanel3.Padding = new System.Windows.Forms.Padding(0, 5, 0, 5);
-    this.flowLayoutPanel3.Size = new System.Drawing.Size(1066, 42);
-    this.flowLayoutPanel3.TabIndex = 5;
-    // 
-    // button1
-    // 
-    this.button1.BackColor = System.Drawing.Color.DarkBlue;
-    this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.button1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.button1.ForeColor = System.Drawing.Color.White;
-    this.button1.Location = new System.Drawing.Point(948, 8);
-    this.button1.Name = "button1";
-    this.button1.Size = new System.Drawing.Size(115, 26);
-    this.button1.TabIndex = 1;
-    this.button1.Text = "Generate Invoice";
-    this.button1.UseVisualStyleBackColor = false;
-    // 
-    // button2
-    // 
-    this.button2.BackColor = System.Drawing.Color.DarkBlue;
-    this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.button2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.button2.ForeColor = System.Drawing.Color.White;
-    this.button2.Location = new System.Drawing.Point(871, 8);
-    this.button2.Name = "button2";
-    this.button2.Size = new System.Drawing.Size(71, 26);
-    this.button2.TabIndex = 2;
-    this.button2.Text = "Save";
-    this.button2.UseVisualStyleBackColor = false;
-    // 
-    // button3
-    // 
-    this.button3.BackColor = System.Drawing.Color.DarkBlue;
-    this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-    this.button3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-    this.button3.ForeColor = System.Drawing.Color.White;
-    this.button3.Location = new System.Drawing.Point(794, 8);
-    this.button3.Name = "button3";
-    this.button3.Size = new System.Drawing.Size(71, 26);
-    this.button3.TabIndex = 3;
-    this.button3.Text = "Print";
-    this.button3.UseVisualStyleBackColor = false;
-    // 
-    // label1
-    // 
-    this.label1.AutoSize = true;
-    this.label1.Dock = System.Windows.Forms.DockStyle.Top;
-    this.label1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-    this.label1.Location = new System.Drawing.Point(10, 10);
-    this.label1.Name = "label1";
-    this.label1.Size = new System.Drawing.Size(121, 19);
-    this.label1.TabIndex = 0;
-    this.label1.Text = "Purchase Invoice";
-    // 
-    // dataGridViewPurchases
-    // 
-    this.dataGridViewPurchases.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-    this.dataGridViewPurchases.BackgroundColor = System.Drawing.Color.White;
-    dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-    dataGridViewCellStyle2.BackColor = System.Drawing.Color.DarkBlue;
-    dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
-    dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-    dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-    dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-    dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-    this.dataGridViewPurchases.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-    this.dataGridViewPurchases.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-    this.dataGridViewPurchases.Location = new System.Drawing.Point(3, 3);
-    this.dataGridViewPurchases.Name = "dataGridViewPurchases";
-    this.dataGridViewPurchases.RowTemplate.Height = 25;
-    this.dataGridViewPurchases.Size = new System.Drawing.Size(1086, 390);
-    this.dataGridViewPurchases.TabIndex = 0;
-    // 
-    // BuyPaddy
-    // 
-    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-    this.Controls.Add(this.tabControl1);
-    this.Controls.Add(this.panel1);
-    this.Name = "BuyPaddy";
-    this.Size = new System.Drawing.Size(1100, 842);
-    this.panel1.ResumeLayout(false);
-    this.panel1.PerformLayout();
-    this.tabControl1.ResumeLayout(false);
-    this.tabPurchase.ResumeLayout(false);
-    this.splitContainer1.Panel1.ResumeLayout(false);
-    this.splitContainer1.Panel2.ResumeLayout(false);
-    ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-    this.splitContainer1.ResumeLayout(false);
-    this.panel2.ResumeLayout(false);
-    this.panel2.PerformLayout();
-    ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFarmers)).EndInit();
-    this.panel3.ResumeLayout(false);
-    this.pnlInvoice.ResumeLayout(false);
-    this.pnlInvoice.PerformLayout();
-    this.flowLayoutPanel1.ResumeLayout(false);
-    this.panel4.ResumeLayout(false);
-    this.panel4.PerformLayout();
-    this.tableLayoutPanel1.ResumeLayout(false);
-    this.tableLayoutPanel1.PerformLayout();
-    this.flowLayoutPanel2.ResumeLayout(false);
-    this.tabHistory.ResumeLayout(false);
-    this.panel5.ResumeLayout(false);
-    this.panel5.PerformLayout();
-    this.flowLayoutPanel3.ResumeLayout(false);
-    ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPurchases)).EndInit();
-    this.ResumeLayout(false);
+    public partial class BuyPaddy : UserControl
+    {
+        private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
+        private readonly int currentBuyerId;
+        private int selectedStockId = -1;
+        private int selectedFarmerId = -1;
+        private int selectedSaleId = -1;
 
+        public BuyPaddy(int buyerID)
+        {
+            InitializeComponent();
+            this.currentBuyerId = buyerID;
+            this.Load += BuyPaddy_Load;
+        }
+       
+
+        private void BuyPaddy_Load(object sender, EventArgs e)
+        {
+            // Initialize UI elements
+            LoadBuyerInfo();
+            LoadFarmersData();
+
+            // Initialize payment status combo box
+            cmbPaymentStatus.Items.Clear();
+            cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
+            cmbPaymentStatus.SelectedIndex = 0;
+
+            // Add stock-related functionality
+            btnViewStock.Click += btnViewStock_Click;
+
+            // Add purchase-related functionality
+            btnCreatePurchase.Click += btnCreatePurchase_Click;
+            btnClear.Click += btnClear_Click;
+            btnRefresh.Click += btnRefresh_Click;
+
+            // Add purchase history functionality
+            dataGridViewSales.CellClick += dataGridViewSales_CellClick;
+
+            // Add invoice-related functionality
+            btnGenerateInvoice.Click += btnGenerateInvoice_Click;
+            btnSaveInvoice.Click += btnSaveInvoice_Click;
+            btnPrintInvoice.Click += btnPrintInvoice_Click;
+
+            // Add event handlers for calculating total when quantity or price changes
+            txtQuantity.TextChanged += CalculateTotalAmount;
+            txtPurchasePrice.TextChanged += CalculateTotalAmount;
+
+            // Style data grid views
+            StylePurchaseGrid();
+
+            // Load purchase history
+            LoadBuyerPurchasesData();
+
+            // Hide invoice panel initially
+            pnlInvoice.Visible = false;
+
+            // FIX: Add the missing event handler for farmer selection
+            dataGridViewFarmers.CellClick += dataGridViewFarmers_CellClick;
+        }
+
+        private void LoadBuyerInfo()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT FullName FROM Users WHERE UserID = @BuyerID AND RoleID = 4";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                    conn.Open();
+                    object result = cmd.ExecuteScalar();
+                    if (result != null)
+                    {
+                        //lblBuyerName.Text = result.ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error: You do not have private buyer privileges.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading buyer information: {ex.Message}");
+            }
+        }
+
+        private void LoadFarmersData()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT u.UserID, u.FullName, 
+                                    (SELECT COUNT(*) FROM Stock s WHERE s.FarmerID = u.UserID AND s.Quantity > 0) AS StocksAvailable,
+                                    (SELECT SUM(s.Quantity) FROM Stock s WHERE s.FarmerID = u.UserID AND s.Quantity > 0) AS TotalQuantity
+                                    FROM Users u
+                                    WHERE u.RoleID = 2 -- Farmer role
+                                    AND u.Status = 'Active'
+                                    AND EXISTS (SELECT 1 FROM Stock s WHERE s.FarmerID = u.UserID AND s.Quantity > 0)
+                                    ORDER BY u.FullName";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    dataGridViewFarmers.DataSource = dt;
+
+                    // Rename columns for better display
+                    if (dataGridViewFarmers.Columns.Contains("UserID"))
+                        dataGridViewFarmers.Columns["UserID"].HeaderText = "Farmer ID";
+                    if (dataGridViewFarmers.Columns.Contains("FullName"))
+                        dataGridViewFarmers.Columns["FullName"].HeaderText = "Farmer Name";
+                    if (dataGridViewFarmers.Columns.Contains("StocksAvailable"))
+                        dataGridViewFarmers.Columns["StocksAvailable"].HeaderText = "Stock Types";
+                    if (dataGridViewFarmers.Columns.Contains("TotalQuantity"))
+                        dataGridViewFarmers.Columns["TotalQuantity"].HeaderText = "Total Quantity (kg)";
+
+                    // Style the farmers grid
+                    StyleFarmersGrid();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading farmers data: {ex.Message}");
+            }
+        }
+
+        private void StyleFarmersGrid()
+        {
+            dataGridViewFarmers.EnableHeadersVisualStyles = false;
+            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkBlue;
+            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewFarmers.DefaultCellStyle.BackColor = Color.White;
+            dataGridViewFarmers.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridViewFarmers.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dataGridViewFarmers.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewFarmers.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue;
+            dataGridViewFarmers.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dataGridViewFarmers.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue;
+            dataGridViewFarmers.RowTemplate.Height = 28;
+            dataGridViewFarmers.GridColor = Color.LightGray;
+            dataGridViewFarmers.BorderStyle = BorderStyle.Fixed3D;
+            dataGridViewFarmers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridViewFarmers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewFarmers.MultiSelect = false;
+            dataGridViewFarmers.AllowUserToAddRows = false;
+            dataGridViewFarmers.ReadOnly = true;
+        }
+
+        private void StylePurchaseGrid()
+        {
+            dataGridViewSales.EnableHeadersVisualStyles = false;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkBlue;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+            dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+            dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
+            dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
+            dataGridViewSales.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+            dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue;
+            dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
+
+            dataGridViewSales.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue;
+            dataGridViewSales.RowTemplate.Height = 28;
+            dataGridViewSales.GridColor = Color.LightGray;
+            dataGridViewSales.BorderStyle = BorderStyle.Fixed3D;
+            dataGridViewSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dataGridViewSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridViewSales.MultiSelect = false;
+            dataGridViewSales.AllowUserToAddRows = false;
+            dataGridViewSales.ReadOnly = true;
+        }
+
+        private void LoadBuyerPurchasesData()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, s.BuyerType,
+                   s.CropType, s.SalePrice, s.Quantity,
+                   (s.SalePrice * s.Quantity) AS TotalAmount,
+                   s.PaymentStatus, s.SaleDate
+            FROM Sales s
+            LEFT JOIN Users f ON s.FarmerID = f.UserID
+            WHERE s.BuyerID = @BuyerID AND s.BuyerType = 'Private'
+            ORDER BY s.SaleDate DESC";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    dataGridViewSales.DataSource = dt;
+                }
+
+                // Rename and format columns for display
+                if (dataGridViewSales.Columns["SaleID"] != null)
+                    dataGridViewSales.Columns["SaleID"].HeaderText = "Purchase ID";
+
+                if (dataGridViewSales.Columns["FarmerName"] != null)
+                    dataGridViewSales.Columns["FarmerName"].HeaderText = "Farmer";
+
+                if (dataGridViewSales.Columns["BuyerType"] != null)
+                    dataGridViewSales.Columns["BuyerType"].HeaderText = "Buyer Type";
+
+                if (dataGridViewSales.Columns["CropType"] != null)
+                    dataGridViewSales.Columns["CropType"].HeaderText = "Rice Type";
+
+                if (dataGridViewSales.Columns["SalePrice"] != null)
+                    dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
+
+                if (dataGridViewSales.Columns["Quantity"] != null)
+                    dataGridViewSales.Columns["Quantity"].HeaderText = "Quantity (kg)";
+
+                if (dataGridViewSales.Columns["TotalAmount"] != null)
+                    dataGridViewSales.Columns["TotalAmount"].HeaderText = "Total Amount";
+
+                if (dataGridViewSales.Columns["PaymentStatus"] != null)
+                    dataGridViewSales.Columns["PaymentStatus"].HeaderText = "Payment Status";
+
+                if (dataGridViewSales.Columns["SaleDate"] != null)
+                    dataGridViewSales.Columns["SaleDate"].HeaderText = "Purchase Date";
+
+                // Hide FarmerID column
+                if (dataGridViewSales.Columns["FarmerID"] != null)
+                    dataGridViewSales.Columns["FarmerID"].Visible = false;
+            }
+        }
+
+
+        private void dataGridViewFarmers_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                var row = dataGridViewFarmers.Rows[e.RowIndex];
+                if (row.Cells["UserID"].Value != null && row.Cells["FullName"].Value != null)
+                {
+                    selectedFarmerId = Convert.ToInt32(row.Cells["UserID"].Value);
+                    string farmerName = row.Cells["FullName"].Value.ToString();
+                    lblSelectedFarmer.Text = $"Selected Farmer: {farmerName}";
+                    lblSelectedFarmer.Visible = true;
+
+                    // Clear previous stock selection
+                    lblSelectedStock.Visible = false;
+                    lblSelectedStock.Tag = null;
+                }
+            }
+        }
+
+
+        private void ShowFarmerStock(int farmerId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT StockID, CropType, Quantity, LastUpdated FROM Stock WHERE FarmerID = @FarmerID AND Quantity > 0";
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    adapter.SelectCommand.Parameters.AddWithValue("@FarmerID", farmerId);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        // Show the stock in a separate form or dialog
+                        using (Form stockForm = new Form())
+                        {
+                            stockForm.Text = "Available Stock";
+                            stockForm.Size = new Size(600, 400);
+                            stockForm.StartPosition = FormStartPosition.CenterParent;
+
+                            DataGridView dgvStock = new DataGridView
+                            {
+                                Dock = DockStyle.Fill,
+                                DataSource = dt,
+                                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                                ReadOnly = true
+                            };
+
+                            Button btnSelect = new Button
+                            {
+                                Text = "Select Stock",
+                                Dock = DockStyle.Bottom,
+                                Height = 40
+                            };
+
+                            btnSelect.Click += (s, ev) =>
+                            {
+                                if (dgvStock.SelectedRows.Count > 0)
+                                {
+                                    DataGridViewRow row = dgvStock.SelectedRows[0];
+                                    selectedStockId = Convert.ToInt32(row.Cells["StockID"].Value);
+                                    decimal availableQuantity = Convert.ToDecimal(row.Cells["Quantity"].Value);
+                                    string cropType = row.Cells["CropType"].Value.ToString();
+
+                                    // Set the maximum available quantity
+                                    txtQuantity.Text = availableQuantity.ToString();
+                                    lblSelectedStock.Text = $"Selected: {cropType} - {availableQuantity} kg";
+                                    lblSelectedStock.Visible = true;
+
+                                    // Store selected stock ID and crop type for later reference
+                                    lblSelectedStock.Tag = new Tuple<int, string>(selectedStockId, cropType);
+
+                                    // Fetch and set suggested price based on crop type
+                                    FetchPriceForCropType(cropType);
+
+                                    stockForm.Close();
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Please select a stock item.");
+                                }
+                            };
+
+                            stockForm.Controls.Add(dgvStock);
+                            stockForm.Controls.Add(btnSelect);
+
+                            stockForm.ShowDialog();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("This farmer does not have any available stock to sell.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading stock data: {ex.Message}");
+            }
+        }
+
+        private void FetchPriceForCropType(string cropType)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@CropType", cropType);
+                        conn.Open();
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            decimal avgPrice = Convert.ToDecimal(result);
+                            txtPurchasePrice.Text = avgPrice.ToString();
+                        }
+                        else
+                        {
+                            MessageBox.Show($"No price data found for {cropType}. Please enter a price manually.");
+                            txtPurchasePrice.Text = string.Empty;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error fetching price information: {ex.Message}");
+            }
+        }
+
+        private void CalculateTotalAmount(object sender, EventArgs e)
+        {
+            try
+            {
+                if (decimal.TryParse(txtQuantity.Text, out decimal quantity) &&
+                    decimal.TryParse(txtPurchasePrice.Text, out decimal price))
+                {
+                    decimal total = quantity * price;
+                    txtTotalAmount.Text = total.ToString("N2");
+                }
+                else
+                {
+                    txtTotalAmount.Text = "0.00";
+                }
+            }
+            catch
+            {
+                txtTotalAmount.Text = "0.00";
+            }
+        }
+        private void ProcessPurchase()
+        {
+            if (!ValidateInputs()) return;
+
+            // Check if stock is selected
+            if (lblSelectedStock.Tag == null)
+            {
+                MessageBox.Show("Please select stock before processing the purchase.");
+                return;
+            }
+
+            // Extract stock ID and crop type from the tag
+            var stockInfo = (Tuple<int, string>)lblSelectedStock.Tag;
+            int stockId = stockInfo.Item1;
+            string cropType = stockInfo.Item2;
+            decimal purchaseQuantity = decimal.Parse(txtQuantity.Text);
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                SqlTransaction transaction = null;
+                try
+                {
+                    conn.Open();
+                    transaction = conn.BeginTransaction();
+
+                    // 1. Check if there's enough stock
+                    string checkStockQuery = "SELECT Quantity FROM Stock WHERE StockID = @StockID";
+                    using (SqlCommand checkCmd = new SqlCommand(checkStockQuery, conn, transaction))
+                    {
+                        checkCmd.Parameters.AddWithValue("@StockID", stockId);
+                        decimal availableQuantity = Convert.ToDecimal(checkCmd.ExecuteScalar());
+
+                        if (availableQuantity < purchaseQuantity)
+                        {
+                            MessageBox.Show($"Insufficient stock. Available: {availableQuantity} kg");
+                            return;
+                        }
+                    }
+
+                    // 2. Get the farmer ID for this stock
+                    string getFarmerQuery = "SELECT FarmerID FROM Stock WHERE StockID = @StockID";
+                    int farmerId;
+                    using (SqlCommand getFarmerCmd = new SqlCommand(getFarmerQuery, conn, transaction))
+                    {
+                        getFarmerCmd.Parameters.AddWithValue("@StockID", stockId);
+                        farmerId = Convert.ToInt32(getFarmerCmd.ExecuteScalar());
+                    }
+
+                    // 3. Insert the sale (which is a purchase from the buyer's perspective)
+                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate, CropType, StockID)
+                                      VALUES (@FarmerID, @BuyerID, 'Private', @SalePrice, @Quantity, @PaymentStatus, @SaleDate, @CropType, @StockID);
+                                      SELECT SCOPE_IDENTITY();";
+
+                    int newSaleId;
+                    using (SqlCommand insertCmd = new SqlCommand(insertSaleQuery, conn, transaction))
+                    {
+                        insertCmd.Parameters.AddWithValue("@FarmerID", farmerId);
+                        insertCmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                        insertCmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtPurchasePrice.Text));
+                        insertCmd.Parameters.AddWithValue("@Quantity", purchaseQuantity);
+                        insertCmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
+                        insertCmd.Parameters.AddWithValue("@SaleDate", DateTime.Now);
+                        insertCmd.Parameters.AddWithValue("@CropType", cropType);
+                        insertCmd.Parameters.AddWithValue("@StockID", stockId);
+
+                        newSaleId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                    }
+
+                    // 4. Update the stock quantity
+                    string updateStockQuery = "UPDATE Stock SET Quantity = Quantity - @SaleQuantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
+                    using (SqlCommand updateCmd = new SqlCommand(updateStockQuery, conn, transaction))
+                    {
+                        updateCmd.Parameters.AddWithValue("@SaleQuantity", purchaseQuantity);
+                        updateCmd.Parameters.AddWithValue("@StockID", stockId);
+                        updateCmd.ExecuteNonQuery();
+                    }
+
+                    // 5. Create invoice record
+                    string invoicePath = $"Invoice_{newSaleId}_{DateTime.Now:yyyyMMdd}.pdf";
+                    string insertInvoiceQuery = "INSERT INTO Invoices (SaleID, InvoicePath, CreatedAt) VALUES (@SaleID, @InvoicePath, GETDATE())";
+                    using (SqlCommand invoiceCmd = new SqlCommand(insertInvoiceQuery, conn, transaction))
+                    {
+                        invoiceCmd.Parameters.AddWithValue("@SaleID", newSaleId);
+                        invoiceCmd.Parameters.AddWithValue("@InvoicePath", invoicePath);
+                        invoiceCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                    MessageBox.Show("Purchase processed successfully!");
+
+                    // Set the selected sale ID for invoice generation
+                    selectedSaleId = newSaleId;
+
+                    // Show the invoice panel and generate invoice preview
+                    pnlInvoice.Visible = true;
+                    GenerateInvoicePreview(newSaleId);
+                }
+                catch (Exception ex)
+                {
+                    transaction?.Rollback();
+                    MessageBox.Show($"Error processing purchase: {ex.Message}");
+                }
+            }
+
+            // Refresh data
+            LoadBuyerPurchasesData();
+            LoadFarmersData();
+            ClearInputs();
+        }
+
+        private bool ValidateInputs()
+        {
+            if (selectedFarmerId <= 0)
+            {
+                MessageBox.Show("Please select a farmer.");
+                return false;
+            }
+
+            if (lblSelectedStock.Tag == null)
+            {
+                MessageBox.Show("Please select stock to purchase.");
+                return false;
+            }
+
+            if (cmbPaymentStatus.SelectedIndex == -1 ||
+                string.IsNullOrWhiteSpace(txtPurchasePrice.Text) ||
+                string.IsNullOrWhiteSpace(txtQuantity.Text))
+            {
+                MessageBox.Show("Please fill all required fields.");
+                return false;
+            }
+
+            if (!decimal.TryParse(txtPurchasePrice.Text, out _) || !decimal.TryParse(txtQuantity.Text, out _))
+            {
+                MessageBox.Show("Purchase Price and Quantity must be valid numbers.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ClearInputs()
+        {
+            txtPurchasePrice.Clear();
+            txtQuantity.Clear();
+            txtTotalAmount.Clear();
+            lblSelectedStock.Visible = false;
+            lblSelectedStock.Tag = null;
+            cmbPaymentStatus.SelectedIndex = 0;
+            pnlInvoice.Visible = false;
+            rtbInvoicePreview.Clear();
+        }
+        private void dataGridViewSales_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
+            {
+                selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
+            }
+        }
+
+        private void GenerateInvoicePreview(int saleId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType, s.CropType,
+                            f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
+                            b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
+                            FROM Sales s
+                            INNER JOIN Users f ON s.FarmerID = f.UserID
+                            LEFT JOIN Users b ON s.BuyerID = b.UserID
+                            WHERE s.SaleID = @SaleID AND s.BuyerID = @BuyerID";
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@SaleID", saleId);
+                    cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        StringBuilder sb = new StringBuilder();
+                        decimal totalAmount = Convert.ToDecimal(reader["SalePrice"]) * Convert.ToDecimal(reader["Quantity"]);
+
+                        sb.AppendLine("RICE PRODUCTION SYSTEM");
+                        sb.AppendLine("PURCHASE INVOICE");
+                        sb.AppendLine("=============================================");
+                        sb.AppendLine($"Invoice #: INV-{saleId:D5}");
+                        sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
+                        sb.AppendLine("=============================================");
+                        sb.AppendLine("\nBUYER INFORMATION:");
+                        sb.AppendLine($"Name: {reader["BuyerName"]}");
+                        if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"Contact: {reader["BuyerContactNumber"]}");
+                        if (reader["BuyerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["BuyerEmail"]}");
+
+                        sb.AppendLine("\nSELLER INFORMATION:");
+                        sb.AppendLine($"Name: {reader["FarmerName"]}");
+                        if (reader["FarmerContactNumber"] != DBNull.Value) sb.AppendLine($"Contact: {reader["FarmerContactNumber"]}");
+                        if (reader["FarmerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["FarmerEmail"]}");
+
+                        sb.AppendLine("\n=============================================");
+                        sb.AppendLine("TRANSACTION DETAILS:");
+                        sb.AppendLine("=============================================");
+
+                        string cropType = reader["CropType"] != DBNull.Value ? reader["CropType"].ToString() : "Rice";
+                        sb.AppendLine($"Product: {cropType}");
+                        sb.AppendLine($"Price per kg: {Convert.ToDecimal(reader["SalePrice"]):C}");
+                        sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
+                        sb.AppendLine($"Total Amount: {totalAmount:C}");
+                        sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
+                        sb.AppendLine("=============================================");
+                        sb.AppendLine("\nThank you for your business!");
+                        sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
+                        rtbInvoicePreview.Text = sb.ToString();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invoice data not found or you don't have permission to view this purchase.");
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error generating invoice: {ex.Message}");
+            }
+        }
+
+
+
+
+        private void btnCreateSale_Click(object sender, EventArgs e)
+        {
+            ProcessPurchase();
+        }
+
+
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadFarmersData();
+            LoadBuyerPurchasesData();
+            MessageBox.Show("Data refreshed successfully.");
+        }
+
+        private void btnViewStock_Click(object sender, EventArgs e)
+        {
+            if (selectedFarmerId <= 0)
+            {
+                MessageBox.Show("Please select a farmer first.");
+                return;
+            }
+
+            ShowFarmerStock(selectedFarmerId);
+        }
+
+        private void btnCreatePurchase_Click(object sender, EventArgs e)
+        {
+            ProcessPurchase();
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+            ClearInputs();
+        }
+
+        private void btnPrintInvoice_Click(object sender, EventArgs e)
+        {
+            if (selectedSaleId == -1 || string.IsNullOrEmpty(rtbInvoicePreview.Text))
+            {
+                MessageBox.Show("Please generate an invoice first.");
+                return;
+            }
+
+            PrintDialog printDialog = new PrintDialog();
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("Printing functionality would be implemented here.");
+                // In a real application, you would implement printing here
+                // This would typically use a PrintDocument object
+            }
+        }
+
+        private void btnSaveInvoice_Click(object sender, EventArgs e)
+        {
+            if (selectedSaleId == -1 || string.IsNullOrEmpty(rtbInvoicePreview.Text))
+            {
+                MessageBox.Show("Please generate an invoice first.");
+                return;
+            }
+
+            SaveFileDialog saveDialog = new SaveFileDialog
+            {
+                Filter = "PDF Files (*.pdf)|*.pdf|Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
+                DefaultExt = "pdf",
+                FileName = $"Invoice_{selectedSaleId}_{DateTime.Now:yyyyMMdd}"
+            };
+
+            if (saveDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    string fileExtension = Path.GetExtension(saveDialog.FileName).ToLower();
+
+                    if (fileExtension == ".pdf")
+                    {
+                        // Create a PDF using iTextSharp
+                        using (FileStream fs = new FileStream(saveDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            Document doc = new Document(PageSize.A4);
+                            PdfWriter writer = PdfWriter.GetInstance(doc, fs);
+                            doc.Open();
+                            doc.Add(new Paragraph(rtbInvoicePreview.Text));
+                            doc.Close();
+                            writer.Close();
+                        }
+                    }
+                    else
+                    {
+                        // Save as plain text
+                        File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
+                    }
+
+                    // Update invoice path in DB
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        string query = "UPDATE Invoices SET InvoicePath = @Path WHERE SaleID = @SaleID";
+                        using (SqlCommand cmd = new SqlCommand(query, conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Path", saveDialog.FileName);
+                            cmd.Parameters.AddWithValue("@SaleID", selectedSaleId);
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    MessageBox.Show("Invoice saved successfully!");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error saving invoice: {ex.Message}");
+                }
+            }
+        }
+
+        private void btnGenerateInvoice_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewSales.SelectedRows.Count > 0)
+            {
+                int saleId = Convert.ToInt32(dataGridViewSales.SelectedRows[0].Cells["SaleID"].Value);
+                selectedSaleId = saleId;
+                GenerateInvoicePreview(saleId);
+                pnlInvoice.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Please select a purchase to generate an invoice.");
+            }
+        }
+    }
 }
-
-
-
-#endregion
-private System.Windows.Forms.Panel panel1;
-private System.Windows.Forms.Label lblTitle;
-private System.Windows.Forms.Label lblBuyerName;
-private System.Windows.Forms.TabControl tabControl1;
-private System.Windows.Forms.TabPage tabPurchase;
-private System.Windows.Forms.TabPage tabHistory;
-private System.Windows.Forms.Panel panel2;
-private System.Windows.Forms.DataGridView dataGridViewFarmers;
-private System.Windows.Forms.Panel panel3;
-private System.Windows.Forms.Panel panel4;
-private System.Windows.Forms.Label lblPurchaseDetails;
-private System.Windows.Forms.Label lblPaymentStatus;
-private System.Windows.Forms.ComboBox cmbPaymentStatus;
-private System.Windows.Forms.Label lblQuantity;
-private System.Windows.Forms.TextBox txtQuantity;
-private System.Windows.Forms.Label lblPurchasePrice;
-private System.Windows.Forms.TextBox txtPurchasePrice;
-private System.Windows.Forms.Label lblTotalAmount;
-private System.Windows.Forms.TextBox txtTotalAmount;
-private System.Windows.Forms.Button btnCreatePurchase;
-private System.Windows.Forms.Button btnClear;
-private System.Windows.Forms.Button btnRefresh;
-private System.Windows.Forms.Button btnViewStock;
-private System.Windows.Forms.Label lblSelectedFarmer;
-private System.Windows.Forms.Label lblSelectedStock;
-private System.Windows.Forms.Panel pnlInvoice;
-private System.Windows.Forms.Button btnGenerateInvoice;
-private System.Windows.Forms.Label lblInvoiceTitle;
-private System.Windows.Forms.Button btnSaveInvoice;
-private System.Windows.Forms.Button btnPrintInvoice;
-private System.Windows.Forms.RichTextBox rtbInvoicePreview;
-private System.Windows.Forms.DataGridView dataGridViewPurchases;
-// Add this declaration to the class BuyPaddy
-private System.Windows.Forms.SplitContainer splitContainer1;
-private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-private System.Windows.Forms.Panel panel5;
-private System.Windows.Forms.RichTextBox richTextBox1;
-private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel3;
-private System.Windows.Forms.Button button1;
-private System.Windows.Forms.Button button2;
-private System.Windows.Forms.Button button3;
-private System.Windows.Forms.Label label1;

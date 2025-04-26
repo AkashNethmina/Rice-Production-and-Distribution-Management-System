@@ -52,47 +52,31 @@ namespace RiceMgmtApp
             this.MinimumSize = new Size(900, 600);
         }
 
-        private void LoadUserControl(UserControl userControl)
+        private async void LoadUserControl(UserControl userControl)
         {
-            // Show loading indicator
             ShowLoadingIndicator();
-            // Check if progressBar is initialized
-            if (progressBar != null)
-            {
-                progressBar.Visible = true;
-                progressBar.StartLoading();
-            }
-            else
-            {
-                // Initialize progressBar if it's null
+
+            if (progressBar == null)
                 InitializeProgressBar();
-                progressBar.Visible = true;
-                progressBar.StartLoading();
-            }
 
-            // Use Task to load control asynchronously
-            Task.Run(() => {
-                // Simulate loading time or actual initialization
-                Thread.Sleep(300);
+            progressBar.Visible = true;
+            progressBar.StartLoading();
 
-                this.Invoke((MethodInvoker)delegate {
-                    progressBar.StopLoading();
+            // Simulate loading time (or do real async init here)
+            await Task.Delay(300);
 
-                    userControl.Dock = DockStyle.Fill;
-                    panelContainer.Controls.Clear();
-                    panelContainer.Controls.Add(userControl);
-                    userControl.BringToFront();
+            progressBar.StopLoading();
 
-                    // Hide loading indicator and progress bar after a delay
-                    Task.Delay(200).ContinueWith(t => {
-                        this.Invoke((MethodInvoker)delegate {
-                            HideLoadingIndicator();
-                            progressBar.Visible = false;
-                        });
-                    });
-                });
-            });
+            userControl.Dock = DockStyle.Fill;
+            panelContainer.Controls.Clear();
+            panelContainer.Controls.Add(userControl);
+            userControl.BringToFront();
+
+            await Task.Delay(200); // slight delay for smooth UI
+            HideLoadingIndicator();
+            progressBar.Visible = false;
         }
+
 
         private void btnPrice_Monitoring_Click(object sender, EventArgs e)
         {
@@ -146,10 +130,9 @@ namespace RiceMgmtApp
 
         private void btn_DamageReporting_Click(object sender, EventArgs e)
         {
-            GovernmentAssistance governmentAssistance = new GovernmentAssistance();
-            LoadUserControl(governmentAssistance);
-            SetActiveButton(btn_DamageReporting);
-            UpdateBreadcrumb("Government Assistance");
+            DamageReporting dr = new DamageReporting();
+            dr.SetUserContext(_userId, _roleId); // Set user context after instantiation
+            LoadUserControl(dr);
         }
 
         private void GovtOfficialDashboard_Load(object sender, EventArgs e)

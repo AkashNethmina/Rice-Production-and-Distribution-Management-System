@@ -531,6 +531,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RequestPaddy.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RequestPaddy.Designer.cs">
+      <DependentUpon>RequestPaddy.cs</DependentUpon>
+    </Compile>
     <Compile Include="RiceProductionDB2DataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -636,6 +642,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RequestPaddy.resx">
+      <DependentUpon>RequestPaddy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SalesManagement.resx">
       <DependentUpon>SalesManagement.cs</DependentUpon>

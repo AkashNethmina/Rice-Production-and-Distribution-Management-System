@@ -8,7 +8,7 @@ namespace RiceMgmtApp
 {
     public partial class frm_login : Form
     {
-        // Store connection string in a more secure way in production
+        // Store connection 
         private readonly string _connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
 
         public frm_login()
@@ -54,7 +54,7 @@ namespace RiceMgmtApp
                         return;
                     }
 
-                    // Check account status
+                    // Check status
                     if (userInfo.Status == "Suspended")
                     {
                         MessageBox.Show("Your account is suspended.", "Access Denied",
@@ -141,7 +141,7 @@ namespace RiceMgmtApp
                     redirectMessage = "Redirecting to Farmer Dashboard...";
                     dashboard = new FarmerDashboard(userId, roleId);
                     break;
-                case 3: // Government Official
+                case 3: // Government 
                     redirectMessage = "Redirecting to Government Panel...";
                     dashboard = new GovtOfficialDashboard(userId, roleId);
                     break;
@@ -159,7 +159,7 @@ namespace RiceMgmtApp
             {
                 MessageBox.Show(redirectMessage);
 
-                // Set username property using reflection to handle different form types
+                // Set username 
                 var usernameProperty = dashboard.GetType().GetProperty("LoggedInUsername");
                 if (usernameProperty != null)
                 {
@@ -172,7 +172,7 @@ namespace RiceMgmtApp
         }
     }
 
-    // Helper class to store user information
+    
     internal class UserInfo
     {
         public int UserId { get; set; }
