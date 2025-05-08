@@ -273,7 +273,7 @@ namespace RiceMgmtApp
                     // Create a modern, responsive edit form
                     Form editForm = new Form();
                     editForm.Text = "Edit Field";
-                    editForm.Size = new Size(550, 480);
+                    editForm.Size = new Size(550, 500);
                     editForm.StartPosition = FormStartPosition.CenterParent;
                     editForm.FormBorderStyle = FormBorderStyle.FixedDialog;
                     editForm.MaximizeBox = false;
@@ -623,17 +623,17 @@ namespace RiceMgmtApp
 
         private void btnAddField_Click(object sender, EventArgs e)
         {
-            // Create a modern add form
+            // add form
             Form addForm = new Form();
             addForm.Text = "Add New Field";
-            addForm.Size = new Size(550, 480);
+            addForm.Size = new Size(550, 500);
             addForm.StartPosition = FormStartPosition.CenterParent;
             addForm.FormBorderStyle = FormBorderStyle.FixedDialog;
             addForm.MaximizeBox = false;
             addForm.MinimizeBox = false;
             addForm.BackColor = Color.FromArgb(245, 246, 250);
 
-            // Modern form header panel
+            //  header panel
             Panel headerPanel = new Panel();
             headerPanel.Dock = DockStyle.Top;
             headerPanel.Height = 70;
@@ -649,13 +649,13 @@ namespace RiceMgmtApp
             lblFormTitle.TextAlign = ContentAlignment.MiddleCenter;
             headerPanel.Controls.Add(lblFormTitle);
 
-            // Main content panel
+            //  content panel
             Panel contentPanel = new Panel();
             contentPanel.Dock = DockStyle.Fill;
             contentPanel.Padding = new Padding(30, 25, 30, 20);
             contentPanel.BackColor = Color.FromArgb(245, 246, 250);
 
-            // Table layout for responsive form controls
+            // Table layout 
             TableLayoutPanel formLayout = new TableLayoutPanel();
             formLayout.Dock = DockStyle.Top;
             formLayout.ColumnCount = 2;
@@ -669,7 +669,7 @@ namespace RiceMgmtApp
             formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
             formLayout.AutoSize = true;
 
-            // Location control
+            // Location 
             Label lblLocation = CreateFormLabel("Location Coordinates");
             TextBox txtLocation = CreateFormTextBox();
             formLayout.Controls.Add(lblLocation, 0, 0);
@@ -746,7 +746,8 @@ namespace RiceMgmtApp
                     using (SqlConnection con = new SqlConnection(connectionString))
                     {
                         con.Open();
-                        string insertQuery = @"INSERT INTO Fields (FarmerID, LocationCoordinates, FieldSize, SoilCondition, Zone, SeasonType, CreatedAt)
+                        string insertQuery = @"INSERT INTO Fields (FarmerID, LocationCoordinates,
+                                                   FieldSize, SoilCondition, Zone, SeasonType, CreatedAt)
                                 VALUES (@FarmerID, @Loc, @Size, @Soil, @Zone, @Season, GETDATE())";
                         SqlCommand cmd = new SqlCommand(insertQuery, con);
                         cmd.Parameters.AddWithValue("@FarmerID", currentUserId);

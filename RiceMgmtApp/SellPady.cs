@@ -226,7 +226,7 @@ namespace RiceMgmtApp
 
                     if (buyerType == "Government")
                     {
-                        // For government buyers, fetch government price
+                        // For government buyers,
                         query = "SELECT GovernmentPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
@@ -236,7 +236,7 @@ namespace RiceMgmtApp
                             {
                                 decimal govPrice = Convert.ToDecimal(result);
                                 txtSalePrice.Text = govPrice.ToString();
-                                txtSalePrice.ReadOnly = true; // Lock the price for government sales
+                                txtSalePrice.ReadOnly = true;
                             }
                             else
                             {
@@ -247,7 +247,7 @@ namespace RiceMgmtApp
                     }
                     else if (buyerType == "Private")
                     {
-                        // For private buyers, fetch average price as starting point but allow editing
+                        // For private buyers, 
                         query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
@@ -325,7 +325,7 @@ namespace RiceMgmtApp
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Join with Users table to display buyer names, limit to current farmer
+                
                 string query = @"SELECT s.SaleID, s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
                            s.CropType, s.SalePrice, s.Quantity, 
                            (s.SalePrice * s.Quantity) AS TotalAmount, 
@@ -426,8 +426,10 @@ namespace RiceMgmtApp
                     }
 
                     // 2. Insert the sale
-                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate, CropType, StockID)
-                                      VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate, @CropType, @StockID);
+                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, 
+                                      PaymentStatus, SaleDate, CropType, StockID)
+                                      VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, 
+                                      @SaleDate, @CropType, @StockID);
                                       SELECT SCOPE_IDENTITY();";
 
                     int newSaleId;
@@ -468,10 +470,10 @@ namespace RiceMgmtApp
                     transaction.Commit();
                     MessageBox.Show("Sale processed successfully!");
 
-                    // Set the selected sale ID for invoice generation
+                   
                     selectedSaleId = newSaleId;
 
-                    // Show the invoice panel and generate invoice preview
+                   
                     pnlInvoice.Visible = true;
                     GenerateInvoicePreview(newSaleId);
                 }

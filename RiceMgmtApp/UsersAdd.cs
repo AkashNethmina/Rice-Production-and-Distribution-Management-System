@@ -69,7 +69,7 @@ namespace RiceMgmtApp
                 {
                     conn.Open();
 
-                    // Check if username already exists
+                    // Check if username 
                     SqlCommand checkCmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username", conn);
                     checkCmd.Parameters.AddWithValue("@Username", txtUsername.Text);
 

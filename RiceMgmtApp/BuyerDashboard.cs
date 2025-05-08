@@ -123,17 +123,17 @@ namespace RiceMgmtApp
         {
             BuyPaddy buyPaddy = new BuyPaddy(_userId);
             LoadUserControl(buyPaddy);
-            SetActiveButton(btn_Sales);
+            SetActiveButton(btn_Purchase);
             UpdateBreadcrumb("Buy Paddy");
         }
 
-        private void btnPrice_Monitoring_Click(object sender, EventArgs e)
-        {
-            Price_Monitoring pm = new Price_Monitoring(_roleId);
-            LoadUserControl(pm);
-            SetActiveButton(btnPrice_Monitoring);
-            UpdateBreadcrumb("Price Monitoring");
-        }
+        //private void btnPrice_Monitoring_Click(object sender, EventArgs e)
+        //{
+        //    Price_Monitoring pm = new Price_Monitoring(_roleId);
+        //    LoadUserControl(pm);
+        //    SetActiveButton(btnPrice_Monitoring);
+        //    UpdateBreadcrumb("Price Monitoring");
+        //}
 
         private void btn_StockManagement_Click(object sender, EventArgs e)
         {
@@ -153,7 +153,7 @@ namespace RiceMgmtApp
             ModernizeUI();
 
             // Show PrivateBuyerHome as default on load
-            PrivateBuyerHome pbh = new PrivateBuyerHome();
+            PrivateBuyerHome pbh = new PrivateBuyerHome(_userId); 
             LoadUserControl(pbh);
             SetActiveButton(btn_Dashboard);
             UpdateBreadcrumb("Dashboard");
@@ -435,11 +435,9 @@ namespace RiceMgmtApp
 
 
 
-        #endregion
-
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-            PrivateBuyerHome privateBuyerHome = new PrivateBuyerHome();
+            PrivateBuyerHome privateBuyerHome = new PrivateBuyerHome(_userId);
             LoadUserControl(privateBuyerHome);
             SetActiveButton(btn_Dashboard);
             UpdateBreadcrumb("Dashboard");
@@ -456,66 +454,6 @@ namespace RiceMgmtApp
             LoadUserControl(dataAnalytics_Reports);
         }
 
-        
     }
-
-    // Make sure to include these classes if they're not already defined elsewhere
-
-    // If LoadingProgressBar is not defined in another file, include it here
-    /* 
-    // Loading progress bar for visual feedback
-    public class LoadingProgressBar : Control
-    {
-        private int _value = 0;
-        private System.Windows.Forms.Timer _timer;
-
-        public LoadingProgressBar()
-        {
-            this.Height = 5;
-            this.BackColor = Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-
-            _timer = new System.Windows.Forms.Timer();
-            _timer.Interval = 15;
-            _timer.Tick += Timer_Tick;
-        }
-
-        public void StartLoading()
-        {
-            _value = 0;
-            _timer.Start();
-        }
-
-        public void StopLoading()
-        {
-            _timer.Stop();
-            _value = 100;
-            this.Invalidate();
-        }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (_value < 100)
-            {
-                _value += 3;
-                if (_value > 100) _value = 100;
-                this.Invalidate();
-            }
-            else
-            {
-                _timer.Stop();
-            }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-
-            using (SolidBrush brush = new SolidBrush(Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))))))
-            {
-                int width = (int)((float)_value / 100 * this.Width);
-                e.Graphics.FillRectangle(brush, 0, 0, width, this.Height);
-            }
-        }
-    }
-    */
+    #endregion
 }

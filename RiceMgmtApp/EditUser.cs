@@ -23,7 +23,6 @@ namespace RiceMgmtApp
             isLoading = true;
             currentUserId = userId;
 
-            // Ensure status options are loaded before setting selected item
             LoadStatusOptions();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -45,22 +44,17 @@ namespace RiceMgmtApp
                     txtUsername.Text = reader["Username"].ToString();
                     txtEmail.Text = reader["Email"].ToString();
                     txtContact.Text = reader["ContactNumber"].ToString();
-
-                    // Set default status to 'Active'
+                   
                     string status = reader["Status"] != DBNull.Value ? reader["Status"].ToString() : "Active";
 
-                    // Make sure the status exists in the combobox items
                     if (comboStatus.Items.Contains(status))
                     {
                         comboStatus.SelectedItem = status;
                     }
                     else
                     {
-                        // Default to 'Active' if status is not valid
                         comboStatus.SelectedItem = "Active";
                     }
-
-                    // Handle RoleID selection
                     if (reader["RoleID"] != DBNull.Value)
                     {
                         comboRole.SelectedValue = Convert.ToInt32(reader["RoleID"]);
@@ -126,10 +120,10 @@ namespace RiceMgmtApp
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Make sure we have valid selections before saving
+            
             if (comboStatus.SelectedItem == null)
             {
-                comboStatus.SelectedItem = "Active"; // Set default if null
+                comboStatus.SelectedItem = "Active"; 
             }
 
             if (comboRole.SelectedValue == null)

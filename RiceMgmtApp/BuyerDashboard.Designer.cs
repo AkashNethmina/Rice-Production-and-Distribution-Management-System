@@ -30,10 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BuyerDashboard));
             this.panelsideMenu = new System.Windows.Forms.Panel();
-            this.btnPrice_Monitoring = new System.Windows.Forms.Button();
-            this.btn_ReportsAnalytics = new System.Windows.Forms.Button();
-            this.btn_StockManagement = new System.Windows.Forms.Button();
-            this.btn_Sales = new System.Windows.Forms.Button();
+            this.btn_RequestPaddy = new System.Windows.Forms.Button();
+            this.btn_Purchase = new System.Windows.Forms.Button();
             this.btn_logout = new System.Windows.Forms.Button();
             this.btn_profile = new System.Windows.Forms.Button();
             this.btn_Dashboard = new System.Windows.Forms.Button();
@@ -47,10 +45,8 @@
             // 
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
-            this.panelsideMenu.Controls.Add(this.btnPrice_Monitoring);
-            this.panelsideMenu.Controls.Add(this.btn_ReportsAnalytics);
-            this.panelsideMenu.Controls.Add(this.btn_StockManagement);
-            this.panelsideMenu.Controls.Add(this.btn_Sales);
+            this.panelsideMenu.Controls.Add(this.btn_RequestPaddy);
+            this.panelsideMenu.Controls.Add(this.btn_Purchase);
             this.panelsideMenu.Controls.Add(this.btn_logout);
             this.panelsideMenu.Controls.Add(this.btn_profile);
             this.panelsideMenu.Controls.Add(this.btn_Dashboard);
@@ -62,73 +58,39 @@
             this.panelsideMenu.Size = new System.Drawing.Size(250, 749);
             this.panelsideMenu.TabIndex = 5;
             // 
-            // btnPrice_Monitoring
+            // btn_RequestPaddy
             // 
-            this.btnPrice_Monitoring.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btnPrice_Monitoring.FlatAppearance.BorderSize = 0;
-            this.btnPrice_Monitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnPrice_Monitoring.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnPrice_Monitoring.ForeColor = System.Drawing.Color.White;
-            this.btnPrice_Monitoring.Location = new System.Drawing.Point(10, 330);
-            this.btnPrice_Monitoring.Name = "btnPrice_Monitoring";
-            this.btnPrice_Monitoring.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btnPrice_Monitoring.Size = new System.Drawing.Size(230, 45);
-            this.btnPrice_Monitoring.TabIndex = 16;
-            this.btnPrice_Monitoring.Text = "Price Monitoring";
-            this.btnPrice_Monitoring.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnPrice_Monitoring.UseVisualStyleBackColor = true;
-            this.btnPrice_Monitoring.Click += new System.EventHandler(this.btnPrice_Monitoring_Click);
+            this.btn_RequestPaddy.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_RequestPaddy.FlatAppearance.BorderSize = 0;
+            this.btn_RequestPaddy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_RequestPaddy.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_RequestPaddy.ForeColor = System.Drawing.Color.White;
+            this.btn_RequestPaddy.Location = new System.Drawing.Point(10, 240);
+            this.btn_RequestPaddy.Name = "btn_RequestPaddy";
+            this.btn_RequestPaddy.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_RequestPaddy.Size = new System.Drawing.Size(230, 45);
+            this.btn_RequestPaddy.TabIndex = 11;
+            this.btn_RequestPaddy.Text = "Request Paddy";
+            this.btn_RequestPaddy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_RequestPaddy.UseVisualStyleBackColor = true;
+            this.btn_RequestPaddy.Click += new System.EventHandler(this.btn_StockManagement_Click);
             // 
-            // btn_ReportsAnalytics
+            // btn_Purchase
             // 
-            this.btn_ReportsAnalytics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_ReportsAnalytics.FlatAppearance.BorderSize = 0;
-            this.btn_ReportsAnalytics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ReportsAnalytics.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ReportsAnalytics.ForeColor = System.Drawing.Color.White;
-            this.btn_ReportsAnalytics.Location = new System.Drawing.Point(10, 285);
-            this.btn_ReportsAnalytics.Name = "btn_ReportsAnalytics";
-            this.btn_ReportsAnalytics.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_ReportsAnalytics.Size = new System.Drawing.Size(230, 45);
-            this.btn_ReportsAnalytics.TabIndex = 13;
-            this.btn_ReportsAnalytics.Text = "Reports and Analytics";
-            this.btn_ReportsAnalytics.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_ReportsAnalytics.UseVisualStyleBackColor = true;
-            this.btn_ReportsAnalytics.Click += new System.EventHandler(this.btn_ReportsAnalytics_Click);
-            // 
-            // btn_StockManagement
-            // 
-            this.btn_StockManagement.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_StockManagement.FlatAppearance.BorderSize = 0;
-            this.btn_StockManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_StockManagement.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_StockManagement.ForeColor = System.Drawing.Color.White;
-            this.btn_StockManagement.Location = new System.Drawing.Point(10, 240);
-            this.btn_StockManagement.Name = "btn_StockManagement";
-            this.btn_StockManagement.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_StockManagement.Size = new System.Drawing.Size(230, 45);
-            this.btn_StockManagement.TabIndex = 11;
-            this.btn_StockManagement.Text = "Stock Management";
-            this.btn_StockManagement.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_StockManagement.UseVisualStyleBackColor = true;
-            this.btn_StockManagement.Click += new System.EventHandler(this.btn_StockManagement_Click);
-            // 
-            // btn_Sales
-            // 
-            this.btn_Sales.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_Sales.FlatAppearance.BorderSize = 0;
-            this.btn_Sales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Sales.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Sales.ForeColor = System.Drawing.Color.White;
-            this.btn_Sales.Location = new System.Drawing.Point(10, 195);
-            this.btn_Sales.Name = "btn_Sales";
-            this.btn_Sales.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_Sales.Size = new System.Drawing.Size(230, 45);
-            this.btn_Sales.TabIndex = 10;
-            this.btn_Sales.Text = "Sales Records";
-            this.btn_Sales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Sales.UseVisualStyleBackColor = true;
-            this.btn_Sales.Click += new System.EventHandler(this.btn_Sales_Click);
+            this.btn_Purchase.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_Purchase.FlatAppearance.BorderSize = 0;
+            this.btn_Purchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Purchase.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Purchase.ForeColor = System.Drawing.Color.White;
+            this.btn_Purchase.Location = new System.Drawing.Point(10, 195);
+            this.btn_Purchase.Name = "btn_Purchase";
+            this.btn_Purchase.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_Purchase.Size = new System.Drawing.Size(230, 45);
+            this.btn_Purchase.TabIndex = 10;
+            this.btn_Purchase.Text = "Purchase Records";
+            this.btn_Purchase.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Purchase.UseVisualStyleBackColor = true;
+            this.btn_Purchase.Click += new System.EventHandler(this.btn_Sales_Click);
             // 
             // btn_logout
             // 
@@ -225,14 +187,12 @@
         #endregion
 
         private System.Windows.Forms.Panel panelsideMenu;
-        private System.Windows.Forms.Button btn_ReportsAnalytics;
-        private System.Windows.Forms.Button btn_StockManagement;
-        private System.Windows.Forms.Button btn_Sales;
+        private System.Windows.Forms.Button btn_RequestPaddy;
+        private System.Windows.Forms.Button btn_Purchase;
         private System.Windows.Forms.Button btn_logout;
         private System.Windows.Forms.Button btn_profile;
         private System.Windows.Forms.Button btn_Dashboard;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panelContainer;
-        private System.Windows.Forms.Button btnPrice_Monitoring;
     }
 }

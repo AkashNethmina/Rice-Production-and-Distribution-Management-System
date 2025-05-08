@@ -30,20 +30,12 @@ namespace RiceMgmtApp
         {
             // Initialize UI elements
             LoadBuyerInfo();
-            LoadFarmersData();
+          
 
-            // Initialize payment status combo box
-            cmbPaymentStatus.Items.Clear();
-            cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
-            cmbPaymentStatus.SelectedIndex = 0;
+        
+         
 
-            // Add stock-related functionality
-            btnViewStock.Click += btnViewStock_Click;
-
-            // Add purchase-related functionality
-            btnCreatePurchase.Click += btnCreatePurchase_Click;
-            btnClear.Click += btnClear_Click;
-            btnRefresh.Click += btnRefresh_Click;
+            
 
             // Add purchase history functionality
             dataGridViewSales.CellClick += dataGridViewSales_CellClick;
@@ -53,9 +45,7 @@ namespace RiceMgmtApp
             btnSaveInvoice.Click += btnSaveInvoice_Click;
             btnPrintInvoice.Click += btnPrintInvoice_Click;
 
-            // Add event handlers for calculating total when quantity or price changes
-            txtQuantity.TextChanged += CalculateTotalAmount;
-            txtPurchasePrice.TextChanged += CalculateTotalAmount;
+            
 
             // Style data grid views
             StylePurchaseGrid();
@@ -66,8 +56,6 @@ namespace RiceMgmtApp
             // Hide invoice panel initially
             pnlInvoice.Visible = false;
 
-            // FIX: Add the missing event handler for farmer selection
-            dataGridViewFarmers.CellClick += dataGridViewFarmers_CellClick;
         }
 
         private void LoadBuyerInfo()
@@ -97,72 +85,9 @@ namespace RiceMgmtApp
             }
         }
 
-        private void LoadFarmersData()
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string query = @"SELECT u.UserID, u.FullName, 
-                                    (SELECT COUNT(*) FROM Stock s WHERE s.FarmerID = u.UserID AND s.Quantity > 0) AS StocksAvailable,
-                                    (SELECT SUM(s.Quantity) FROM Stock s WHERE s.FarmerID = u.UserID AND s.Quantity > 0) AS TotalQuantity
-                                    FROM Users u
-                                    WHERE u.RoleID = 2 -- Farmer role
-                                    AND u.Status = 'Active'
-                                    AND EXISTS (SELECT 1 FROM Stock s WHERE s.FarmerID = u.UserID AND s.Quantity > 0)
-                                    ORDER BY u.FullName";
+     
 
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    dataGridViewFarmers.DataSource = dt;
-
-                    // Rename columns for better display
-                    if (dataGridViewFarmers.Columns.Contains("UserID"))
-                        dataGridViewFarmers.Columns["UserID"].HeaderText = "Farmer ID";
-                    if (dataGridViewFarmers.Columns.Contains("FullName"))
-                        dataGridViewFarmers.Columns["FullName"].HeaderText = "Farmer Name";
-                    if (dataGridViewFarmers.Columns.Contains("StocksAvailable"))
-                        dataGridViewFarmers.Columns["StocksAvailable"].HeaderText = "Stock Types";
-                    if (dataGridViewFarmers.Columns.Contains("TotalQuantity"))
-                        dataGridViewFarmers.Columns["TotalQuantity"].HeaderText = "Total Quantity (kg)";
-
-                    // Style the farmers grid
-                    StyleFarmersGrid();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading farmers data: {ex.Message}");
-            }
-        }
-
-        private void StyleFarmersGrid()
-        {
-            dataGridViewFarmers.EnableHeadersVisualStyles = false;
-            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.BackColor = Color.DarkBlue;
-            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
-            dataGridViewFarmers.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            dataGridViewFarmers.DefaultCellStyle.BackColor = Color.White;
-            dataGridViewFarmers.DefaultCellStyle.ForeColor = Color.Black;
-            dataGridViewFarmers.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
-            dataGridViewFarmers.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewFarmers.DefaultCellStyle.SelectionBackColor = Color.LightSteelBlue;
-            dataGridViewFarmers.DefaultCellStyle.SelectionForeColor = Color.Black;
-
-            dataGridViewFarmers.AlternatingRowsDefaultCellStyle.BackColor = Color.AliceBlue;
-            dataGridViewFarmers.RowTemplate.Height = 28;
-            dataGridViewFarmers.GridColor = Color.LightGray;
-            dataGridViewFarmers.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewFarmers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-            dataGridViewFarmers.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewFarmers.MultiSelect = false;
-            dataGridViewFarmers.AllowUserToAddRows = false;
-            dataGridViewFarmers.ReadOnly = true;
-        }
+      
 
         private void StylePurchaseGrid()
         {
@@ -249,309 +174,10 @@ namespace RiceMgmtApp
         }
 
 
-        private void dataGridViewFarmers_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                var row = dataGridViewFarmers.Rows[e.RowIndex];
-                if (row.Cells["UserID"].Value != null && row.Cells["FullName"].Value != null)
-                {
-                    selectedFarmerId = Convert.ToInt32(row.Cells["UserID"].Value);
-                    string farmerName = row.Cells["FullName"].Value.ToString();
-                    lblSelectedFarmer.Text = $"Selected Farmer: {farmerName}";
-                    lblSelectedFarmer.Visible = true;
-
-                    // Clear previous stock selection
-                    lblSelectedStock.Visible = false;
-                    lblSelectedStock.Tag = null;
-                }
-            }
-        }
-
-
-        private void ShowFarmerStock(int farmerId)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string query = "SELECT StockID, CropType, Quantity, LastUpdated FROM Stock WHERE FarmerID = @FarmerID AND Quantity > 0";
-                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                    adapter.SelectCommand.Parameters.AddWithValue("@FarmerID", farmerId);
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-
-                    if (dt.Rows.Count > 0)
-                    {
-                        // Show the stock in a separate form or dialog
-                        using (Form stockForm = new Form())
-                        {
-                            stockForm.Text = "Available Stock";
-                            stockForm.Size = new Size(600, 400);
-                            stockForm.StartPosition = FormStartPosition.CenterParent;
-
-                            DataGridView dgvStock = new DataGridView
-                            {
-                                Dock = DockStyle.Fill,
-                                DataSource = dt,
-                                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                                ReadOnly = true
-                            };
-
-                            Button btnSelect = new Button
-                            {
-                                Text = "Select Stock",
-                                Dock = DockStyle.Bottom,
-                                Height = 40
-                            };
-
-                            btnSelect.Click += (s, ev) =>
-                            {
-                                if (dgvStock.SelectedRows.Count > 0)
-                                {
-                                    DataGridViewRow row = dgvStock.SelectedRows[0];
-                                    selectedStockId = Convert.ToInt32(row.Cells["StockID"].Value);
-                                    decimal availableQuantity = Convert.ToDecimal(row.Cells["Quantity"].Value);
-                                    string cropType = row.Cells["CropType"].Value.ToString();
-
-                                    // Set the maximum available quantity
-                                    txtQuantity.Text = availableQuantity.ToString();
-                                    lblSelectedStock.Text = $"Selected: {cropType} - {availableQuantity} kg";
-                                    lblSelectedStock.Visible = true;
-
-                                    // Store selected stock ID and crop type for later reference
-                                    lblSelectedStock.Tag = new Tuple<int, string>(selectedStockId, cropType);
-
-                                    // Fetch and set suggested price based on crop type
-                                    FetchPriceForCropType(cropType);
-
-                                    stockForm.Close();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Please select a stock item.");
-                                }
-                            };
-
-                            stockForm.Controls.Add(dgvStock);
-                            stockForm.Controls.Add(btnSelect);
-
-                            stockForm.ShowDialog();
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("This farmer does not have any available stock to sell.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading stock data: {ex.Message}");
-            }
-        }
-
-        private void FetchPriceForCropType(string cropType)
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    string query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
-                    using (SqlCommand cmd = new SqlCommand(query, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@CropType", cropType);
-                        conn.Open();
-                        object result = cmd.ExecuteScalar();
-                        if (result != null && result != DBNull.Value)
-                        {
-                            decimal avgPrice = Convert.ToDecimal(result);
-                            txtPurchasePrice.Text = avgPrice.ToString();
-                        }
-                        else
-                        {
-                            MessageBox.Show($"No price data found for {cropType}. Please enter a price manually.");
-                            txtPurchasePrice.Text = string.Empty;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error fetching price information: {ex.Message}");
-            }
-        }
-
-        private void CalculateTotalAmount(object sender, EventArgs e)
-        {
-            try
-            {
-                if (decimal.TryParse(txtQuantity.Text, out decimal quantity) &&
-                    decimal.TryParse(txtPurchasePrice.Text, out decimal price))
-                {
-                    decimal total = quantity * price;
-                    txtTotalAmount.Text = total.ToString("N2");
-                }
-                else
-                {
-                    txtTotalAmount.Text = "0.00";
-                }
-            }
-            catch
-            {
-                txtTotalAmount.Text = "0.00";
-            }
-        }
-        private void ProcessPurchase()
-        {
-            if (!ValidateInputs()) return;
-
-            // Check if stock is selected
-            if (lblSelectedStock.Tag == null)
-            {
-                MessageBox.Show("Please select stock before processing the purchase.");
-                return;
-            }
-
-            // Extract stock ID and crop type from the tag
-            var stockInfo = (Tuple<int, string>)lblSelectedStock.Tag;
-            int stockId = stockInfo.Item1;
-            string cropType = stockInfo.Item2;
-            decimal purchaseQuantity = decimal.Parse(txtQuantity.Text);
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                SqlTransaction transaction = null;
-                try
-                {
-                    conn.Open();
-                    transaction = conn.BeginTransaction();
-
-                    // 1. Check if there's enough stock
-                    string checkStockQuery = "SELECT Quantity FROM Stock WHERE StockID = @StockID";
-                    using (SqlCommand checkCmd = new SqlCommand(checkStockQuery, conn, transaction))
-                    {
-                        checkCmd.Parameters.AddWithValue("@StockID", stockId);
-                        decimal availableQuantity = Convert.ToDecimal(checkCmd.ExecuteScalar());
-
-                        if (availableQuantity < purchaseQuantity)
-                        {
-                            MessageBox.Show($"Insufficient stock. Available: {availableQuantity} kg");
-                            return;
-                        }
-                    }
-
-                    // 2. Get the farmer ID for this stock
-                    string getFarmerQuery = "SELECT FarmerID FROM Stock WHERE StockID = @StockID";
-                    int farmerId;
-                    using (SqlCommand getFarmerCmd = new SqlCommand(getFarmerQuery, conn, transaction))
-                    {
-                        getFarmerCmd.Parameters.AddWithValue("@StockID", stockId);
-                        farmerId = Convert.ToInt32(getFarmerCmd.ExecuteScalar());
-                    }
-
-                    // 3. Insert the sale (which is a purchase from the buyer's perspective)
-                    string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate, CropType, StockID)
-                                      VALUES (@FarmerID, @BuyerID, 'Private', @SalePrice, @Quantity, @PaymentStatus, @SaleDate, @CropType, @StockID);
-                                      SELECT SCOPE_IDENTITY();";
-
-                    int newSaleId;
-                    using (SqlCommand insertCmd = new SqlCommand(insertSaleQuery, conn, transaction))
-                    {
-                        insertCmd.Parameters.AddWithValue("@FarmerID", farmerId);
-                        insertCmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
-                        insertCmd.Parameters.AddWithValue("@SalePrice", decimal.Parse(txtPurchasePrice.Text));
-                        insertCmd.Parameters.AddWithValue("@Quantity", purchaseQuantity);
-                        insertCmd.Parameters.AddWithValue("@PaymentStatus", cmbPaymentStatus.Text);
-                        insertCmd.Parameters.AddWithValue("@SaleDate", DateTime.Now);
-                        insertCmd.Parameters.AddWithValue("@CropType", cropType);
-                        insertCmd.Parameters.AddWithValue("@StockID", stockId);
-
-                        newSaleId = Convert.ToInt32(insertCmd.ExecuteScalar());
-                    }
-
-                    // 4. Update the stock quantity
-                    string updateStockQuery = "UPDATE Stock SET Quantity = Quantity - @SaleQuantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
-                    using (SqlCommand updateCmd = new SqlCommand(updateStockQuery, conn, transaction))
-                    {
-                        updateCmd.Parameters.AddWithValue("@SaleQuantity", purchaseQuantity);
-                        updateCmd.Parameters.AddWithValue("@StockID", stockId);
-                        updateCmd.ExecuteNonQuery();
-                    }
-
-                    // 5. Create invoice record
-                    string invoicePath = $"Invoice_{newSaleId}_{DateTime.Now:yyyyMMdd}.pdf";
-                    string insertInvoiceQuery = "INSERT INTO Invoices (SaleID, InvoicePath, CreatedAt) VALUES (@SaleID, @InvoicePath, GETDATE())";
-                    using (SqlCommand invoiceCmd = new SqlCommand(insertInvoiceQuery, conn, transaction))
-                    {
-                        invoiceCmd.Parameters.AddWithValue("@SaleID", newSaleId);
-                        invoiceCmd.Parameters.AddWithValue("@InvoicePath", invoicePath);
-                        invoiceCmd.ExecuteNonQuery();
-                    }
-
-                    transaction.Commit();
-                    MessageBox.Show("Purchase processed successfully!");
-
-                    // Set the selected sale ID for invoice generation
-                    selectedSaleId = newSaleId;
-
-                    // Show the invoice panel and generate invoice preview
-                    pnlInvoice.Visible = true;
-                    GenerateInvoicePreview(newSaleId);
-                }
-                catch (Exception ex)
-                {
-                    transaction?.Rollback();
-                    MessageBox.Show($"Error processing purchase: {ex.Message}");
-                }
-            }
-
-            // Refresh data
-            LoadBuyerPurchasesData();
-            LoadFarmersData();
-            ClearInputs();
-        }
-
-        private bool ValidateInputs()
-        {
-            if (selectedFarmerId <= 0)
-            {
-                MessageBox.Show("Please select a farmer.");
-                return false;
-            }
-
-            if (lblSelectedStock.Tag == null)
-            {
-                MessageBox.Show("Please select stock to purchase.");
-                return false;
-            }
-
-            if (cmbPaymentStatus.SelectedIndex == -1 ||
-                string.IsNullOrWhiteSpace(txtPurchasePrice.Text) ||
-                string.IsNullOrWhiteSpace(txtQuantity.Text))
-            {
-                MessageBox.Show("Please fill all required fields.");
-                return false;
-            }
-
-            if (!decimal.TryParse(txtPurchasePrice.Text, out _) || !decimal.TryParse(txtQuantity.Text, out _))
-            {
-                MessageBox.Show("Purchase Price and Quantity must be valid numbers.");
-                return false;
-            }
-
-            return true;
-        }
 
         private void ClearInputs()
         {
-            txtPurchasePrice.Clear();
-            txtQuantity.Clear();
-            txtTotalAmount.Clear();
-            lblSelectedStock.Visible = false;
-            lblSelectedStock.Tag = null;
-            cmbPaymentStatus.SelectedIndex = 0;
+            
             pnlInvoice.Visible = false;
             rtbInvoicePreview.Clear();
         }
@@ -633,36 +259,18 @@ namespace RiceMgmtApp
 
 
 
-        private void btnCreateSale_Click(object sender, EventArgs e)
-        {
-            ProcessPurchase();
-        }
-
+      
 
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            LoadFarmersData();
+            
             LoadBuyerPurchasesData();
             MessageBox.Show("Data refreshed successfully.");
         }
 
-        private void btnViewStock_Click(object sender, EventArgs e)
-        {
-            if (selectedFarmerId <= 0)
-            {
-                MessageBox.Show("Please select a farmer first.");
-                return;
-            }
-
-            ShowFarmerStock(selectedFarmerId);
-        }
-
-        private void btnCreatePurchase_Click(object sender, EventArgs e)
-        {
-            ProcessPurchase();
-        }
-
+       
+      
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearInputs();

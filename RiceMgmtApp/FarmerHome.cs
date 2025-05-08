@@ -19,6 +19,7 @@ namespace RiceMgmtApp
         private int currentFarmerId; // To store the current logged-in farmer's ID
         private decimal totalFieldSize = 0; // Total field size for the farmer
         private decimal totalStockQuantity = 0; // Total stock quantity for the farmer
+        private decimal totalsalesQuantity = 0;
 
         // Dictionary for crop types and quantities
         private Dictionary<string, decimal> stockByType = new Dictionary<string, decimal>();
@@ -46,6 +47,8 @@ namespace RiceMgmtApp
         {
             try
             {
+                int completedSalesCount = 0; // Declare the variable here
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -81,6 +84,23 @@ namespace RiceMgmtApp
                         object result = command.ExecuteScalar();
                         totalStockQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
                     }
+
+                    // Get completed sales count
+                    string salesQuery = @"
+                        SELECT 
+                            SUM(Quantity) as TotalQuantity
+                        FROM 
+                            Sales
+                        WHERE 
+                            FarmerID = @FarmerId ";
+
+                    using (SqlCommand command = new SqlCommand(salesQuery, connection))
+                    {
+                        command.Parameters.AddWithValue("@FarmerId", currentFarmerId);
+                        object result = command.ExecuteScalar();
+                        totalsalesQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+
+                    }
                 }
 
                 // Update UI elements
@@ -98,6 +118,7 @@ namespace RiceMgmtApp
             // Update your UI controls with the farmer's data
             lblTotalFieldSize.Text = totalFieldSize.ToString("N2") + " Acres";
             lblTotalStock.Text = totalStockQuantity.ToString("N2") + " kg";
+            lblTotalSales.Text = totalsalesQuantity.ToString("N2") + " Kg";
 
             // Note: You'll need to add these labels to your form design
             // and remove the previous user count labels
@@ -321,6 +342,7 @@ namespace RiceMgmtApp
             // Reset counters and dictionaries
             totalFieldSize = 0;
             totalStockQuantity = 0;
+            totalsalesQuantity = 0;
             stockByType.Clear();
             salesByMonth.Clear();
 
@@ -344,6 +366,7 @@ namespace RiceMgmtApp
             // Reset counters and dictionaries
             totalFieldSize = 0;
             totalStockQuantity = 0;
+            totalsalesQuantity = 0;
             stockByType.Clear();
             salesByMonth.Clear();
 

@@ -170,7 +170,6 @@ namespace RiceMgmtApp
             dataGridViewusers.Location = new Point(padding, topBarHeight + padding);
             dataGridViewusers.Size = new Size(this.Width - (padding * 2), this.Height - topBarHeight - (padding * 2));
         }
-
         private void LoadUsers()
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -195,8 +194,8 @@ namespace RiceMgmtApp
                     adapter.Fill(dt);
                     dataGridViewusers.DataSource = dt;
 
-                    StyleDataGridView(); // Apply modern styles
-                    AddActionButtons();  // Add modern action buttons
+                    StyleDataGridView(); 
+                    AddActionButtons();  
                 }
                 catch (Exception ex)
                 {
@@ -732,5 +731,10 @@ namespace RiceMgmtApp
         }
 
         #endregion
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+           
+        }
     }
 }

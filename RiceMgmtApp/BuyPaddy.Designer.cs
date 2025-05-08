@@ -30,33 +30,6 @@ namespace RiceMgmtApp
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanelMain = new System.Windows.Forms.TableLayoutPanel();
-            this.panelActionButtons = new System.Windows.Forms.Panel();
-            this.lblFarmersList = new System.Windows.Forms.Label();
-            this.dataGridViewFarmers = new System.Windows.Forms.DataGridView();
-            this.btnViewStock = new System.Windows.Forms.Button();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.lblSelectedFarmer = new System.Windows.Forms.Label();
-            this.lblSelectedStock = new System.Windows.Forms.Label();
-            this.panelSaleForm = new System.Windows.Forms.Panel();
-            this.groupBoxSaleDetails = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanelForm = new System.Windows.Forms.TableLayoutPanel();
-            this.flowLayoutPanelPrice = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblPurchasePrice = new System.Windows.Forms.Label();
-            this.txtPurchasePrice = new System.Windows.Forms.TextBox();
-            this.flowLayoutPanelQuantity = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblQuantity = new System.Windows.Forms.Label();
-            this.txtQuantity = new System.Windows.Forms.TextBox();
-            this.flowLayoutPanelTotal = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblTotalAmount = new System.Windows.Forms.Label();
-            this.txtTotalAmount = new System.Windows.Forms.TextBox();
-            this.flowLayoutPanelPayment = new System.Windows.Forms.FlowLayoutPanel();
-            this.lblPaymentStatus = new System.Windows.Forms.Label();
-            this.cmbPaymentStatus = new System.Windows.Forms.ComboBox();
-            this.flowLayoutPanelButtons = new System.Windows.Forms.FlowLayoutPanel();
-            this.btnCreatePurchase = new System.Windows.Forms.Button();
-            this.btnClear = new System.Windows.Forms.Button();
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeader = new System.Windows.Forms.Label();
             this.pnlInvoice = new System.Windows.Forms.Panel();
@@ -88,18 +61,6 @@ namespace RiceMgmtApp
             this.lblInvoiceDate = new System.Windows.Forms.Label();
             this.lblInvoiceNumber = new System.Windows.Forms.Label();
             this.lblInvoiceTitle = new System.Windows.Forms.Label();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanelMain.SuspendLayout();
-            this.panelActionButtons.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFarmers)).BeginInit();
-            this.panelSaleForm.SuspendLayout();
-            this.groupBoxSaleDetails.SuspendLayout();
-            this.tableLayoutPanelForm.SuspendLayout();
-            this.flowLayoutPanelPrice.SuspendLayout();
-            this.flowLayoutPanelQuantity.SuspendLayout();
-            this.flowLayoutPanelTotal.SuspendLayout();
-            this.flowLayoutPanelPayment.SuspendLayout();
-            this.flowLayoutPanelButtons.SuspendLayout();
             this.pnlHeader.SuspendLayout();
             this.pnlInvoice.SuspendLayout();
             this.groupBoxInvoice.SuspendLayout();
@@ -111,364 +72,13 @@ namespace RiceMgmtApp
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanelMain, 0, 1);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(1, 78);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(548, 933);
-            this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // tableLayoutPanelMain
-            // 
-            this.tableLayoutPanelMain.ColumnCount = 1;
-            this.tableLayoutPanelMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanelMain.Controls.Add(this.panelActionButtons, 0, 0);
-            this.tableLayoutPanelMain.Controls.Add(this.panelSaleForm, 0, 1);
-            this.tableLayoutPanelMain.Location = new System.Drawing.Point(3, 11);
-            this.tableLayoutPanelMain.Name = "tableLayoutPanelMain";
-            this.tableLayoutPanelMain.RowCount = 3;
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40.69641F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 42.87269F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.4309F));
-            this.tableLayoutPanelMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanelMain.Size = new System.Drawing.Size(542, 919);
-            this.tableLayoutPanelMain.TabIndex = 1;
-            // 
-            // panelActionButtons
-            // 
-            this.panelActionButtons.BackColor = System.Drawing.Color.White;
-            this.panelActionButtons.Controls.Add(this.lblFarmersList);
-            this.panelActionButtons.Controls.Add(this.dataGridViewFarmers);
-            this.panelActionButtons.Controls.Add(this.btnViewStock);
-            this.panelActionButtons.Controls.Add(this.btnRefresh);
-            this.panelActionButtons.Controls.Add(this.lblSelectedFarmer);
-            this.panelActionButtons.Controls.Add(this.lblSelectedStock);
-            this.panelActionButtons.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panelActionButtons.Location = new System.Drawing.Point(3, 3);
-            this.panelActionButtons.Name = "panelActionButtons";
-            this.panelActionButtons.Padding = new System.Windows.Forms.Padding(10);
-            this.panelActionButtons.Size = new System.Drawing.Size(536, 368);
-            this.panelActionButtons.TabIndex = 0;
-            // 
-            // lblFarmersList
-            // 
-            this.lblFarmersList.AutoSize = true;
-            this.lblFarmersList.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblFarmersList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.lblFarmersList.Location = new System.Drawing.Point(16, 10);
-            this.lblFarmersList.Name = "lblFarmersList";
-            this.lblFarmersList.Size = new System.Drawing.Size(146, 21);
-            this.lblFarmersList.TabIndex = 2;
-            this.lblFarmersList.Text = "Available Farmers";
-            // 
-            // dataGridViewFarmers
-            // 
-            this.dataGridViewFarmers.AllowUserToAddRows = false;
-            this.dataGridViewFarmers.AllowUserToDeleteRows = false;
-            this.dataGridViewFarmers.AllowUserToResizeRows = false;
-            this.dataGridViewFarmers.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewFarmers.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridViewFarmers.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dataGridViewFarmers.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dataGridViewFarmers.Location = new System.Drawing.Point(15, 34);
-            this.dataGridViewFarmers.MultiSelect = false;
-            this.dataGridViewFarmers.Name = "dataGridViewFarmers";
-            this.dataGridViewFarmers.ReadOnly = true;
-            this.dataGridViewFarmers.RowHeadersVisible = false;
-            this.dataGridViewFarmers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewFarmers.Size = new System.Drawing.Size(246, 128);
-            this.dataGridViewFarmers.TabIndex = 3;
-            this.dataGridViewFarmers.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFarmers_CellClick);
-            // 
-            // btnViewStock
-            // 
-            this.btnViewStock.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.btnViewStock.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnViewStock.FlatAppearance.BorderSize = 0;
-            this.btnViewStock.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnViewStock.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnViewStock.ForeColor = System.Drawing.Color.White;
-            this.btnViewStock.Location = new System.Drawing.Point(296, 34);
-            this.btnViewStock.Name = "btnViewStock";
-            this.btnViewStock.Size = new System.Drawing.Size(220, 35);
-            this.btnViewStock.TabIndex = 4;
-            this.btnViewStock.Text = "View Selected Farmer\'s Stock";
-            this.btnViewStock.UseVisualStyleBackColor = false;
-            this.btnViewStock.Click += new System.EventHandler(this.btnViewStock_Click);
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRefresh.FlatAppearance.BorderSize = 0;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(296, 75);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(220, 35);
-            this.btnRefresh.TabIndex = 5;
-            this.btnRefresh.Text = "Refresh Data";
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // lblSelectedFarmer
-            // 
-            this.lblSelectedFarmer.AutoSize = true;
-            this.lblSelectedFarmer.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedFarmer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.lblSelectedFarmer.Location = new System.Drawing.Point(15, 255);
-            this.lblSelectedFarmer.Name = "lblSelectedFarmer";
-            this.lblSelectedFarmer.Size = new System.Drawing.Size(138, 19);
-            this.lblSelectedFarmer.TabIndex = 6;
-            this.lblSelectedFarmer.Text = "No farmer selected";
-            this.lblSelectedFarmer.Visible = false;
-            // 
-            // lblSelectedStock
-            // 
-            this.lblSelectedStock.AutoSize = true;
-            this.lblSelectedStock.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblSelectedStock.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.lblSelectedStock.Location = new System.Drawing.Point(350, 255);
-            this.lblSelectedStock.Name = "lblSelectedStock";
-            this.lblSelectedStock.Size = new System.Drawing.Size(127, 19);
-            this.lblSelectedStock.TabIndex = 7;
-            this.lblSelectedStock.Text = "No stock selected";
-            this.lblSelectedStock.Visible = false;
-            // 
-            // panelSaleForm
-            // 
-            this.panelSaleForm.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panelSaleForm.Controls.Add(this.groupBoxSaleDetails);
-            this.panelSaleForm.Location = new System.Drawing.Point(3, 377);
-            this.panelSaleForm.Name = "panelSaleForm";
-            this.panelSaleForm.Padding = new System.Windows.Forms.Padding(10);
-            this.panelSaleForm.Size = new System.Drawing.Size(536, 318);
-            this.panelSaleForm.TabIndex = 1;
-            // 
-            // groupBoxSaleDetails
-            // 
-            this.groupBoxSaleDetails.Controls.Add(this.tableLayoutPanelForm);
-            this.groupBoxSaleDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBoxSaleDetails.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.groupBoxSaleDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.groupBoxSaleDetails.Location = new System.Drawing.Point(10, 10);
-            this.groupBoxSaleDetails.Name = "groupBoxSaleDetails";
-            this.groupBoxSaleDetails.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBoxSaleDetails.Size = new System.Drawing.Size(516, 298);
-            this.groupBoxSaleDetails.TabIndex = 0;
-            this.groupBoxSaleDetails.TabStop = false;
-            this.groupBoxSaleDetails.Text = "Purchase Details";
-            // 
-            // tableLayoutPanelForm
-            // 
-            this.tableLayoutPanelForm.ColumnCount = 2;
-            this.tableLayoutPanelForm.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45.56452F));
-            this.tableLayoutPanelForm.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 54.43548F));
-            this.tableLayoutPanelForm.Controls.Add(this.flowLayoutPanelPrice, 0, 0);
-            this.tableLayoutPanelForm.Controls.Add(this.flowLayoutPanelQuantity, 1, 0);
-            this.tableLayoutPanelForm.Controls.Add(this.flowLayoutPanelTotal, 0, 1);
-            this.tableLayoutPanelForm.Controls.Add(this.flowLayoutPanelPayment, 1, 1);
-            this.tableLayoutPanelForm.Controls.Add(this.flowLayoutPanelButtons, 0, 3);
-            this.tableLayoutPanelForm.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanelForm.Location = new System.Drawing.Point(10, 32);
-            this.tableLayoutPanelForm.Name = "tableLayoutPanelForm";
-            this.tableLayoutPanelForm.RowCount = 4;
-            this.tableLayoutPanelForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30.07813F));
-            this.tableLayoutPanelForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 38.28125F));
-            this.tableLayoutPanelForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 3.125F));
-            this.tableLayoutPanelForm.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.125F));
-            this.tableLayoutPanelForm.Size = new System.Drawing.Size(496, 256);
-            this.tableLayoutPanelForm.TabIndex = 0;
-            // 
-            // flowLayoutPanelPrice
-            // 
-            this.flowLayoutPanelPrice.Controls.Add(this.lblPurchasePrice);
-            this.flowLayoutPanelPrice.Controls.Add(this.txtPurchasePrice);
-            this.flowLayoutPanelPrice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelPrice.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelPrice.Location = new System.Drawing.Point(3, 3);
-            this.flowLayoutPanelPrice.Name = "flowLayoutPanelPrice";
-            this.flowLayoutPanelPrice.Size = new System.Drawing.Size(220, 71);
-            this.flowLayoutPanelPrice.TabIndex = 0;
-            // 
-            // lblPurchasePrice
-            // 
-            this.lblPurchasePrice.AutoSize = true;
-            this.lblPurchasePrice.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPurchasePrice.Location = new System.Drawing.Point(3, 0);
-            this.lblPurchasePrice.Name = "lblPurchasePrice";
-            this.lblPurchasePrice.Size = new System.Drawing.Size(151, 19);
-            this.lblPurchasePrice.TabIndex = 0;
-            this.lblPurchasePrice.Text = "Purchase Price (per kg):";
-            // 
-            // txtPurchasePrice
-            // 
-            this.txtPurchasePrice.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPurchasePrice.Location = new System.Drawing.Point(0, 24);
-            this.txtPurchasePrice.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.txtPurchasePrice.Name = "txtPurchasePrice";
-            this.txtPurchasePrice.Size = new System.Drawing.Size(150, 25);
-            this.txtPurchasePrice.TabIndex = 1;
-            this.txtPurchasePrice.TextChanged += new System.EventHandler(this.CalculateTotalAmount);
-            // 
-            // flowLayoutPanelQuantity
-            // 
-            this.flowLayoutPanelQuantity.Controls.Add(this.lblQuantity);
-            this.flowLayoutPanelQuantity.Controls.Add(this.txtQuantity);
-            this.flowLayoutPanelQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelQuantity.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelQuantity.Location = new System.Drawing.Point(229, 3);
-            this.flowLayoutPanelQuantity.Name = "flowLayoutPanelQuantity";
-            this.flowLayoutPanelQuantity.Size = new System.Drawing.Size(264, 71);
-            this.flowLayoutPanelQuantity.TabIndex = 1;
-            // 
-            // lblQuantity
-            // 
-            this.lblQuantity.AutoSize = true;
-            this.lblQuantity.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblQuantity.Location = new System.Drawing.Point(3, 0);
-            this.lblQuantity.Name = "lblQuantity";
-            this.lblQuantity.Size = new System.Drawing.Size(93, 19);
-            this.lblQuantity.TabIndex = 0;
-            this.lblQuantity.Text = "Quantity (kg):";
-            // 
-            // txtQuantity
-            // 
-            this.txtQuantity.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtQuantity.Location = new System.Drawing.Point(0, 24);
-            this.txtQuantity.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.txtQuantity.Name = "txtQuantity";
-            this.txtQuantity.Size = new System.Drawing.Size(203, 25);
-            this.txtQuantity.TabIndex = 1;
-            this.txtQuantity.TextChanged += new System.EventHandler(this.CalculateTotalAmount);
-            // 
-            // flowLayoutPanelTotal
-            // 
-            this.flowLayoutPanelTotal.Controls.Add(this.lblTotalAmount);
-            this.flowLayoutPanelTotal.Controls.Add(this.txtTotalAmount);
-            this.flowLayoutPanelTotal.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelTotal.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelTotal.Location = new System.Drawing.Point(3, 80);
-            this.flowLayoutPanelTotal.Name = "flowLayoutPanelTotal";
-            this.flowLayoutPanelTotal.Size = new System.Drawing.Size(220, 92);
-            this.flowLayoutPanelTotal.TabIndex = 2;
-            // 
-            // lblTotalAmount
-            // 
-            this.lblTotalAmount.AutoSize = true;
-            this.lblTotalAmount.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblTotalAmount.Location = new System.Drawing.Point(3, 0);
-            this.lblTotalAmount.Name = "lblTotalAmount";
-            this.lblTotalAmount.Size = new System.Drawing.Size(95, 19);
-            this.lblTotalAmount.TabIndex = 0;
-            this.lblTotalAmount.Text = "Total Amount:";
-            // 
-            // txtTotalAmount
-            // 
-            this.txtTotalAmount.BackColor = System.Drawing.Color.White;
-            this.txtTotalAmount.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtTotalAmount.Location = new System.Drawing.Point(0, 24);
-            this.txtTotalAmount.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.txtTotalAmount.Name = "txtTotalAmount";
-            this.txtTotalAmount.ReadOnly = true;
-            this.txtTotalAmount.Size = new System.Drawing.Size(206, 25);
-            this.txtTotalAmount.TabIndex = 1;
-            // 
-            // flowLayoutPanelPayment
-            // 
-            this.flowLayoutPanelPayment.Controls.Add(this.lblPaymentStatus);
-            this.flowLayoutPanelPayment.Controls.Add(this.cmbPaymentStatus);
-            this.flowLayoutPanelPayment.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelPayment.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanelPayment.Location = new System.Drawing.Point(229, 80);
-            this.flowLayoutPanelPayment.Name = "flowLayoutPanelPayment";
-            this.flowLayoutPanelPayment.Size = new System.Drawing.Size(264, 92);
-            this.flowLayoutPanelPayment.TabIndex = 3;
-            // 
-            // lblPaymentStatus
-            // 
-            this.lblPaymentStatus.AutoSize = true;
-            this.lblPaymentStatus.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblPaymentStatus.Location = new System.Drawing.Point(3, 0);
-            this.lblPaymentStatus.Name = "lblPaymentStatus";
-            this.lblPaymentStatus.Size = new System.Drawing.Size(108, 19);
-            this.lblPaymentStatus.TabIndex = 0;
-            this.lblPaymentStatus.Text = "Payment Status:";
-            // 
-            // cmbPaymentStatus
-            // 
-            this.cmbPaymentStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbPaymentStatus.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cmbPaymentStatus.Items.AddRange(new object[] {
-            "Paid",
-            "Pending",
-            "Partial"});
-            this.cmbPaymentStatus.Location = new System.Drawing.Point(0, 24);
-            this.cmbPaymentStatus.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
-            this.cmbPaymentStatus.Name = "cmbPaymentStatus";
-            this.cmbPaymentStatus.Size = new System.Drawing.Size(250, 25);
-            this.cmbPaymentStatus.TabIndex = 1;
-            // 
-            // flowLayoutPanelButtons
-            // 
-            this.tableLayoutPanelForm.SetColumnSpan(this.flowLayoutPanelButtons, 2);
-            this.flowLayoutPanelButtons.Controls.Add(this.btnCreatePurchase);
-            this.flowLayoutPanelButtons.Controls.Add(this.btnClear);
-            this.flowLayoutPanelButtons.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanelButtons.Location = new System.Drawing.Point(3, 186);
-            this.flowLayoutPanelButtons.Name = "flowLayoutPanelButtons";
-            this.flowLayoutPanelButtons.Size = new System.Drawing.Size(490, 67);
-            this.flowLayoutPanelButtons.TabIndex = 4;
-            // 
-            // btnCreatePurchase
-            // 
-            this.btnCreatePurchase.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
-            this.btnCreatePurchase.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCreatePurchase.FlatAppearance.BorderSize = 0;
-            this.btnCreatePurchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreatePurchase.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnCreatePurchase.ForeColor = System.Drawing.Color.White;
-            this.btnCreatePurchase.Location = new System.Drawing.Point(0, 10);
-            this.btnCreatePurchase.Margin = new System.Windows.Forms.Padding(0, 10, 10, 0);
-            this.btnCreatePurchase.Name = "btnCreatePurchase";
-            this.btnCreatePurchase.Size = new System.Drawing.Size(200, 40);
-            this.btnCreatePurchase.TabIndex = 0;
-            this.btnCreatePurchase.Text = "Process Purchase";
-            this.btnCreatePurchase.UseVisualStyleBackColor = false;
-            this.btnCreatePurchase.Click += new System.EventHandler(this.btnCreatePurchase_Click);
-            // 
-            // btnClear
-            // 
-            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
-            this.btnClear.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClear.FlatAppearance.BorderSize = 0;
-            this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClear.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnClear.ForeColor = System.Drawing.Color.White;
-            this.btnClear.Location = new System.Drawing.Point(210, 10);
-            this.btnClear.Margin = new System.Windows.Forms.Padding(0, 10, 0, 0);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(200, 40);
-            this.btnClear.TabIndex = 1;
-            this.btnClear.Text = "Clear Form";
-            this.btnClear.UseVisualStyleBackColor = false;
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
             // pnlHeader
             // 
             this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
             this.pnlHeader.Controls.Add(this.lblHeader);
             this.pnlHeader.Location = new System.Drawing.Point(7, 7);
             this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1090, 65);
+            this.pnlHeader.Size = new System.Drawing.Size(1060, 65);
             this.pnlHeader.TabIndex = 0;
             // 
             // lblHeader
@@ -478,7 +88,7 @@ namespace RiceMgmtApp
             this.lblHeader.Location = new System.Drawing.Point(3, 0);
             this.lblHeader.Name = "lblHeader";
             this.lblHeader.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.lblHeader.Size = new System.Drawing.Size(1084, 65);
+            this.lblHeader.Size = new System.Drawing.Size(1057, 65);
             this.lblHeader.TabIndex = 0;
             this.lblHeader.Text = "Buy Paddy";
             this.lblHeader.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -488,10 +98,11 @@ namespace RiceMgmtApp
             this.pnlInvoice.AutoScroll = true;
             this.pnlInvoice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
             this.pnlInvoice.Controls.Add(this.groupBoxInvoice);
+            this.pnlInvoice.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlInvoice.Location = new System.Drawing.Point(3, 11);
             this.pnlInvoice.Name = "pnlInvoice";
             this.pnlInvoice.Padding = new System.Windows.Forms.Padding(10);
-            this.pnlInvoice.Size = new System.Drawing.Size(542, 290);
+            this.pnlInvoice.Size = new System.Drawing.Size(1043, 290);
             this.pnlInvoice.TabIndex = 1;
             this.pnlInvoice.Visible = false;
             // 
@@ -505,7 +116,7 @@ namespace RiceMgmtApp
             this.groupBoxInvoice.Location = new System.Drawing.Point(10, 10);
             this.groupBoxInvoice.Name = "groupBoxInvoice";
             this.groupBoxInvoice.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBoxInvoice.Size = new System.Drawing.Size(522, 270);
+            this.groupBoxInvoice.Size = new System.Drawing.Size(1023, 270);
             this.groupBoxInvoice.TabIndex = 0;
             this.groupBoxInvoice.TabStop = false;
             this.groupBoxInvoice.Text = "Invoice Preview";
@@ -519,7 +130,7 @@ namespace RiceMgmtApp
             this.rtbInvoicePreview.Location = new System.Drawing.Point(10, 32);
             this.rtbInvoicePreview.Name = "rtbInvoicePreview";
             this.rtbInvoicePreview.ReadOnly = true;
-            this.rtbInvoicePreview.Size = new System.Drawing.Size(502, 178);
+            this.rtbInvoicePreview.Size = new System.Drawing.Size(1003, 178);
             this.rtbInvoicePreview.TabIndex = 0;
             this.rtbInvoicePreview.Text = "";
             // 
@@ -531,7 +142,7 @@ namespace RiceMgmtApp
             this.pnlInvoiceButtons.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlInvoiceButtons.Location = new System.Drawing.Point(10, 210);
             this.pnlInvoiceButtons.Name = "pnlInvoiceButtons";
-            this.pnlInvoiceButtons.Size = new System.Drawing.Size(502, 50);
+            this.pnlInvoiceButtons.Size = new System.Drawing.Size(1003, 50);
             this.pnlInvoiceButtons.TabIndex = 1;
             // 
             // btnSaveInvoice
@@ -570,23 +181,24 @@ namespace RiceMgmtApp
             // 
             this.panelSalesGrid.BackColor = System.Drawing.Color.White;
             this.panelSalesGrid.Controls.Add(this.groupBox1);
-            this.panelSalesGrid.Location = new System.Drawing.Point(555, 388);
+            this.panelSalesGrid.Location = new System.Drawing.Point(18, 78);
             this.panelSalesGrid.Name = "panelSalesGrid";
             this.panelSalesGrid.Padding = new System.Windows.Forms.Padding(10);
-            this.panelSalesGrid.Size = new System.Drawing.Size(545, 314);
+            this.panelSalesGrid.Size = new System.Drawing.Size(1049, 314);
             this.panelSalesGrid.TabIndex = 2;
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dataGridViewSales);
             this.groupBox1.Controls.Add(this.btnGenerateInvoice);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
             this.groupBox1.Location = new System.Drawing.Point(10, 10);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBox1.Size = new System.Drawing.Size(525, 294);
+            this.groupBox1.Size = new System.Drawing.Size(1026, 294);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Purchase History";
@@ -596,6 +208,8 @@ namespace RiceMgmtApp
             this.dataGridViewSales.AllowUserToAddRows = false;
             this.dataGridViewSales.AllowUserToDeleteRows = false;
             this.dataGridViewSales.AllowUserToResizeRows = false;
+            this.dataGridViewSales.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewSales.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewSales.BackgroundColor = System.Drawing.Color.White;
             this.dataGridViewSales.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -606,7 +220,7 @@ namespace RiceMgmtApp
             this.dataGridViewSales.ReadOnly = true;
             this.dataGridViewSales.RowHeadersVisible = false;
             this.dataGridViewSales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewSales.Size = new System.Drawing.Size(512, 127);
+            this.dataGridViewSales.Size = new System.Drawing.Size(1013, 189);
             this.dataGridViewSales.TabIndex = 0;
             // 
             // btnGenerateInvoice
@@ -684,16 +298,18 @@ namespace RiceMgmtApp
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.pnlInvoice, 0, 1);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(552, 78);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(18, 398);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(548, 304);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1049, 304);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // lblInvoiceTotalValue
@@ -806,27 +422,9 @@ namespace RiceMgmtApp
             this.Controls.Add(this.pnlHeader);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.panelSalesGrid);
-            this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "BuyPaddy";
             this.Padding = new System.Windows.Forms.Padding(15);
-            this.Size = new System.Drawing.Size(1085, 795);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanelMain.ResumeLayout(false);
-            this.panelActionButtons.ResumeLayout(false);
-            this.panelActionButtons.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFarmers)).EndInit();
-            this.panelSaleForm.ResumeLayout(false);
-            this.groupBoxSaleDetails.ResumeLayout(false);
-            this.tableLayoutPanelForm.ResumeLayout(false);
-            this.flowLayoutPanelPrice.ResumeLayout(false);
-            this.flowLayoutPanelPrice.PerformLayout();
-            this.flowLayoutPanelQuantity.ResumeLayout(false);
-            this.flowLayoutPanelQuantity.PerformLayout();
-            this.flowLayoutPanelTotal.ResumeLayout(false);
-            this.flowLayoutPanelTotal.PerformLayout();
-            this.flowLayoutPanelPayment.ResumeLayout(false);
-            this.flowLayoutPanelPayment.PerformLayout();
-            this.flowLayoutPanelButtons.ResumeLayout(false);
+            this.Size = new System.Drawing.Size(1085, 709);
             this.pnlHeader.ResumeLayout(false);
             this.pnlInvoice.ResumeLayout(false);
             this.groupBoxInvoice.ResumeLayout(false);
@@ -840,52 +438,9 @@ namespace RiceMgmtApp
 
         }
 
-        private void InitializeFormData()
-        {
-            // This method would typically populate ComboBoxes, initial values, etc.
-            cmbPaymentStatus.Items.Clear();
-            cmbPaymentStatus.Items.AddRange(new object[] { "Paid", "Pending", "Partial" });
-            cmbPaymentStatus.SelectedIndex = 0;
+       
 
-            // Clear form fields
-            txtPurchasePrice.Clear();
-            txtQuantity.Clear();
-            txtTotalAmount.Clear();
-
-            // Set up DataGridViews
-            SetupDataGridViews();
-        }
-
-        private void SetupDataGridViews()
-        {
-            // Configure Farmers DataGridView
-            dataGridViewFarmers.Columns.Clear();
-            dataGridViewFarmers.Columns.Add("Id", "ID");
-            dataGridViewFarmers.Columns.Add("Name", "Farmer Name");
-            dataGridViewFarmers.Columns.Add("Contact", "Contact");
-            dataGridViewFarmers.Columns.Add("Location", "Location");
-            dataGridViewFarmers.Columns.Add("StockQuantity", "Available Stock (kg)");
-
-            // Configure Sales/Purchases DataGridView
-            dataGridViewSales.Columns.Clear();
-            dataGridViewSales.Columns.Add("Id", "ID");
-            dataGridViewSales.Columns.Add("Date", "Date");
-            dataGridViewSales.Columns.Add("FarmerName", "Farmer");
-            dataGridViewSales.Columns.Add("Quantity", "Quantity (kg)");
-            dataGridViewSales.Columns.Add("Price", "Price per kg");
-            dataGridViewSales.Columns.Add("Total", "Total Amount");
-            dataGridViewSales.Columns.Add("PaymentStatus", "Payment Status");
-
-            // Adjust column widths
-            dataGridViewFarmers.Columns["Id"].Width = 50;
-            dataGridViewFarmers.Columns["Name"].Width = 150;
-            dataGridViewFarmers.Columns["StockQuantity"].Width = 120;
-
-            dataGridViewSales.Columns["Id"].Width = 50;
-            dataGridViewSales.Columns["Date"].Width = 100;
-            dataGridViewSales.Columns["FarmerName"].Width = 150;
-            dataGridViewSales.Columns["Total"].Width = 120;
-        }
+     
 
         
 
@@ -913,28 +468,14 @@ namespace RiceMgmtApp
         
 
         #endregion
-
-        // Declare all the control variables
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelMain;
-        private System.Windows.Forms.Panel panelSaleForm;
-        private System.Windows.Forms.GroupBox groupBoxSaleDetails;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanelForm;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelButtons;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelBuyerType;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelBuyer;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPrice;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelQuantity;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelTotal;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelPayment;
         private System.Windows.Forms.Panel panelSalesGrid;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanelInvoiceButtons;
         private System.Windows.Forms.Panel panelInvoice;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBoxInvoice;
         private System.Windows.Forms.Label lblHeader;
-        private System.Windows.Forms.Button btnCreatePurchase;
-        private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnGenerateInvoice;
         private System.Windows.Forms.Button btnSaveInvoice;
         private System.Windows.Forms.Button btnPrintInvoice;
@@ -944,26 +485,11 @@ namespace RiceMgmtApp
         private System.Windows.Forms.Panel pnlInvoiceButtons;
         private System.Windows.Forms.Panel pnlInvoice;
         private System.Windows.Forms.Panel pnlInvoicePreview;
-        private System.Windows.Forms.TextBox txtPurchasePrice;
-        private System.Windows.Forms.TextBox txtQuantity;
-        private System.Windows.Forms.TextBox txtTotalAmount;
-        private System.Windows.Forms.ComboBox cmbPaymentStatus;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnPrint;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.DataGridView dataGridViewPurchases;
         private System.Windows.Forms.Label lblInvoicePreview;
-        private System.Windows.Forms.Label lblPurchasePrice;
-        private System.Windows.Forms.Label lblQuantity;
-        private System.Windows.Forms.Label lblTotalAmount;
-        private System.Windows.Forms.Label lblPaymentStatus;
-        private System.Windows.Forms.Panel panelActionButtons;
-        private System.Windows.Forms.Label lblFarmersList;
-        private System.Windows.Forms.DataGridView dataGridViewFarmers;
-        private System.Windows.Forms.Button btnViewStock;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Label lblSelectedFarmer;
-        private System.Windows.Forms.Label lblSelectedStock;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label lblInvoiceTotalValue;
         private System.Windows.Forms.Label lblInvoiceTotal;

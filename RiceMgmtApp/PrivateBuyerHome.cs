@@ -13,26 +13,24 @@ using Microsoft.Office.Interop.Excel;
 
 namespace RiceMgmtApp
 {
-    public partial class PrivateBuyerHome: UserControl
+    public partial class PrivateBuyerHome : UserControl
     {
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
-        private int totalUsers = 0;
-        private int adminCount = 0;
-        private int farmerCount = 0;
-        private int governmentCount = 0;
-        private int privateBuyerCount = 0;
-
-        // Dictionary to store role names and their corresponding counts
-        private Dictionary<string, int> roleCounts = new Dictionary<string, int>();
+        private int currentBuyerId; // To store the current logged-in farmer's ID
+        private decimal totalPurchaseQuantity = 0; // Total field size for the farmer
+        private decimal totalStockQuantity = 0; // Total stock quantity for the farmer
+        private decimal totalrequestQuantity = 0;
 
         // Dictionary for crop types and quantities
         private Dictionary<string, decimal> stockByType = new Dictionary<string, decimal>();
 
         // Dictionary for sales data by month
         private Dictionary<string, decimal> salesByMonth = new Dictionary<string, decimal>();
-        public PrivateBuyerHome()
+
+        public PrivateBuyerHome(int buyerid)
         {
             InitializeComponent();
+            this.currentBuyerId = buyerid;
             // Subscribe to the Load event
             this.Load += PrivateBuyerHome_Load;
         }
@@ -40,86 +38,90 @@ namespace RiceMgmtApp
         private void PrivateBuyerHome_Load(object sender, EventArgs e)
         {
             // Load all data when the control is loaded
-            LoadUserStatistics();
+            LoadBuyerStatistics();
             SetupSalesChart();
             SetupStockChart();
         }
 
-        private void LoadUserStatistics()
+        private void LoadBuyerStatistics()
         {
             try
             {
+                int completedSalesCount = 0; // Declare the variable here
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    // SQL query to get user counts by role
-                    string query = @"
+                    // Get total Sales quantity
+                    string purchaseQuantity = @"
                         SELECT 
-                            r.RoleName, 
-                            COUNT(u.UserID) as UserCount
+                            SUM(Quantity) as TotalQuantity
                         FROM 
-                            Users u
-                        JOIN 
-                            Roles r ON u.RoleID = r.RoleID
-                        GROUP BY 
-                            r.RoleName, r.RoleID
-                        ORDER BY 
-                            r.RoleID";
+                            Sales
+                        WHERE 
+                            BuyerID = @BuyerID";
 
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    using (SqlCommand command = new SqlCommand(purchaseQuantity, connection))
                     {
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                string roleName = reader["RoleName"].ToString();
-                                int count = Convert.ToInt32(reader["UserCount"]);
-
-                                // Store in dictionary
-                                roleCounts[roleName] = count;
-
-                                // Update specific counters
-                                switch (roleName)
-                                {
-                                    case "Admin":
-                                        adminCount = count;
-                                        break;
-                                    case "Farmer":
-                                        farmerCount = count;
-                                        break;
-                                    case "Government":
-                                        governmentCount = count;
-                                        break;
-                                    case "Private Buyer":
-                                        privateBuyerCount = count;
-                                        break;
-                                }
-
-                                totalUsers += count;
-                            }
-                        }
+                        command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                        object result = command.ExecuteScalar();
+                        totalPurchaseQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
                     }
+
+                    // Get total stock quantity
+                    //string stockQuery = @"
+                    //    SELECT 
+                    //        SUM(Quantity) as TotalQuantity
+                    //    FROM 
+                    //        Stock
+                    //    WHERE 
+                    //        BuyerID = @BuyerID";
+
+                    //using (SqlCommand command = new SqlCommand(stockQuery, connection))
+                    //{
+                    //    command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                    //    object result = command.ExecuteScalar();
+                    //    totalStockQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+                    //}
+
+                    // Get request Paddy count
+                    string requestQuantity = @"
+                        SELECT 
+                            SUM(Quantity) as TotalQuantity
+                        FROM 
+                            RequestPaddy
+                        WHERE 
+                            BuyerID = @BuyerID AND RequestStatus = 'Pending'";
+
+                    using (SqlCommand command = new SqlCommand(requestQuantity, connection))
+                    {
+                        command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+                        object result = command.ExecuteScalar();
+                        totalrequestQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
+                    }
+
                 }
 
                 // Update UI elements
-                UpdateUserStatisticsDisplay();
+                UpdateBuyerStatisticsDisplay();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading user statistics: " + ex.Message, "Database Error",
+                MessageBox.Show("Error loading buyer statistics: " + ex.Message, "Database Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void UpdateUserStatisticsDisplay()
+        private void UpdateBuyerStatisticsDisplay()
         {
-            // Update your UI controls with the counts
-            lblTotalUsers.Text = totalUsers.ToString();
-            lblAdminCount.Text = adminCount.ToString();
-            lblFarmerCount.Text = farmerCount.ToString();
-            lblGovernmentCount.Text = governmentCount.ToString();
-            lblPrivateBuyerCount.Text = privateBuyerCount.ToString();
+            // Update your UI controls with the farmer's data
+            lbltotalPurchaseQuantity.Text = totalPurchaseQuantity.ToString("N2") + " kg";
+            lblTotalRiceSales.Text = totalStockQuantity.ToString("N2") + " kg";
+            lblTotalrequest.Text = totalrequestQuantity.ToString("N2") + " Kg";
+
+            // Note: You'll need to add these labels to your form design
+            // and remove the previous user count labels
         }
 
         private void SetupSalesChart()
@@ -130,13 +132,15 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get monthly sales data
+                    // SQL query to get monthly sales data for this farmer only
                     string query = @"
                         SELECT 
                             FORMAT(SaleDate, 'yyyy-MM') as Month,
                             SUM(SalePrice * Quantity) as TotalSales
                         FROM 
                             Sales
+                        WHERE
+                            BuyerID = @BuyerID
                         GROUP BY 
                             FORMAT(SaleDate, 'yyyy-MM')
                         ORDER BY 
@@ -144,6 +148,7 @@ namespace RiceMgmtApp
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -170,13 +175,15 @@ namespace RiceMgmtApp
                 System.Windows.Forms.DataVisualization.Charting.Series salesSeries =
                     new System.Windows.Forms.DataVisualization.Charting.Series("Sales");
 
+                salesSeries.ChartType = SeriesChartType.Column;
+
                 foreach (var entry in salesByMonth)
                 {
                     salesSeries.Points.AddXY(entry.Key, entry.Value);
                 }
 
                 chartSales.Series.Add(salesSeries);
-                chartSales.Titles.Add(new Title("Monthly Sales", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
+                chartSales.Titles.Add(new Title("My Monthly Sales", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
 
                 // Set chart appearance
                 salesChartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
@@ -207,13 +214,15 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get stock data by crop type
+                    // SQL query to get stock data by crop type for this farmer only
                     string query = @"
                         SELECT 
                             CropType,
                             SUM(Quantity) as TotalQuantity
                         FROM 
-                            Stock
+                            Sales
+                        WHERE 
+                            BuyerID = @BuyerID
                         GROUP BY 
                             CropType
                         ORDER BY 
@@ -221,6 +230,7 @@ namespace RiceMgmtApp
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
+                        command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
@@ -249,16 +259,20 @@ namespace RiceMgmtApp
                 System.Windows.Forms.DataVisualization.Charting.Series stockSeries =
                     new System.Windows.Forms.DataVisualization.Charting.Series("Stock");
 
+                stockSeries.ChartType = SeriesChartType.Pie;
+
                 foreach (var entry in stockByType)
                 {
                     DataPoint point = new DataPoint();
                     point.SetValueXY(entry.Key, entry.Value);
                     point.LegendText = entry.Key;
+                    // Show percentage in the pie chart
+                    point.Label = "#PERCENT{P0}";
                     stockSeries.Points.Add(point);
                 }
 
                 chartStock.Series.Add(stockSeries);
-                chartStock.Titles.Add(new Title("Current Stock by Crop Type", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
+                chartStock.Titles.Add(new Title("My Current Stock by Crop Type", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
 
                 // Specify the full namespace for Legend to resolve ambiguity
                 System.Windows.Forms.DataVisualization.Charting.Legend stockLegend =
@@ -276,16 +290,59 @@ namespace RiceMgmtApp
             }
         }
 
+        // Add method to get field details (total acreage by zone)
+        //private void LoadFieldsByZone()
+        //{
+        //    try
+        //    {
+        //        using (SqlConnection connection = new SqlConnection(connectionString))
+        //        {
+        //            connection.Open();
+
+        //            // SQL query to get fields by zone
+        //            string query = @"
+        //                SELECT 
+        //                    Zone,
+        //                    SUM(FieldSize) as TotalSize
+        //                FROM 
+        //                    Fields
+        //                WHERE 
+        //                    BuyerID = @BuyerID
+        //                GROUP BY 
+        //                    Zone
+        //                ORDER BY 
+        //                    TotalSize DESC";
+
+        //            using (SqlCommand command = new SqlCommand(query, connection))
+        //            {
+        //                command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+
+        //                // Explicitly specify the namespace for DataTable to resolve ambiguity
+        //                System.Data.DataTable dt = new System.Data.DataTable();
+        //                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+        //                {
+        //                    adapter.Fill(dt);
+        //                }
+
+        //                // If you have a DataGridView for fields
+        //                // dgvFieldsByZone.DataSource = dt;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error loading field data: " + ex.Message, "Database Error",
+        //            MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
+
         // Button click handler for the refresh button
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Reset counters
-            totalUsers = 0;
-            adminCount = 0;
-            farmerCount = 0;
-            governmentCount = 0;
-            privateBuyerCount = 0;
-            roleCounts.Clear();
+            // Reset counters and dictionaries
+            totalPurchaseQuantity = 0;
+            totalStockQuantity = 0;
+            totalrequestQuantity = 0;
             stockByType.Clear();
             salesByMonth.Clear();
 
@@ -294,9 +351,10 @@ namespace RiceMgmtApp
             chartStock.Titles.Clear();
 
             // Reload all data
-            LoadUserStatistics();
+            LoadBuyerStatistics();
             SetupSalesChart();
             SetupStockChart();
+           // LoadFieldsByZone();
 
             MessageBox.Show("Dashboard data has been refreshed.", "Refresh Complete",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -305,20 +363,69 @@ namespace RiceMgmtApp
         // Add method to refresh data (can be called from outside if needed)
         public void RefreshDashboard()
         {
-            // Reset counters
-            totalUsers = 0;
-            adminCount = 0;
-            farmerCount = 0;
-            governmentCount = 0;
-            privateBuyerCount = 0;
-            roleCounts.Clear();
+            // Reset counters and dictionaries
+            totalPurchaseQuantity = 0;
+            totalStockQuantity = 0;
+            totalrequestQuantity = 0;
             stockByType.Clear();
             salesByMonth.Clear();
 
             // Reload all data
-            LoadUserStatistics();
+            LoadBuyerStatistics();
             SetupSalesChart();
             SetupStockChart();
+         //   LoadFieldsByZone();
+        }
+
+        // Add method to analyze crop performance
+        //public void AnalyzeCropPerformance()
+        //{
+        //    try
+        //    {
+        //        using (SqlConnection connection = new SqlConnection(connectionString))
+        //        {
+        //            connection.Open();
+
+        //            // SQL query to get sales performance by crop type
+        //            string query = @"
+        //                SELECT 
+        //                    CropType,
+        //                    SUM(Quantity) as TotalQuantitySold,
+        //                    SUM(SalePrice * Quantity) as TotalRevenue,
+        //                    AVG(SalePrice) as AveragePrice
+        //                FROM 
+        //                    Sales
+        //                WHERE 
+        //                    BuyerID = @BuyerID
+        //                GROUP BY 
+        //                    CropType
+        //                ORDER BY 
+        //                    TotalRevenue DESC";
+
+        //            using (SqlCommand command = new SqlCommand(query, connection))
+        //            {
+        //                command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+
+        //                // If you have a DataGridView for crop performance
+        //                // DataTable dt = new DataTable();
+        //                // using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+        //                // {
+        //                //     adapter.Fill(dt);
+        //                // }
+        //                // dgvCropPerformance.DataSource = dt;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Error analyzing crop performance: " + ex.Message, "Database Error",
+        //            MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //    }
+        //}
+
+        private void panelStats_Paint(object sender, PaintEventArgs e)
+        {
+            // You can add any custom painting if needed
         }
     }
 }
