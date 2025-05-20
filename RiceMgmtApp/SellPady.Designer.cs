@@ -673,7 +673,6 @@ namespace RiceMgmtApp
             this.dataGridViewSales.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewSales.Size = new System.Drawing.Size(636, 341);
             this.dataGridViewSales.TabIndex = 0;
-          //  this.dataGridViewSales.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewSales_CellContentClick);
             // 
             // groupBoxInvoice
             // 

@@ -5,7 +5,6 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using System.Text;
-
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 
@@ -26,33 +25,40 @@ namespace RiceMgmtApp
 
         private void SellPady_Load(object sender, EventArgs e)
         {
-            // Initialize UI elements
-            LoadFarmerSalesData();
-            LoadBuyerCombo();
+            try
+            {
+                // Initialize UI elements
+                StyleSalesGrid();  // Style first before loading data
+                LoadBuyerCombo();
 
-            cmbBuyerType.Items.Clear();
-            cmbBuyerType.Items.AddRange(new[] { "Government", "Private" });
-            cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
+                cmbBuyerType.Items.Clear();
+                cmbBuyerType.Items.AddRange(new[] { "Government", "Private" });
+                cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
 
-            cmbPaymentStatus.Items.Clear();
-            cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
+                cmbPaymentStatus.Items.Clear();
+                cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
 
-            // Set the farmer information
-            LoadFarmerInfo();
+                // Set the farmer information
+                LoadFarmerInfo();
 
-            // Add stock-related functionality
-            btnViewStock.Click += BtnViewStock_Click;
+                // Add event handlers
+                btnViewStock.Click += BtnViewStock_Click;
+                btnGenerateInvoice.Click += btnGenerateInvoice_Click;
+                btnSaveInvoice.Click += btnSaveInvoice_Click;
+                btnPrintInvoice.Click += btnPrintInvoice_Click;
+                txtQuantity.TextChanged += CalculateTotalAmount;
+                txtSalePrice.TextChanged += CalculateTotalAmount;
 
-            // Add invoice-related functionality
-            btnGenerateInvoice.Click += btnGenerateInvoice_Click;
-            btnSaveInvoice.Click += btnSaveInvoice_Click;
-            btnPrintInvoice.Click += btnPrintInvoice_Click;
+                // Add event handler for grid selection
+                dataGridViewSales.CellClick += dataGridViewSales_CellClick;
 
-            // Add event handlers for calculating total when quantity or price changes
-            txtQuantity.TextChanged += CalculateTotalAmount;
-            txtSalePrice.TextChanged += CalculateTotalAmount;
-
-            StyleSalesGrid();
+                // Load data last to ensure all handlers are set up
+                LoadFarmerSalesData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during form initialization: {ex.Message}");
+            }
         }
 
         private void LoadFarmerInfo()
@@ -80,45 +86,84 @@ namespace RiceMgmtApp
 
         private void CmbBuyerType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbBuyerType.SelectedItem?.ToString() == "Government")
+            try
             {
-                // Filter only government buyers
-                LoadBuyerComboFiltered("Government");
-
-                // If crop type is already selected, fetch price
-                if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                if (cmbBuyerType.SelectedItem?.ToString() == "Government")
                 {
-                    string cropType = stockInfo.Item2;
-                    FetchPriceForCropType(cropType, "Government");
+                    // only government buyers
+                    LoadBuyerComboFiltered("Government");
+
+                    // if crop type is already selected, fetch price
+                    if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                    {
+                        string cropType = stockInfo.Item2;
+                        FetchPriceForCropType(cropType, "Government");
+                    }
+                }
+                else if (cmbBuyerType.SelectedItem?.ToString() == "Private")
+                {
+                    // only private buyers
+                    LoadBuyerComboFiltered("Private");
+
+                    // crop type is already selected, fetch price
+                    if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
+                    {
+                        string cropType = stockInfo.Item2;
+                        FetchPriceForCropType(cropType, "Private");
+                    }
                 }
             }
-            else if (cmbBuyerType.SelectedItem?.ToString() == "Private")
+            catch (Exception ex)
             {
-                // Filter only private buyers
-                LoadBuyerComboFiltered("Private");
-
-                // If crop type is already selected, fetch price
-                if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
-                {
-                    string cropType = stockInfo.Item2;
-                    FetchPriceForCropType(cropType, "Private");
-                }
+                MessageBox.Show($"Error changing buyer type: {ex.Message}");
             }
         }
 
         private void LoadBuyerComboFiltered(string buyerType)
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                string roleFilter = buyerType == "Government" ? "RoleID = 3" : "RoleID = 4";
-                string query = $"SELECT UserID, FullName FROM Users WHERE {roleFilter}";
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                cmbBuyer.DataSource = dt;
-                cmbBuyer.DisplayMember = "FullName";
-                cmbBuyer.ValueMember = "UserID";
-                cmbBuyer.SelectedIndex = -1;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string roleFilter = buyerType == "Government" ? "RoleID = 3" : "RoleID = 4";
+                    string query = $"SELECT UserID, FullName FROM Users WHERE {roleFilter}";
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    // Store current selection if possible
+                    object currentValue = null;
+                    if (cmbBuyer.SelectedValue != null)
+                    {
+                        currentValue = cmbBuyer.SelectedValue;
+                    }
+
+                    cmbBuyer.DataSource = dt;
+                    cmbBuyer.DisplayMember = "FullName";
+                    cmbBuyer.ValueMember = "UserID";
+
+                    // Try to restore selection if it exists in new data source
+                    if (currentValue != null)
+                    {
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            if (row["UserID"].ToString() == currentValue.ToString())
+                            {
+                                cmbBuyer.SelectedValue = currentValue;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (cmbBuyer.SelectedIndex == -1 && dt.Rows.Count > 0)
+                    {
+                        cmbBuyer.SelectedIndex = 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading buyers: {ex.Message}");
             }
         }
 
@@ -226,8 +271,8 @@ namespace RiceMgmtApp
 
                     if (buyerType == "Government")
                     {
-                        // For government buyers,
-                        query = "SELECT GovernmentPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                        // For government buyers
+                        query = "SELECT TOP 1 GovernmentPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             cmd.Parameters.AddWithValue("@CropType", cropType);
@@ -247,8 +292,8 @@ namespace RiceMgmtApp
                     }
                     else if (buyerType == "Private")
                     {
-                        // For private buyers, 
-                        query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
+                        // For private buyers
+                        query = "SELECT TOP 1 AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
                             cmd.Parameters.AddWithValue("@CropType", cropType);
@@ -296,93 +341,137 @@ namespace RiceMgmtApp
 
         private void StyleSalesGrid()
         {
-            dataGridViewSales.EnableHeadersVisualStyles = false;
-            dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.ForestGreen;
-            dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
-            dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
-            dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            try
+            {
+                dataGridViewSales.EnableHeadersVisualStyles = false;
+                dataGridViewSales.ColumnHeadersDefaultCellStyle.BackColor = Color.ForestGreen;
+                dataGridViewSales.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+                dataGridViewSales.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10, FontStyle.Bold);
+                dataGridViewSales.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
-            dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
-            dataGridViewSales.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
-            dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightGreen;
-            dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
+                dataGridViewSales.DefaultCellStyle.BackColor = Color.White;
+                dataGridViewSales.DefaultCellStyle.ForeColor = Color.Black;
+                dataGridViewSales.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10);
+                dataGridViewSales.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dataGridViewSales.DefaultCellStyle.SelectionBackColor = Color.LightGreen;
+                dataGridViewSales.DefaultCellStyle.SelectionForeColor = Color.Black;
 
-            dataGridViewSales.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
-            dataGridViewSales.RowTemplate.Height = 28;
-            dataGridViewSales.GridColor = Color.LightGray;
-            dataGridViewSales.BorderStyle = BorderStyle.Fixed3D;
-            dataGridViewSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                dataGridViewSales.AlternatingRowsDefaultCellStyle.BackColor = Color.WhiteSmoke;
+                dataGridViewSales.RowTemplate.Height = 28;
+                dataGridViewSales.GridColor = Color.LightGray;
+                dataGridViewSales.BorderStyle = BorderStyle.Fixed3D;
+                dataGridViewSales.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            dataGridViewSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewSales.MultiSelect = false;
-            dataGridViewSales.AllowUserToAddRows = false;
-            dataGridViewSales.ReadOnly = true;
+                dataGridViewSales.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dataGridViewSales.MultiSelect = false;
+                dataGridViewSales.AllowUserToAddRows = false;
+                dataGridViewSales.ReadOnly = true;
+
+                // Ensure we have this event handler connected
+                dataGridViewSales.CellClick += dataGridViewSales_CellClick;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error styling sales grid: {ex.Message}");
+            }
         }
 
         private void LoadFarmerSalesData()
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                
-                string query = @"SELECT s.SaleID, s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
-                           s.CropType, s.SalePrice, s.Quantity, 
-                           (s.SalePrice * s.Quantity) AS TotalAmount, 
-                           s.PaymentStatus, s.SaleDate,
-                           s.StockID
-                           FROM Sales s
-                           LEFT JOIN Users b ON s.BuyerID = b.UserID
-                           WHERE s.FarmerID = @FarmerID
-                           ORDER BY s.SaleDate DESC";
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    // Use a SqlCommand with parameters instead of string interpolation for safety
+                    string query = @"SELECT s.SaleID, s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
+                               s.CropType, s.SalePrice, s.Quantity, 
+                               (s.SalePrice * s.Quantity) AS TotalAmount, 
+                               s.PaymentStatus, s.SaleDate,
+                               s.StockID
+                               FROM Sales s
+                               LEFT JOIN Users b ON s.BuyerID = b.UserID
+                               WHERE s.FarmerID = @FarmerID
+                               ORDER BY s.SaleDate DESC";
 
+                    // Use a DataTable to store results
+                    DataTable dt = new DataTable();
 
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                adapter.SelectCommand.Parameters.AddWithValue("@FarmerID", currentFarmerId);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                dataGridViewSales.DataSource = dt;
+                    // Create SqlDataAdapter with proper parameter
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    SqlCommand cmd = new SqlCommand(query, conn);
+                    cmd.Parameters.AddWithValue("@FarmerID", currentFarmerId);
+                    adapter.SelectCommand = cmd;
 
-                // Rename and reorder columns for better display
-                if (dataGridViewSales.Columns.Contains("SaleID"))
-                    dataGridViewSales.Columns["SaleID"].HeaderText = "Sale ID";
-                if (dataGridViewSales.Columns.Contains("BuyerName"))
-                    dataGridViewSales.Columns["BuyerName"].HeaderText = "Buyer";
-                if (dataGridViewSales.Columns.Contains("BuyerType"))
-                    dataGridViewSales.Columns["BuyerType"].HeaderText = "Buyer Type";
-                if (dataGridViewSales.Columns.Contains("CropType"))
-                    dataGridViewSales.Columns["CropType"].HeaderText = "Rice Type";
-                if (dataGridViewSales.Columns.Contains("SalePrice"))
-                    dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
-                if (dataGridViewSales.Columns.Contains("Quantity"))
-                    dataGridViewSales.Columns["Quantity"].HeaderText = "Quantity (kg)";
-                if (dataGridViewSales.Columns.Contains("TotalAmount"))
-                    dataGridViewSales.Columns["TotalAmount"].HeaderText = "Total Amount";
-                if (dataGridViewSales.Columns.Contains("PaymentStatus"))
-                    dataGridViewSales.Columns["PaymentStatus"].HeaderText = "Payment Status";
-                if (dataGridViewSales.Columns.Contains("SaleDate"))
-                    dataGridViewSales.Columns["SaleDate"].HeaderText = "Sale Date";
+                    // Fill the DataTable
+                    adapter.Fill(dt);
 
-                // Hide IDs as they're not needed in the view
-                if (dataGridViewSales.Columns.Contains("BuyerID"))
-                    dataGridViewSales.Columns["BuyerID"].Visible = false;
-                if (dataGridViewSales.Columns.Contains("StockID"))
-                    dataGridViewSales.Columns["StockID"].Visible = false;
+                    // Detach old event handlers to prevent duplicate calls
+                    if (dataGridViewSales.DataSource != null)
+                    {
+                        dataGridViewSales.DataSource = null;
+                    }
+
+                    // Set the DataSource
+                    dataGridViewSales.DataSource = dt;
+
+                    // Configure columns
+                    ConfigureDataGridColumns();
+                }
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading sales data: {ex.Message}");
+            }
+        }
+
+        private void ConfigureDataGridColumns()
+        {
+            // Rename and reorder columns for better display
+            if (dataGridViewSales.Columns.Contains("SaleID"))
+                dataGridViewSales.Columns["SaleID"].HeaderText = "Sale ID";
+            if (dataGridViewSales.Columns.Contains("BuyerName"))
+                dataGridViewSales.Columns["BuyerName"].HeaderText = "Buyer";
+            if (dataGridViewSales.Columns.Contains("BuyerType"))
+                dataGridViewSales.Columns["BuyerType"].HeaderText = "Buyer Type";
+            if (dataGridViewSales.Columns.Contains("CropType"))
+                dataGridViewSales.Columns["CropType"].HeaderText = "Rice Type";
+            if (dataGridViewSales.Columns.Contains("SalePrice"))
+                dataGridViewSales.Columns["SalePrice"].HeaderText = "Price/kg";
+            if (dataGridViewSales.Columns.Contains("Quantity"))
+                dataGridViewSales.Columns["Quantity"].HeaderText = "Quantity (kg)";
+            if (dataGridViewSales.Columns.Contains("TotalAmount"))
+                dataGridViewSales.Columns["TotalAmount"].HeaderText = "Total Amount";
+            if (dataGridViewSales.Columns.Contains("PaymentStatus"))
+                dataGridViewSales.Columns["PaymentStatus"].HeaderText = "Payment Status";
+            if (dataGridViewSales.Columns.Contains("SaleDate"))
+                dataGridViewSales.Columns["SaleDate"].HeaderText = "Sale Date";
+
+            // Hide IDs as they're not needed in the view
+            if (dataGridViewSales.Columns.Contains("BuyerID"))
+                dataGridViewSales.Columns["BuyerID"].Visible = false;
+            if (dataGridViewSales.Columns.Contains("StockID"))
+                dataGridViewSales.Columns["StockID"].Visible = false;
         }
 
         private void LoadBuyerCombo()
         {
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            try
             {
-                string query = "SELECT UserID, FullName FROM Users WHERE RoleID IN (3, 4)";
-                SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
-                DataTable dt = new DataTable();
-                adapter.Fill(dt);
-                cmbBuyer.DataSource = dt;
-                cmbBuyer.DisplayMember = "FullName";
-                cmbBuyer.ValueMember = "UserID";
-                cmbBuyer.SelectedIndex = -1;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = "SELECT UserID, FullName FROM Users WHERE RoleID IN (3, 4)";
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    cmbBuyer.DataSource = dt;
+                    cmbBuyer.DisplayMember = "FullName";
+                    cmbBuyer.ValueMember = "UserID";
+                    cmbBuyer.SelectedIndex = -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading buyer list: {ex.Message}");
             }
         }
 
@@ -421,6 +510,7 @@ namespace RiceMgmtApp
                         if (availableQuantity < saleQuantity)
                         {
                             MessageBox.Show($"Insufficient stock. Available: {availableQuantity} kg");
+                            transaction.Rollback();
                             return;
                         }
                     }
@@ -445,7 +535,15 @@ namespace RiceMgmtApp
                         insertCmd.Parameters.AddWithValue("@CropType", cropType);
                         insertCmd.Parameters.AddWithValue("@StockID", stockId);
 
-                        newSaleId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                        object result = insertCmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            newSaleId = Convert.ToInt32(result);
+                        }
+                        else
+                        {
+                            throw new Exception("Failed to get new sale ID");
+                        }
                     }
 
                     // 3. Update the stock quantity
@@ -454,7 +552,11 @@ namespace RiceMgmtApp
                     {
                         updateCmd.Parameters.AddWithValue("@SaleQuantity", saleQuantity);
                         updateCmd.Parameters.AddWithValue("@StockID", stockId);
-                        updateCmd.ExecuteNonQuery();
+                        int rowsAffected = updateCmd.ExecuteNonQuery();
+                        if (rowsAffected == 0)
+                        {
+                            throw new Exception("Stock update failed");
+                        }
                     }
 
                     // 4. Create invoice record
@@ -470,10 +572,7 @@ namespace RiceMgmtApp
                     transaction.Commit();
                     MessageBox.Show("Sale processed successfully!");
 
-                   
                     selectedSaleId = newSaleId;
-
-                   
                     pnlInvoice.Visible = true;
                     GenerateInvoicePreview(newSaleId);
                 }
@@ -484,6 +583,7 @@ namespace RiceMgmtApp
                 }
             }
 
+            // Refresh the grid after sale
             LoadFarmerSalesData();
             ClearInputs();
         }
@@ -520,8 +620,6 @@ namespace RiceMgmtApp
             pnlInvoice.Visible = false;
             rtbInvoicePreview.Clear();
         }
-
-       
 
         private void GenerateInvoicePreview(int saleId)
         {
@@ -593,9 +691,18 @@ namespace RiceMgmtApp
 
         private void dataGridViewSales_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
+            try
             {
-                selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
+                if (e.RowIndex >= 0 && e.RowIndex < dataGridViewSales.Rows.Count &&
+                    dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"] != null &&
+                    dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
+                {
+                    selectedSaleId = Convert.ToInt32(dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error selecting row: {ex.Message}");
             }
         }
 

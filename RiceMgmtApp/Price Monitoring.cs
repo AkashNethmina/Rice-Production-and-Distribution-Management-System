@@ -40,10 +40,6 @@ namespace RiceMgmtApp
             Load += Price_Monitoring_Load;
         }
 
-      
-
-       
-
         private void Price_Monitoring_Load(object sender, EventArgs e)
         {
             try
@@ -82,6 +78,12 @@ namespace RiceMgmtApp
 
             if (comCropType.Items.Count > 0)
                 comCropType.SelectedIndex = 0;
+
+            // Load filter dropdown with same crop types plus "All" option
+            comFilterCrop.Items.Clear();
+            comFilterCrop.Items.Add("All");
+            comFilterCrop.Items.AddRange(cropTypes);
+            comFilterCrop.SelectedIndex = 0; // Select "All" by default
         }
 
         private void LoadPriceMonitoringData()
@@ -128,9 +130,6 @@ namespace RiceMgmtApp
 
                     if (dgvPriceMonitoring.Columns.Contains("CreatedDate"))
                         dgvPriceMonitoring.Columns["CreatedDate"].HeaderText = "Created Date";
-
-                    // Check for significant price deviations and display alerts
-                    CheckPriceDeviations(dt);
                 }
             }
             catch (Exception ex)
@@ -139,70 +138,103 @@ namespace RiceMgmtApp
             }
         }
 
-        private void CheckPriceDeviations(DataTable priceData)
+        private void comFilterCrop_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Clear any existing alert
-            lblPriceAlert.Text = "";
-
-            if (priceData == null || priceData.Rows.Count == 0)
-                return;
-
-            // Define significant deviation threshold (e.g., 10%)
-            const decimal SIGNIFICANT_DEVIATION_PERCENT = 10m;
-
-            foreach (DataRow row in priceData.Rows)
+            try
             {
-                if (row["PriceDeviation"] != DBNull.Value && row["GovernmentPrice"] != DBNull.Value)
+                string selectedCrop = comFilterCrop.SelectedItem?.ToString();
+
+                // If "All" is selected or nothing is selected, show all data
+                if (string.IsNullOrEmpty(selectedCrop) || selectedCrop.ToLower() == "all")
                 {
-                    decimal deviation = Convert.ToDecimal(row["PriceDeviation"]);
-                    decimal govtPrice = Convert.ToDecimal(row["GovernmentPrice"]);
-
-                    // Calculate percentage deviation
-                    if (govtPrice != 0) // Avoid division by zero
-                    {
-                        decimal deviationPercent = Math.Abs(deviation / govtPrice * 100);
-
-                        if (deviationPercent >= SIGNIFICANT_DEVIATION_PERCENT)
-                        {
-                            string cropType = row["CropType"].ToString();
-                            string direction = deviation > 0 ? "above" : "below";
-
-                            lblPriceAlert.Text = $"ALERT: Market price for {cropType} is significantly {direction} the government price ({deviationPercent:F1}%)";
-                            return; // Display only the first significant deviation
-                        }
-                    }
+                    LoadPriceMonitoringData();
+                    return;
                 }
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    string query = @"
+                SELECT 
+                    PriceID, 
+                    CropType, 
+                    AvgPrice, 
+                    GovernmentPrice, 
+                    PriceDeviation, 
+                    FORMAT(CreatedAt, 'yyyy-MM-dd HH:mm') AS CreatedDate
+                FROM 
+                    PriceMonitoring 
+                WHERE 
+                    CropType = @CropType
+                ORDER BY 
+                    CreatedAt DESC";
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    adapter.SelectCommand.Parameters.AddWithValue("@CropType", selectedCrop);
+
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+
+                    dgvPriceMonitoring.DataSource = dt;
+
+                    // Hide PriceID column
+                    if (dgvPriceMonitoring.Columns.Contains("PriceID"))
+                        dgvPriceMonitoring.Columns["PriceID"].Visible = false;
+
+                    lblStatus.Text = $"Showing price data for {selectedCrop}.";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error filtering data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void ConfigureUIByRole()
         {
-            // Set UI interaction based on user role
+            // Check if the user has edit permissions (Admin or Government)
             bool canEdit = currentUserRoleID == ROLE_ADMIN || currentUserRoleID == ROLE_GOVERNMENT;
+            bool isViewOnlyUser = currentUserRoleID == ROLE_FARMER || currentUserRoleID == ROLE_PRIVATE_BUYER;
 
-            // Enable/disable controls
-            grpPriceDetails.Enabled = true; // Always show the group box
-            txtAvgPrice.Enabled = canEdit;
-            txtGovtPrice.Enabled = canEdit;
-            btnAddUpdate.Enabled = canEdit;
-            btnDelete.Enabled = canEdit;
+            // Configure visibility of UI elements based on role
+            grpPriceDetails.Visible = !isViewOnlyUser; // Hide the entire price details group for Farmers and Private Buyers
+            btnAddUpdate.Visible = canEdit;
+            btnDelete.Visible = canEdit;
+            btnClear.Visible = canEdit;
 
-            // Price deviation is always read-only since it's a calculated field
-            txtPriceDeviation.ReadOnly = true;
+            // For viewing roles, disable cell click selection functionality
+            if (isViewOnlyUser)
+            {
+                // Remove the event handler for cell click if it's a view-only user
+                dgvPriceMonitoring.CellClick -= DgvPriceMonitoring_CellClick;
+
+                // Set the selection mode to prevent visual selection in the grid
+                dgvPriceMonitoring.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgvPriceMonitoring.ReadOnly = true;
+            }
+            else
+            {
+                // Make sure cell click is hooked up for admin/government users
+                dgvPriceMonitoring.CellClick += DgvPriceMonitoring_CellClick;
+                dgvPriceMonitoring.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
 
             // Adjust title based on role
-            if (currentUserRoleID == ROLE_FARMER)
+            if (isViewOnlyUser)
             {
                 lblTitle.Text = "Paddy Price Monitoring (View Only)";
             }
-            else if (currentUserRoleID == ROLE_PRIVATE_BUYER)
+            else
             {
-                lblTitle.Text = "Paddy Price Monitoring (View Only)";
+                lblTitle.Text = "Paddy Price Monitoring";
             }
         }
 
         private void DgvPriceMonitoring_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Only process cell clicks for users with appropriate permissions
+            if (currentUserRoleID != ROLE_ADMIN && currentUserRoleID != ROLE_GOVERNMENT)
+                return;
+
             if (e.RowIndex >= 0)
             {
                 try
@@ -409,6 +441,6 @@ namespace RiceMgmtApp
             lblStatus.Text = "Form cleared.";
         }
 
-        
+       
     }
 }

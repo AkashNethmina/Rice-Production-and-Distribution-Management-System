@@ -15,7 +15,6 @@ namespace RiceMgmtApp
         private Button btnSetPrice;
         private Panel pnlAlerts;
 
-
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
@@ -42,23 +41,12 @@ namespace RiceMgmtApp
         /// Required method for Designer support - do not modify 
         /// the contents of this method with the code editor.
         /// </summary>
-        //private void InitializeComponent()
-        //{
-        //    this.SuspendLayout();
-        //    // 
-        //    // Price_Monitoring
-        //    // 
-        //    this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-        //    this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        //    this.Name = "Price_Monitoring";
-        //    this.Size = new System.Drawing.Size(831, 458);
-        //    this.Load += new System.EventHandler(this.Price_Monitoring_Load);
-        //    this.ResumeLayout(false);
 
-        //}
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvPriceMonitoring = new System.Windows.Forms.DataGridView();
             this.lblTitle = new System.Windows.Forms.Label();
             this.grpPriceDetails = new System.Windows.Forms.GroupBox();
@@ -75,7 +63,6 @@ namespace RiceMgmtApp
             this.btnDelete = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.lblPriceAlert = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.panelHeader = new System.Windows.Forms.Panel();
             this.refreshTimer = new System.Windows.Forms.Timer(this.components);
             this.panelAlerts = new System.Windows.Forms.FlowLayoutPanel();
@@ -84,11 +71,14 @@ namespace RiceMgmtApp
             this.filterPanel = new System.Windows.Forms.Panel();
             this.lblFilter = new System.Windows.Forms.Label();
             this.comFilterCrop = new System.Windows.Forms.ComboBox();
-            this.chkShowAlerts = new System.Windows.Forms.CheckBox();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.panelContent = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPriceMonitoring)).BeginInit();
             this.grpPriceDetails.SuspendLayout();
             this.panelHeader.SuspendLayout();
             this.filterPanel.SuspendLayout();
+            this.panelMain.SuspendLayout();
+            this.panelContent.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvPriceMonitoring
@@ -101,29 +91,50 @@ namespace RiceMgmtApp
             this.dgvPriceMonitoring.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvPriceMonitoring.BackgroundColor = System.Drawing.Color.White;
             this.dgvPriceMonitoring.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvPriceMonitoring.ColumnHeadersHeight = 35;
+            this.dgvPriceMonitoring.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvPriceMonitoring.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(194)))), ((int)(((byte)(88)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(194)))), ((int)(((byte)(88)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPriceMonitoring.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvPriceMonitoring.ColumnHeadersHeight = 45;
             this.dgvPriceMonitoring.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            this.dgvPriceMonitoring.Location = new System.Drawing.Point(20, 135);
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle2.Padding = new System.Windows.Forms.Padding(8, 5, 8, 5);
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(245)))), ((int)(((byte)(233)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPriceMonitoring.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvPriceMonitoring.EnableHeadersVisualStyles = false;
+            this.dgvPriceMonitoring.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(236)))), ((int)(((byte)(239)))));
+            this.dgvPriceMonitoring.Location = new System.Drawing.Point(0, 75);
             this.dgvPriceMonitoring.MultiSelect = false;
             this.dgvPriceMonitoring.Name = "dgvPriceMonitoring";
             this.dgvPriceMonitoring.ReadOnly = true;
             this.dgvPriceMonitoring.RowHeadersVisible = false;
-            this.dgvPriceMonitoring.RowTemplate.Height = 28;
+            this.dgvPriceMonitoring.RowTemplate.Height = 35;
             this.dgvPriceMonitoring.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvPriceMonitoring.Size = new System.Drawing.Size(680, 220);
+            this.dgvPriceMonitoring.Size = new System.Drawing.Size(720, 202);
             this.dgvPriceMonitoring.TabIndex = 1;
             this.dgvPriceMonitoring.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DgvPriceMonitoring_CellClick);
             // 
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Font = new System.Drawing.Font("Outfit", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTitle.ForeColor = System.Drawing.Color.White;
-            this.lblTitle.Location = new System.Drawing.Point(15, 12);
+            this.lblTitle.Location = new System.Drawing.Point(23, 15);
             this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(259, 30);
+            this.lblTitle.Size = new System.Drawing.Size(221, 34);
             this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Paddy Price Monitoring";
+            this.lblTitle.Text = "Price Monitoring";
             // 
             // grpPriceDetails
             // 
@@ -140,104 +151,119 @@ namespace RiceMgmtApp
             this.grpPriceDetails.Controls.Add(this.btnAddUpdate);
             this.grpPriceDetails.Controls.Add(this.btnClear);
             this.grpPriceDetails.Controls.Add(this.btnDelete);
-            this.grpPriceDetails.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpPriceDetails.Location = new System.Drawing.Point(20, 380);
+            this.grpPriceDetails.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.grpPriceDetails.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.grpPriceDetails.Location = new System.Drawing.Point(0, 297);
             this.grpPriceDetails.Name = "grpPriceDetails";
-            this.grpPriceDetails.Size = new System.Drawing.Size(680, 210);
+            this.grpPriceDetails.Padding = new System.Windows.Forms.Padding(20, 15, 20, 20);
+            this.grpPriceDetails.Size = new System.Drawing.Size(717, 220);
             this.grpPriceDetails.TabIndex = 3;
             this.grpPriceDetails.TabStop = false;
-            this.grpPriceDetails.Text = "Price Details";
+            this.grpPriceDetails.Text = "Price Management";
             // 
             // comCropType
             // 
             this.comCropType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comCropType.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comCropType.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comCropType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comCropType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
             this.comCropType.FormattingEnabled = true;
-            this.comCropType.Location = new System.Drawing.Point(150, 33);
+            this.comCropType.Location = new System.Drawing.Point(180, 45);
             this.comCropType.Name = "comCropType";
-            this.comCropType.Size = new System.Drawing.Size(200, 23);
+            this.comCropType.Size = new System.Drawing.Size(220, 25);
             this.comCropType.TabIndex = 11;
             // 
             // lblCropType
             // 
             this.lblCropType.AutoSize = true;
-            this.lblCropType.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCropType.Location = new System.Drawing.Point(20, 35);
+            this.lblCropType.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCropType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblCropType.Location = new System.Drawing.Point(30, 48);
             this.lblCropType.Name = "lblCropType";
-            this.lblCropType.Size = new System.Drawing.Size(63, 15);
+            this.lblCropType.Size = new System.Drawing.Size(74, 19);
             this.lblCropType.TabIndex = 0;
             this.lblCropType.Text = "Crop Type:";
             // 
             // lblAvgPrice
             // 
             this.lblAvgPrice.AutoSize = true;
-            this.lblAvgPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAvgPrice.Location = new System.Drawing.Point(20, 75);
+            this.lblAvgPrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAvgPrice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblAvgPrice.Location = new System.Drawing.Point(30, 88);
             this.lblAvgPrice.Name = "lblAvgPrice";
-            this.lblAvgPrice.Size = new System.Drawing.Size(82, 15);
+            this.lblAvgPrice.Size = new System.Drawing.Size(95, 19);
             this.lblAvgPrice.TabIndex = 2;
             this.lblAvgPrice.Text = "Average Price:";
             // 
             // txtAvgPrice
             // 
-            this.txtAvgPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtAvgPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtAvgPrice.Location = new System.Drawing.Point(150, 73);
+            this.txtAvgPrice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.txtAvgPrice.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtAvgPrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtAvgPrice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.txtAvgPrice.Location = new System.Drawing.Point(185, 88);
             this.txtAvgPrice.Name = "txtAvgPrice";
-            this.txtAvgPrice.Size = new System.Drawing.Size(200, 23);
+            this.txtAvgPrice.Size = new System.Drawing.Size(215, 18);
             this.txtAvgPrice.TabIndex = 3;
             // 
             // lblGovtPrice
             // 
             this.lblGovtPrice.AutoSize = true;
-            this.lblGovtPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblGovtPrice.Location = new System.Drawing.Point(20, 115);
+            this.lblGovtPrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblGovtPrice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblGovtPrice.Location = new System.Drawing.Point(30, 128);
             this.lblGovtPrice.Name = "lblGovtPrice";
-            this.lblGovtPrice.Size = new System.Drawing.Size(105, 15);
+            this.lblGovtPrice.Size = new System.Drawing.Size(122, 19);
             this.lblGovtPrice.TabIndex = 4;
             this.lblGovtPrice.Text = "Government Price:";
             // 
             // txtGovtPrice
             // 
-            this.txtGovtPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtGovtPrice.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtGovtPrice.Location = new System.Drawing.Point(150, 113);
+            this.txtGovtPrice.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.txtGovtPrice.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtGovtPrice.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtGovtPrice.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.txtGovtPrice.Location = new System.Drawing.Point(185, 128);
             this.txtGovtPrice.Name = "txtGovtPrice";
-            this.txtGovtPrice.Size = new System.Drawing.Size(200, 23);
+            this.txtGovtPrice.Size = new System.Drawing.Size(215, 18);
             this.txtGovtPrice.TabIndex = 5;
             // 
             // lblPriceDeviation
             // 
             this.lblPriceDeviation.AutoSize = true;
-            this.lblPriceDeviation.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPriceDeviation.Location = new System.Drawing.Point(20, 155);
+            this.lblPriceDeviation.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPriceDeviation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblPriceDeviation.Location = new System.Drawing.Point(30, 168);
             this.lblPriceDeviation.Name = "lblPriceDeviation";
-            this.lblPriceDeviation.Size = new System.Drawing.Size(89, 15);
+            this.lblPriceDeviation.Size = new System.Drawing.Size(103, 19);
             this.lblPriceDeviation.TabIndex = 6;
             this.lblPriceDeviation.Text = "Price Deviation:";
             // 
             // txtPriceDeviation
             // 
-            this.txtPriceDeviation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtPriceDeviation.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPriceDeviation.Location = new System.Drawing.Point(150, 153);
+            this.txtPriceDeviation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(236)))), ((int)(((byte)(239)))));
+            this.txtPriceDeviation.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtPriceDeviation.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPriceDeviation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.txtPriceDeviation.Location = new System.Drawing.Point(185, 168);
             this.txtPriceDeviation.Name = "txtPriceDeviation";
             this.txtPriceDeviation.ReadOnly = true;
-            this.txtPriceDeviation.Size = new System.Drawing.Size(200, 23);
+            this.txtPriceDeviation.Size = new System.Drawing.Size(215, 18);
             this.txtPriceDeviation.TabIndex = 7;
             // 
             // btnAddUpdate
             // 
             this.btnAddUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
+            this.btnAddUpdate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(194)))), ((int)(((byte)(88)))));
             this.btnAddUpdate.FlatAppearance.BorderSize = 0;
+            this.btnAddUpdate.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(7)))), ((int)(((byte)(174)))), ((int)(((byte)(79)))));
+            this.btnAddUpdate.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(6)))), ((int)(((byte)(154)))), ((int)(((byte)(70)))));
             this.btnAddUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnAddUpdate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddUpdate.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnAddUpdate.Location = new System.Drawing.Point(400, 70);
+            this.btnAddUpdate.Location = new System.Drawing.Point(487, 80);
             this.btnAddUpdate.Name = "btnAddUpdate";
-            this.btnAddUpdate.Size = new System.Drawing.Size(120, 30);
+            this.btnAddUpdate.Size = new System.Drawing.Size(150, 35);
             this.btnAddUpdate.TabIndex = 8;
             this.btnAddUpdate.Text = "Add / Update";
             this.btnAddUpdate.UseVisualStyleBackColor = false;
@@ -246,14 +272,16 @@ namespace RiceMgmtApp
             // btnClear
             // 
             this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-            this.btnClear.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnClear.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.btnClear.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(206)))), ((int)(((byte)(212)))), ((int)(((byte)(218)))));
+            this.btnClear.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(233)))), ((int)(((byte)(236)))), ((int)(((byte)(239)))));
+            this.btnClear.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(241)))), ((int)(((byte)(243)))), ((int)(((byte)(245)))));
             this.btnClear.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClear.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClear.ForeColor = System.Drawing.Color.Black;
-            this.btnClear.Location = new System.Drawing.Point(400, 110);
+            this.btnClear.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnClear.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.btnClear.Location = new System.Drawing.Point(487, 125);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(120, 30);
+            this.btnClear.Size = new System.Drawing.Size(150, 35);
             this.btnClear.TabIndex = 9;
             this.btnClear.Text = "Clear";
             this.btnClear.UseVisualStyleBackColor = false;
@@ -262,14 +290,16 @@ namespace RiceMgmtApp
             // btnDelete
             // 
             this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(17)))), ((int)(((byte)(35)))));
+            this.btnDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
             this.btnDelete.FlatAppearance.BorderSize = 0;
+            this.btnDelete.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(35)))), ((int)(((byte)(51)))));
+            this.btnDelete.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(177)))), ((int)(((byte)(32)))), ((int)(((byte)(45)))));
             this.btnDelete.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDelete.ForeColor = System.Drawing.Color.White;
-            this.btnDelete.Location = new System.Drawing.Point(400, 150);
+            this.btnDelete.Location = new System.Drawing.Point(487, 170);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(120, 30);
+            this.btnDelete.Size = new System.Drawing.Size(150, 35);
             this.btnDelete.TabIndex = 10;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = false;
@@ -280,7 +310,8 @@ namespace RiceMgmtApp
             this.lblStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblStatus.AutoSize = true;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblStatus.Location = new System.Drawing.Point(20, 595);
+            this.lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.lblStatus.Location = new System.Drawing.Point(0, 532);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(0, 15);
             this.lblStatus.TabIndex = 12;
@@ -290,38 +321,21 @@ namespace RiceMgmtApp
             this.lblPriceAlert.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblPriceAlert.AutoSize = true;
-            this.lblPriceAlert.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPriceAlert.ForeColor = System.Drawing.Color.Red;
-            this.lblPriceAlert.Location = new System.Drawing.Point(20, 360);
+            this.lblPriceAlert.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPriceAlert.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.lblPriceAlert.Location = new System.Drawing.Point(0, 277);
             this.lblPriceAlert.Name = "lblPriceAlert";
-            this.lblPriceAlert.Size = new System.Drawing.Size(0, 15);
+            this.lblPriceAlert.Size = new System.Drawing.Size(0, 19);
             this.lblPriceAlert.TabIndex = 2;
-            // 
-            // btnRefresh
-            // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
-            this.btnRefresh.FlatAppearance.BorderSize = 0;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(580, 97);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(120, 30);
-            this.btnRefresh.TabIndex = 13;
-            this.btnRefresh.Text = "Refresh Data";
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Click += new System.EventHandler(this.BtnRefresh_Click);
             // 
             // panelHeader
             // 
-            this.panelHeader.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(120)))), ((int)(((byte)(215)))));
+            this.panelHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(194)))), ((int)(((byte)(88)))));
             this.panelHeader.Controls.Add(this.lblTitle);
+            this.panelHeader.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelHeader.Location = new System.Drawing.Point(0, 0);
             this.panelHeader.Name = "panelHeader";
-            this.panelHeader.Size = new System.Drawing.Size(720, 55);
+            this.panelHeader.Size = new System.Drawing.Size(720, 63);
             this.panelHeader.TabIndex = 14;
             // 
             // refreshTimer
@@ -333,11 +347,12 @@ namespace RiceMgmtApp
             this.panelAlerts.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelAlerts.AutoScroll = true;
-            this.panelAlerts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(244)))), ((int)(((byte)(244)))));
+            this.panelAlerts.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(243)))), ((int)(((byte)(224)))));
             this.panelAlerts.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panelAlerts.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.panelAlerts.Location = new System.Drawing.Point(20, 360);
+            this.panelAlerts.Location = new System.Drawing.Point(0, 277);
             this.panelAlerts.Name = "panelAlerts";
+            this.panelAlerts.Padding = new System.Windows.Forms.Padding(10);
             this.panelAlerts.Size = new System.Drawing.Size(680, 0);
             this.panelAlerts.TabIndex = 15;
             this.panelAlerts.WrapContents = false;
@@ -345,10 +360,11 @@ namespace RiceMgmtApp
             // lblLastUpdated
             // 
             this.lblLastUpdated.AutoSize = true;
-            this.lblLastUpdated.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblLastUpdated.Location = new System.Drawing.Point(22, 115);
+            this.lblLastUpdated.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblLastUpdated.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(108)))), ((int)(((byte)(117)))), ((int)(((byte)(125)))));
+            this.lblLastUpdated.Location = new System.Drawing.Point(3, 55);
             this.lblLastUpdated.Name = "lblLastUpdated";
-            this.lblLastUpdated.Size = new System.Drawing.Size(77, 13);
+            this.lblLastUpdated.Size = new System.Drawing.Size(88, 15);
             this.lblLastUpdated.TabIndex = 16;
             this.lblLastUpdated.Text = "Last updated: -";
             // 
@@ -356,22 +372,24 @@ namespace RiceMgmtApp
             // 
             this.filterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.filterPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
+            this.filterPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.filterPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.filterPanel.Controls.Add(this.lblFilter);
             this.filterPanel.Controls.Add(this.comFilterCrop);
-            this.filterPanel.Controls.Add(this.chkShowAlerts);
-            this.filterPanel.Location = new System.Drawing.Point(20, 65);
+            this.filterPanel.Location = new System.Drawing.Point(0, 5);
             this.filterPanel.Name = "filterPanel";
-            this.filterPanel.Size = new System.Drawing.Size(680, 30);
+            this.filterPanel.Padding = new System.Windows.Forms.Padding(15, 10, 15, 10);
+            this.filterPanel.Size = new System.Drawing.Size(720, 47);
             this.filterPanel.TabIndex = 17;
             // 
             // lblFilter
             // 
             this.lblFilter.AutoSize = true;
-            this.lblFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFilter.Location = new System.Drawing.Point(10, 7);
+            this.lblFilter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
+            this.lblFilter.Location = new System.Drawing.Point(24, 14);
             this.lblFilter.Name = "lblFilter";
-            this.lblFilter.Size = new System.Drawing.Size(52, 15);
+            this.lblFilter.Size = new System.Drawing.Size(61, 19);
             this.lblFilter.TabIndex = 0;
             this.lblFilter.Text = "Filter by:";
             // 
@@ -379,41 +397,51 @@ namespace RiceMgmtApp
             // 
             this.comFilterCrop.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comFilterCrop.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comFilterCrop.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comFilterCrop.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.comFilterCrop.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
             this.comFilterCrop.FormattingEnabled = true;
-            this.comFilterCrop.Location = new System.Drawing.Point(70, 4);
+            this.comFilterCrop.Location = new System.Drawing.Point(94, 13);
             this.comFilterCrop.Name = "comFilterCrop";
-            this.comFilterCrop.Size = new System.Drawing.Size(150, 21);
+            this.comFilterCrop.Size = new System.Drawing.Size(200, 25);
             this.comFilterCrop.TabIndex = 1;
-//            this.comFilterCrop.SelectedIndexChanged += new System.EventHandler(this.comFilterCrop_SelectedIndexChanged);
+            this.comFilterCrop.SelectedIndexChanged += new System.EventHandler(this.comFilterCrop_SelectedIndexChanged);
             // 
-            // chkShowAlerts
+            // panelMain
             // 
-            this.chkShowAlerts.AutoSize = true;
-            this.chkShowAlerts.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkShowAlerts.Location = new System.Drawing.Point(240, 6);
-            this.chkShowAlerts.Name = "chkShowAlerts";
-            this.chkShowAlerts.Size = new System.Drawing.Size(114, 17);
-            this.chkShowAlerts.TabIndex = 2;
-            this.chkShowAlerts.Text = "Show price alerts";
-            this.chkShowAlerts.UseVisualStyleBackColor = true;
+            this.panelMain.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
+            this.panelMain.Controls.Add(this.panelContent);
+            this.panelMain.Controls.Add(this.panelHeader);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(0, 0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(720, 620);
+            this.panelMain.TabIndex = 18;
+            // 
+            // panelContent
+            // 
+            this.panelContent.BackColor = System.Drawing.Color.White;
+            this.panelContent.Controls.Add(this.filterPanel);
+            this.panelContent.Controls.Add(this.lblLastUpdated);
+            this.panelContent.Controls.Add(this.panelAlerts);
+            this.panelContent.Controls.Add(this.lblStatus);
+            this.panelContent.Controls.Add(this.grpPriceDetails);
+            this.panelContent.Controls.Add(this.lblPriceAlert);
+            this.panelContent.Controls.Add(this.dgvPriceMonitoring);
+            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContent.Location = new System.Drawing.Point(0, 63);
+            this.panelContent.Name = "panelContent";
+            this.panelContent.Padding = new System.Windows.Forms.Padding(20);
+            this.panelContent.Size = new System.Drawing.Size(720, 557);
+            this.panelContent.TabIndex = 19;
             // 
             // Price_Monitoring
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.White;
-            this.Controls.Add(this.filterPanel);
-            this.Controls.Add(this.lblLastUpdated);
-            this.Controls.Add(this.panelAlerts);
-            this.Controls.Add(this.panelHeader);
-            this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.lblStatus);
-            this.Controls.Add(this.grpPriceDetails);
-            this.Controls.Add(this.lblPriceAlert);
-            this.Controls.Add(this.dgvPriceMonitoring);
-            this.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Controls.Add(this.panelMain);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "Price_Monitoring";
             this.Size = new System.Drawing.Size(720, 620);
             this.Load += new System.EventHandler(this.Price_Monitoring_Load);
@@ -424,12 +452,12 @@ namespace RiceMgmtApp
             this.panelHeader.PerformLayout();
             this.filterPanel.ResumeLayout(false);
             this.filterPanel.PerformLayout();
+            this.panelMain.ResumeLayout(false);
+            this.panelContent.ResumeLayout(false);
+            this.panelContent.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
-        
-
 
         #endregion
         private System.Windows.Forms.DataGridView dgvPriceMonitoring;
@@ -448,7 +476,7 @@ namespace RiceMgmtApp
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.Label lblPriceAlert;
         private System.Windows.Forms.ComboBox comCropType;
-        //private System.Windows.Forms.Button btnRefresh;
+       // private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Panel panelHeader;
         private System.Windows.Forms.Timer refreshTimer;
         private System.Windows.Forms.FlowLayoutPanel panelAlerts;
@@ -457,7 +485,7 @@ namespace RiceMgmtApp
         private System.Windows.Forms.Panel filterPanel;
         private System.Windows.Forms.Label lblFilter;
         private System.Windows.Forms.ComboBox comFilterCrop;
-        private System.Windows.Forms.CheckBox chkShowAlerts;
-
+        private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.Panel panelContent;
     }
 }

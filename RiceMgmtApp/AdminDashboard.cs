@@ -199,23 +199,7 @@ namespace RiceMgmtApp
             btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
         }
 
-        private void AdminDashboard_Load(object sender, EventArgs e)
-        {
-            // Configure based on screen resolution
-            ConfigureForScreenResolution();
-
-            // Initialize UI elements
-            InitializeProgressBar();
-            AddUserProfileSection();
-            InitializeBreadcrumb();
-            ModernizeUI();
-
-            // Show AdminHome as default on load
-            AdminHome ah = new AdminHome();
-            LoadUserControl(ah);
-            SetActiveButton(btn_Dashboard);
-            UpdateBreadcrumb("Dashboard");
-        }
+      
 
         private void btn_Cultivation_Click(object sender, EventArgs e)
         {
@@ -551,11 +535,35 @@ namespace RiceMgmtApp
             btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
         }
 
-        private void btn_ReportsAnalytics_Click(object sender, EventArgs e)
+       
+
+        private void AdminDashboard_Load(object sender, EventArgs e)
         {
-            // Pass the required parameters _userId and _roleId to the constructor
-            DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
-            LoadUserControl(dataAnalytics_Reports);
+
+            // Configure based on screen resolution
+            ConfigureForScreenResolution();
+
+            // Initialize UI elements
+            InitializeProgressBar();
+            AddUserProfileSection();
+            InitializeBreadcrumb();
+            ModernizeUI();
+
+            // Show AdminHome as default on load
+            AdminHome ah = new AdminHome();
+            LoadUserControl(ah);
+            SetActiveButton(btn_Dashboard);
+            UpdateBreadcrumb("Dashboard");
+        }
+
+        private void btn_profile_Click(object sender, EventArgs e)
+        {
+            profileControl profileControl = new profileControl();
+            profileControl.LoggedInUsername = LoggedInUsername;
+            profileControl.LoadUserDetails();
+            LoadUserControl(profileControl);
+            SetActiveButton(btn_profile);
+            UpdateBreadcrumb("Profile");
         }
     }
 

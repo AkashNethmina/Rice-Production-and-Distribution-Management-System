@@ -460,11 +460,7 @@ namespace RiceMgmtApp
             }
         }
 
-        private void btn_ReportsAnalytics_Click(object sender, EventArgs e)
-        {
-            DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
-            LoadUserControl(dataAnalytics_Reports);
-        }
+      
 
         private void btn_Farmers_Click(object sender, EventArgs e)
         {

@@ -446,12 +446,6 @@
     <Compile Include="DamageReporting.Designer.cs">
       <DependentUpon>DamageReporting.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataAnalytics&amp;Reports.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DataAnalytics&amp;Reports.Designer.cs">
-      <DependentUpon>DataAnalytics&amp;Reports.cs</DependentUpon>
-    </Compile>
     <Compile Include="EditUser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -598,9 +592,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DamageReporting.resx">
       <DependentUpon>DamageReporting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DataAnalytics&amp;Reports.resx">
-      <DependentUpon>DataAnalytics&amp;Reports.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditUser.resx">
       <DependentUpon>EditUser.cs</DependentUpon>

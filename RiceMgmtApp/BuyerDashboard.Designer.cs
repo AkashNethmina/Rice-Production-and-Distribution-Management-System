@@ -178,6 +178,7 @@
             this.Name = "BuyerDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Buyer Dashboard";
+            this.Load += new System.EventHandler(this.BuyerDashboard_Load);
             this.panelsideMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

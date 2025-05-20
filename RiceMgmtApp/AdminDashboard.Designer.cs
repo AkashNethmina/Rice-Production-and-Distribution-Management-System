@@ -32,8 +32,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AdminDashboard));
             this.sqlCommandBuilder1 = new Microsoft.Data.SqlClient.SqlCommandBuilder();
             this.panelsideMenu = new System.Windows.Forms.Panel();
+            this.btn_profile = new System.Windows.Forms.Button();
             this.btn_DamageReporting = new System.Windows.Forms.Button();
-            this.btn_ReportsAnalytics = new System.Windows.Forms.Button();
             this.btn_PriceSetting = new System.Windows.Forms.Button();
             this.btn_StockManagement = new System.Windows.Forms.Button();
             this.btn_Sales = new System.Windows.Forms.Button();
@@ -67,8 +67,8 @@
             // 
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
+            this.panelsideMenu.Controls.Add(this.btn_profile);
             this.panelsideMenu.Controls.Add(this.btn_DamageReporting);
-            this.panelsideMenu.Controls.Add(this.btn_ReportsAnalytics);
             this.panelsideMenu.Controls.Add(this.btn_PriceSetting);
             this.panelsideMenu.Controls.Add(this.btn_StockManagement);
             this.panelsideMenu.Controls.Add(this.btn_Sales);
@@ -86,6 +86,23 @@
             this.panelsideMenu.Size = new System.Drawing.Size(250, 749);
             this.panelsideMenu.TabIndex = 3;
             // 
+            // btn_profile
+            // 
+            this.btn_profile.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_profile.FlatAppearance.BorderSize = 0;
+            this.btn_profile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_profile.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_profile.ForeColor = System.Drawing.Color.White;
+            this.btn_profile.Location = new System.Drawing.Point(10, 627);
+            this.btn_profile.Name = "btn_profile";
+            this.btn_profile.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_profile.Size = new System.Drawing.Size(230, 45);
+            this.btn_profile.TabIndex = 15;
+            this.btn_profile.Text = "Profile";
+            this.btn_profile.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_profile.UseVisualStyleBackColor = true;
+            this.btn_profile.Click += new System.EventHandler(this.btn_profile_Click);
+            // 
             // btn_DamageReporting
             // 
             this.btn_DamageReporting.Dock = System.Windows.Forms.DockStyle.Top;
@@ -93,7 +110,7 @@
             this.btn_DamageReporting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DamageReporting.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_DamageReporting.ForeColor = System.Drawing.Color.White;
-            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 627);
+            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 582);
             this.btn_DamageReporting.Name = "btn_DamageReporting";
             this.btn_DamageReporting.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_DamageReporting.Size = new System.Drawing.Size(230, 45);
@@ -102,23 +119,6 @@
             this.btn_DamageReporting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_DamageReporting.UseVisualStyleBackColor = true;
             this.btn_DamageReporting.Click += new System.EventHandler(this.btn_DamageReporting_Click);
-            // 
-            // btn_ReportsAnalytics
-            // 
-            this.btn_ReportsAnalytics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_ReportsAnalytics.FlatAppearance.BorderSize = 0;
-            this.btn_ReportsAnalytics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ReportsAnalytics.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ReportsAnalytics.ForeColor = System.Drawing.Color.White;
-            this.btn_ReportsAnalytics.Location = new System.Drawing.Point(10, 582);
-            this.btn_ReportsAnalytics.Name = "btn_ReportsAnalytics";
-            this.btn_ReportsAnalytics.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_ReportsAnalytics.Size = new System.Drawing.Size(230, 45);
-            this.btn_ReportsAnalytics.TabIndex = 13;
-            this.btn_ReportsAnalytics.Text = "Reports and Analytics";
-            this.btn_ReportsAnalytics.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_ReportsAnalytics.UseVisualStyleBackColor = true;
-            this.btn_ReportsAnalytics.Click += new System.EventHandler(this.btn_ReportsAnalytics_Click);
             // 
             // btn_PriceSetting
             // 
@@ -254,28 +254,25 @@
             this.btn_Farmers.UseVisualStyleBackColor = true;
             this.btn_Farmers.Click += new System.EventHandler(this.btn_Farmers_Click);
             // 
-            // Set up basic properties
+            // btn_logout
+            // 
+            this.btn_logout.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(53)))), ((int)(((byte)(69)))));
+            this.btn_logout.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_logout.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.btn_logout.Location = new System.Drawing.Point(10, 662);
+            this.btn_logout.FlatAppearance.BorderSize = 0;
+            this.btn_logout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_logout.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btn_logout.ForeColor = System.Drawing.Color.White;
+            this.btn_logout.Location = new System.Drawing.Point(10, 675);
             this.btn_logout.Name = "btn_logout";
             this.btn_logout.Size = new System.Drawing.Size(230, 41);
             this.btn_logout.TabIndex = 6;
             this.btn_logout.Text = "Logout";
-
-            // Style enhancements
-            this.btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Red color
-            this.btn_logout.ForeColor = System.Drawing.Color.White; // White text
-            this.btn_logout.FlatStyle = System.Windows.Forms.FlatStyle.Flat; // Flat style
-            this.btn_logout.FlatAppearance.BorderSize = 0; // No border
-            this.btn_logout.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btn_logout.Cursor = System.Windows.Forms.Cursors.Hand; // Hand cursor on hover
-
-            // Add hover effect
+            this.btn_logout.UseVisualStyleBackColor = false;
+            this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
             this.btn_logout.MouseEnter += new System.EventHandler(this.btn_logout_MouseEnter);
             this.btn_logout.MouseLeave += new System.EventHandler(this.btn_logout_MouseLeave);
-
-            // Keep the original click event
-            this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
+            // 
             // panel2submenu
             // 
             this.panel2submenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
@@ -417,6 +414,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "AdminDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Load += new System.EventHandler(this.AdminDashboard_Load);
             this.panelsideMenu.ResumeLayout(false);
             this.panel3side.ResumeLayout(false);
             this.panel2submenu.ResumeLayout(false);
@@ -450,10 +448,10 @@
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter2;
         private System.Windows.Forms.Button btn_AddUsers;
         private System.Windows.Forms.Button btn_DamageReporting;
-        private System.Windows.Forms.Button btn_ReportsAnalytics;
         private System.Windows.Forms.Button btn_PriceSetting;
         private System.Windows.Forms.Button btn_StockManagement;
         private System.Windows.Forms.Button btn_Cultivation;
+        private System.Windows.Forms.Button btn_profile;
         // private FontAwesome.Sharp.IconToolStripButton iconToolStripButton1;
         // private FontAwesome.Sharp.IconMenuItem iconMenuItem1;
     }

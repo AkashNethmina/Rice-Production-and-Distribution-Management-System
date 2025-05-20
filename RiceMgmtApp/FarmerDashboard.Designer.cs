@@ -67,7 +67,6 @@
             this.panelsideMenu.Padding = new System.Windows.Forms.Padding(10, 0, 10, 48);
             this.panelsideMenu.Size = new System.Drawing.Size(250, 749);
             this.panelsideMenu.TabIndex = 4;
-            this.panelsideMenu.Paint += new System.Windows.Forms.PaintEventHandler(this.panelsideMenu_Paint);
             // 
             // RequestPaddy
             // 
@@ -119,23 +118,6 @@
             this.btn_DamageReporting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btn_DamageReporting.UseVisualStyleBackColor = true;
             this.btn_DamageReporting.Click += new System.EventHandler(this.btn_DamageReporting_Click);
-            // 
-            // btn_ReportsAnalytics
-            // 
-            this.btn_ReportsAnalytics.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_ReportsAnalytics.FlatAppearance.BorderSize = 0;
-            this.btn_ReportsAnalytics.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_ReportsAnalytics.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_ReportsAnalytics.ForeColor = System.Drawing.Color.White;
-            this.btn_ReportsAnalytics.Location = new System.Drawing.Point(10, 330);
-            this.btn_ReportsAnalytics.Name = "btn_ReportsAnalytics";
-            this.btn_ReportsAnalytics.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_ReportsAnalytics.Size = new System.Drawing.Size(230, 45);
-            this.btn_ReportsAnalytics.TabIndex = 13;
-            this.btn_ReportsAnalytics.Text = "Reports and Analytics";
-            this.btn_ReportsAnalytics.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_ReportsAnalytics.UseVisualStyleBackColor = true;
-            this.btn_ReportsAnalytics.Click += new System.EventHandler(this.btn_ReportsAnalytics_Click);
             // 
             // btn_StockManagement
             // 
@@ -255,20 +237,19 @@
             // 
             // panelContainer
             // 
-            this.panelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelContainer.AutoScroll = true;
+            this.panelContainer.AutoSize = true;
             this.panelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-            this.panelContainer.Location = new System.Drawing.Point(266, 27);
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContainer.Location = new System.Drawing.Point(250, 0);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(944, 722);
+            this.panelContainer.Size = new System.Drawing.Size(974, 749);
             this.panelContainer.TabIndex = 6;
+//            this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint);
             // 
             // FarmerDashboard
             // 
-            //this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
             this.ClientSize = new System.Drawing.Size(1224, 749);
@@ -284,8 +265,14 @@
             this.panelsideMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
+        // Add this method to the FarmerDashboard class
+        //private void panelsideMenu_Paint(object sender, PaintEventArgs e)
+        //{
+        //    // You can leave this empty or add custom painting logic if needed
+        //}
 
         #endregion
 

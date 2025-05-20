@@ -127,13 +127,7 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Buy Paddy");
         }
 
-        //private void btnPrice_Monitoring_Click(object sender, EventArgs e)
-        //{
-        //    Price_Monitoring pm = new Price_Monitoring(_roleId);
-        //    LoadUserControl(pm);
-        //    SetActiveButton(btnPrice_Monitoring);
-        //    UpdateBreadcrumb("Price Monitoring");
-        //}
+        
 
         private void btn_StockManagement_Click(object sender, EventArgs e)
         {
@@ -141,23 +135,7 @@ namespace RiceMgmtApp
             LoadUserControl(requestPaddy);
         }
 
-        private void BuyerDashboard_Load(object sender, EventArgs e)
-        {
-            // Configure based on screen resolution
-            ConfigureForScreenResolution();
-
-            // Initialize UI elements
-            InitializeProgressBar();
-            AddUserProfileSection();
-            InitializeBreadcrumb();
-            ModernizeUI();
-
-            // Show PrivateBuyerHome as default on load
-            PrivateBuyerHome pbh = new PrivateBuyerHome(_userId); 
-            LoadUserControl(pbh);
-            SetActiveButton(btn_Dashboard);
-            UpdateBreadcrumb("Dashboard");
-        }
+       
 
         #region Responsive Design Implementation
 
@@ -454,6 +432,23 @@ namespace RiceMgmtApp
             LoadUserControl(dataAnalytics_Reports);
         }
 
+        private void BuyerDashboard_Load(object sender, EventArgs e)
+        {
+            // Configure based on screen resolution
+            ConfigureForScreenResolution();
+
+            // Initialize UI elements
+            InitializeProgressBar();
+            AddUserProfileSection();
+            InitializeBreadcrumb();
+            ModernizeUI();
+
+            // Show PrivateBuyerHome as default on load
+            PrivateBuyerHome pbh = new PrivateBuyerHome(_userId);
+            LoadUserControl(pbh);
+            SetActiveButton(btn_Dashboard);
+            UpdateBreadcrumb("Dashboard");
+        }
     }
     #endregion
 }
