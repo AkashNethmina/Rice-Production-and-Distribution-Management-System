@@ -482,12 +482,6 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GovernmentAssistance.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GovernmentAssistance.Designer.cs">
-      <DependentUpon>GovernmentAssistance.cs</DependentUpon>
-    </Compile>
     <Compile Include="GovernmentHome.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -610,9 +604,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GovernmentAssistance.resx">
-      <DependentUpon>GovernmentAssistance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GovernmentHome.resx">
       <DependentUpon>GovernmentHome.cs</DependentUpon>

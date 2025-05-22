@@ -421,16 +421,9 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Dashboard");
         }
 
-        private void btn_DamageReporting_Click(object sender, EventArgs e)
-        {
+        
 
-        }
-
-        private void btn_ReportsAnalytics_Click(object sender, EventArgs e)
-        {
-            DataAnalytics_Reports dataAnalytics_Reports = new DataAnalytics_Reports();
-            LoadUserControl(dataAnalytics_Reports);
-        }
+       
 
         private void BuyerDashboard_Load(object sender, EventArgs e)
         {

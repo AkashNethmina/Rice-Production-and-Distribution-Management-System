@@ -35,9 +35,8 @@
             this.sidebarTimer = new System.Windows.Forms.Timer(this.components);
             this.panelsideMenu = new System.Windows.Forms.Panel();
             this.btnPrice_Monitoring = new System.Windows.Forms.Button();
-            this.btn_DamageReporting = new System.Windows.Forms.Button();
             this.btn_StockManagement = new System.Windows.Forms.Button();
-            this.btn_Sales = new System.Windows.Forms.Button();
+            this.btn_Purchase = new System.Windows.Forms.Button();
             this.btn_Farmers = new System.Windows.Forms.Button();
             this.btn_logout = new System.Windows.Forms.Button();
             this.btn_profile = new System.Windows.Forms.Button();
@@ -67,9 +66,8 @@
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
             this.panelsideMenu.Controls.Add(this.btnPrice_Monitoring);
-            this.panelsideMenu.Controls.Add(this.btn_DamageReporting);
             this.panelsideMenu.Controls.Add(this.btn_StockManagement);
-            this.panelsideMenu.Controls.Add(this.btn_Sales);
+            this.panelsideMenu.Controls.Add(this.btn_Purchase);
             this.panelsideMenu.Controls.Add(this.btn_Farmers);
             this.panelsideMenu.Controls.Add(this.btn_logout);
             this.panelsideMenu.Controls.Add(this.btn_profile);
@@ -89,7 +87,7 @@
             this.btnPrice_Monitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrice_Monitoring.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrice_Monitoring.ForeColor = System.Drawing.Color.White;
-            this.btnPrice_Monitoring.Location = new System.Drawing.Point(10, 375);
+            this.btnPrice_Monitoring.Location = new System.Drawing.Point(10, 330);
             this.btnPrice_Monitoring.Name = "btnPrice_Monitoring";
             this.btnPrice_Monitoring.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnPrice_Monitoring.Size = new System.Drawing.Size(230, 45);
@@ -98,23 +96,6 @@
             this.btnPrice_Monitoring.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPrice_Monitoring.UseVisualStyleBackColor = true;
             this.btnPrice_Monitoring.Click += new System.EventHandler(this.btnPrice_Monitoring_Click);
-            // 
-            // btn_DamageReporting
-            // 
-            this.btn_DamageReporting.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_DamageReporting.FlatAppearance.BorderSize = 0;
-            this.btn_DamageReporting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_DamageReporting.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_DamageReporting.ForeColor = System.Drawing.Color.White;
-            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 330);
-            this.btn_DamageReporting.Name = "btn_DamageReporting";
-            this.btn_DamageReporting.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_DamageReporting.Size = new System.Drawing.Size(230, 45);
-            this.btn_DamageReporting.TabIndex = 14;
-            this.btn_DamageReporting.Text = "Damage Reporting";
-            this.btn_DamageReporting.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_DamageReporting.UseVisualStyleBackColor = true;
-            this.btn_DamageReporting.Click += new System.EventHandler(this.btn_DamageReporting_Click);
             // 
             // btn_StockManagement
             // 
@@ -133,22 +114,22 @@
             this.btn_StockManagement.UseVisualStyleBackColor = true;
             this.btn_StockManagement.Click += new System.EventHandler(this.btn_StockManagement_Click);
             // 
-            // btn_Sales
+            // btn_Purchase
             // 
-            this.btn_Sales.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_Sales.FlatAppearance.BorderSize = 0;
-            this.btn_Sales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Sales.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Sales.ForeColor = System.Drawing.Color.White;
-            this.btn_Sales.Location = new System.Drawing.Point(10, 240);
-            this.btn_Sales.Name = "btn_Sales";
-            this.btn_Sales.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_Sales.Size = new System.Drawing.Size(230, 45);
-            this.btn_Sales.TabIndex = 10;
-            this.btn_Sales.Text = "Sales Records";
-            this.btn_Sales.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Sales.UseVisualStyleBackColor = true;
-            this.btn_Sales.Click += new System.EventHandler(this.btn_Sales_Click);
+            this.btn_Purchase.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_Purchase.FlatAppearance.BorderSize = 0;
+            this.btn_Purchase.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Purchase.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Purchase.ForeColor = System.Drawing.Color.White;
+            this.btn_Purchase.Location = new System.Drawing.Point(10, 240);
+            this.btn_Purchase.Name = "btn_Purchase";
+            this.btn_Purchase.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_Purchase.Size = new System.Drawing.Size(230, 45);
+            this.btn_Purchase.TabIndex = 10;
+            this.btn_Purchase.Text = "Purchase Records";
+            this.btn_Purchase.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_Purchase.UseVisualStyleBackColor = true;
+            this.btn_Purchase.Click += new System.EventHandler(this.btn_Sales_Click);
             // 
             // btn_Farmers
             // 
@@ -256,6 +237,7 @@
             this.Name = "GovtOfficialDashboard";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Govt Dashboard";
+            this.Load += new System.EventHandler(this.GovtOfficialDashboard_Load);
             this.panelsideMenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -268,9 +250,8 @@
         private System.Windows.Forms.Timer sidebarTimer;
         private System.Windows.Forms.Panel panelsideMenu;
         private System.Windows.Forms.Button btnPrice_Monitoring;
-        private System.Windows.Forms.Button btn_DamageReporting;
         private System.Windows.Forms.Button btn_StockManagement;
-        private System.Windows.Forms.Button btn_Sales;
+        private System.Windows.Forms.Button btn_Purchase;
         private System.Windows.Forms.Button btn_Farmers;
         private System.Windows.Forms.Button btn_logout;
         private System.Windows.Forms.Button btn_profile;

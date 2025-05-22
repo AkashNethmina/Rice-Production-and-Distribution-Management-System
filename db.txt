@@ -80,7 +80,7 @@ CREATE TABLE RequestPaddy (
     FarmerID INT NOT NULL,
     BuyerID INT NULL, 
     StockID INT NOT NULL,
-    BuyerType NVARCHAR(50) CHECK (BuyerType IN ('Private')), 
+    BuyerType NVARCHAR(50) CHECK (BuyerType IN ('Government', 'Private')),
     RequestPrice DECIMAL(10,2) NOT NULL,
     Quantity DECIMAL(10,2) NOT NULL,
     RequestStatus NVARCHAR(20) 

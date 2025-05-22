@@ -16,7 +16,7 @@ namespace RiceMgmtApp
     public partial class PrivateBuyerHome : UserControl
     {
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
-        private int currentBuyerId; // To store the current logged-in farmer's ID
+        private int currentBuyerId; 
         private decimal totalPurchaseQuantity = 0; // Total field size for the farmer
         private decimal totalStockQuantity = 0; // Total stock quantity for the farmer
         private decimal totalrequestQuantity = 0;

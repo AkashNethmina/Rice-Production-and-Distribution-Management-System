@@ -17,45 +17,13 @@ namespace RiceMgmtApp
         private int selectedStockId = -1;
         private int selectedFarmerId = -1;
         private int selectedSaleId = -1;
+        private int userRoleId = -1; // Store the user's role
 
         public BuyPaddy(int buyerID)
         {
             InitializeComponent();
             this.currentBuyerId = buyerID;
             this.Load += BuyPaddy_Load;
-        }
-       
-
-        private void BuyPaddy_Load(object sender, EventArgs e)
-        {
-            // Initialize UI elements
-            LoadBuyerInfo();
-          
-
-        
-         
-
-            
-
-            // Add purchase history functionality
-            dataGridViewSales.CellClick += dataGridViewSales_CellClick;
-
-            // Add invoice-related functionality
-            btnGenerateInvoice.Click += btnGenerateInvoice_Click;
-            btnSaveInvoice.Click += btnSaveInvoice_Click;
-            btnPrintInvoice.Click += btnPrintInvoice_Click;
-
-            
-
-            // Style data grid views
-            StylePurchaseGrid();
-
-            // Load purchase history
-            LoadBuyerPurchasesData();
-
-            // Hide invoice panel initially
-            pnlInvoice.Visible = false;
-
         }
 
         private void LoadBuyerInfo()
@@ -64,18 +32,30 @@ namespace RiceMgmtApp
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    string query = "SELECT FullName FROM Users WHERE UserID = @BuyerID AND RoleID = 4";
+                    // Modified query to accept both Government (3) and Private Buyer (4) roles
+                    string query = "SELECT FullName, RoleID FROM Users WHERE UserID = @BuyerID AND RoleID IN (3, 4)";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
                     conn.Open();
-                    object result = cmd.ExecuteScalar();
-                    if (result != null)
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        //lblBuyerName.Text = result.ToString();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Error: You do not have private buyer privileges.");
+                        if (reader.Read())
+                        {
+                            string fullName = reader["FullName"].ToString();
+                            userRoleId = Convert.ToInt32(reader["RoleID"]);
+
+                            // You can uncomment this if you have a label to display buyer name
+                            // lblBuyerName.Text = fullName;
+
+                            // Optional: Show role-specific information
+                            string roleText = userRoleId == 3 ? "Government Buyer" : "Private Buyer";
+                            // lblBuyerRole.Text = roleText; // If you have a role label
+                        }
+                        else
+                        {
+                            MessageBox.Show("Error: You do not have buyer privileges (Government or Private).");
+                        }
                     }
                 }
             }
@@ -84,10 +64,6 @@ namespace RiceMgmtApp
                 MessageBox.Show($"Error loading buyer information: {ex.Message}");
             }
         }
-
-     
-
-      
 
         private void StylePurchaseGrid()
         {
@@ -120,6 +96,7 @@ namespace RiceMgmtApp
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
+                // Modified query to show purchases for both Government and Private buyers
                 string query = @"
             SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, s.BuyerType,
                    s.CropType, s.SalePrice, s.Quantity,
@@ -127,7 +104,7 @@ namespace RiceMgmtApp
                    s.PaymentStatus, s.SaleDate
             FROM Sales s
             LEFT JOIN Users f ON s.FarmerID = f.UserID
-            WHERE s.BuyerID = @BuyerID AND s.BuyerType = 'Private'
+            WHERE s.BuyerID = @BuyerID AND s.BuyerType IN ('Private', 'Government')
             ORDER BY s.SaleDate DESC";
 
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -173,14 +150,12 @@ namespace RiceMgmtApp
             }
         }
 
-
-
         private void ClearInputs()
         {
-            
             pnlInvoice.Visible = false;
             rtbInvoicePreview.Clear();
         }
+
         private void dataGridViewSales_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && dataGridViewSales.Rows[e.RowIndex].Cells["SaleID"].Value != null)
@@ -211,6 +186,7 @@ namespace RiceMgmtApp
                     {
                         StringBuilder sb = new StringBuilder();
                         decimal totalAmount = Convert.ToDecimal(reader["SalePrice"]) * Convert.ToDecimal(reader["Quantity"]);
+                        string buyerType = reader["BuyerType"].ToString();
 
                         sb.AppendLine("RICE PRODUCTION SYSTEM");
                         sb.AppendLine("PURCHASE INVOICE");
@@ -218,7 +194,7 @@ namespace RiceMgmtApp
                         sb.AppendLine($"Invoice #: INV-{saleId:D5}");
                         sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
                         sb.AppendLine("=============================================");
-                        sb.AppendLine("\nBUYER INFORMATION:");
+                        sb.AppendLine($"\nBUYER INFORMATION ({buyerType.ToUpper()}):");
                         sb.AppendLine($"Name: {reader["BuyerName"]}");
                         if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"Contact: {reader["BuyerContactNumber"]}");
                         if (reader["BuyerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["BuyerEmail"]}");
@@ -238,6 +214,7 @@ namespace RiceMgmtApp
                         sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
                         sb.AppendLine($"Total Amount: {totalAmount:C}");
                         sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
+                        sb.AppendLine($"Buyer Type: {buyerType}");
                         sb.AppendLine("=============================================");
                         sb.AppendLine("\nThank you for your business!");
                         sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
@@ -256,21 +233,12 @@ namespace RiceMgmtApp
             }
         }
 
-
-
-
-      
-
-
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            
             LoadBuyerPurchasesData();
             MessageBox.Show("Data refreshed successfully.");
         }
 
-       
-      
         private void btnClear_Click(object sender, EventArgs e)
         {
             ClearInputs();
@@ -368,6 +336,29 @@ namespace RiceMgmtApp
             {
                 MessageBox.Show("Please select a purchase to generate an invoice.");
             }
+        }
+
+        private void BuyPaddy_Load(object sender, EventArgs e)
+        {
+            // Initialize UI elements
+            LoadBuyerInfo();
+
+            // Add purchase history functionality
+            dataGridViewSales.CellClick += dataGridViewSales_CellClick;
+
+            // Add invoice-related functionality
+            btnGenerateInvoice.Click += btnGenerateInvoice_Click;
+            btnSaveInvoice.Click += btnSaveInvoice_Click;
+            btnPrintInvoice.Click += btnPrintInvoice_Click;
+
+            // Style data grid views
+            StylePurchaseGrid();
+
+            // Load purchase history
+            LoadBuyerPurchasesData();
+
+            // Hide invoice panel initially
+            pnlInvoice.Visible = false;
         }
     }
 }

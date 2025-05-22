@@ -425,6 +425,7 @@ namespace RiceMgmtApp
             this.Name = "BuyPaddy";
             this.Padding = new System.Windows.Forms.Padding(15);
             this.Size = new System.Drawing.Size(1085, 709);
+            this.Load += new System.EventHandler(this.BuyPaddy_Load);
             this.pnlHeader.ResumeLayout(false);
             this.pnlInvoice.ResumeLayout(false);
             this.groupBoxInvoice.ResumeLayout(false);

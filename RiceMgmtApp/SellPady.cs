@@ -23,43 +23,7 @@ namespace RiceMgmtApp
             this.Load += SellPady_Load;
         }
 
-        private void SellPady_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                // Initialize UI elements
-                StyleSalesGrid();  // Style first before loading data
-                LoadBuyerCombo();
-
-                cmbBuyerType.Items.Clear();
-                cmbBuyerType.Items.AddRange(new[] { "Government", "Private" });
-                cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
-
-                cmbPaymentStatus.Items.Clear();
-                cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
-
-                // Set the farmer information
-                LoadFarmerInfo();
-
-                // Add event handlers
-                btnViewStock.Click += BtnViewStock_Click;
-                btnGenerateInvoice.Click += btnGenerateInvoice_Click;
-                btnSaveInvoice.Click += btnSaveInvoice_Click;
-                btnPrintInvoice.Click += btnPrintInvoice_Click;
-                txtQuantity.TextChanged += CalculateTotalAmount;
-                txtSalePrice.TextChanged += CalculateTotalAmount;
-
-                // Add event handler for grid selection
-                dataGridViewSales.CellClick += dataGridViewSales_CellClick;
-
-                // Load data last to ensure all handlers are set up
-                LoadFarmerSalesData();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error during form initialization: {ex.Message}");
-            }
-        }
+     
 
         private void LoadFarmerInfo()
         {
@@ -852,6 +816,42 @@ namespace RiceMgmtApp
             }
         }
 
-       
+        private void SellPady_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // Initialize UI elements
+                StyleSalesGrid();  // Style first before loading data
+                LoadBuyerCombo();
+
+                cmbBuyerType.Items.Clear();
+                cmbBuyerType.Items.AddRange(new[] { "Government", "Private" });
+                cmbBuyerType.SelectedIndexChanged += CmbBuyerType_SelectedIndexChanged;
+
+                cmbPaymentStatus.Items.Clear();
+                cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed" });
+
+                // Set the farmer information
+                LoadFarmerInfo();
+
+                // Add event handlers
+                btnViewStock.Click += BtnViewStock_Click;
+                btnGenerateInvoice.Click += btnGenerateInvoice_Click;
+                btnSaveInvoice.Click += btnSaveInvoice_Click;
+                btnPrintInvoice.Click += btnPrintInvoice_Click;
+                txtQuantity.TextChanged += CalculateTotalAmount;
+                txtSalePrice.TextChanged += CalculateTotalAmount;
+
+                // Add event handler for grid selection
+                dataGridViewSales.CellClick += dataGridViewSales_CellClick;
+
+                // Load data last to ensure all handlers are set up
+                LoadFarmerSalesData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error during form initialization: {ex.Message}");
+            }
+        }
     }
 }

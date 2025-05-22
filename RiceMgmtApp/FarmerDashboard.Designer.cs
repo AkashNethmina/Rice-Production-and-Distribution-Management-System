@@ -33,7 +33,6 @@
             this.RequestPaddy = new System.Windows.Forms.Button();
             this.btnPrice_Monitoring = new System.Windows.Forms.Button();
             this.btn_DamageReporting = new System.Windows.Forms.Button();
-            this.btn_ReportsAnalytics = new System.Windows.Forms.Button();
             this.btn_StockManagement = new System.Windows.Forms.Button();
             this.btn_Sales = new System.Windows.Forms.Button();
             this.btn_Farmers = new System.Windows.Forms.Button();
@@ -53,7 +52,6 @@
             this.panelsideMenu.Controls.Add(this.RequestPaddy);
             this.panelsideMenu.Controls.Add(this.btnPrice_Monitoring);
             this.panelsideMenu.Controls.Add(this.btn_DamageReporting);
-            this.panelsideMenu.Controls.Add(this.btn_ReportsAnalytics);
             this.panelsideMenu.Controls.Add(this.btn_StockManagement);
             this.panelsideMenu.Controls.Add(this.btn_Sales);
             this.panelsideMenu.Controls.Add(this.btn_Farmers);
@@ -75,7 +73,7 @@
             this.RequestPaddy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.RequestPaddy.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.RequestPaddy.ForeColor = System.Drawing.Color.White;
-            this.RequestPaddy.Location = new System.Drawing.Point(10, 465);
+            this.RequestPaddy.Location = new System.Drawing.Point(10, 420);
             this.RequestPaddy.Name = "RequestPaddy";
             this.RequestPaddy.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.RequestPaddy.Size = new System.Drawing.Size(230, 45);
@@ -92,7 +90,7 @@
             this.btnPrice_Monitoring.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrice_Monitoring.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnPrice_Monitoring.ForeColor = System.Drawing.Color.White;
-            this.btnPrice_Monitoring.Location = new System.Drawing.Point(10, 420);
+            this.btnPrice_Monitoring.Location = new System.Drawing.Point(10, 375);
             this.btnPrice_Monitoring.Name = "btnPrice_Monitoring";
             this.btnPrice_Monitoring.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnPrice_Monitoring.Size = new System.Drawing.Size(230, 45);
@@ -109,7 +107,7 @@
             this.btn_DamageReporting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DamageReporting.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_DamageReporting.ForeColor = System.Drawing.Color.White;
-            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 375);
+            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 330);
             this.btn_DamageReporting.Name = "btn_DamageReporting";
             this.btn_DamageReporting.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_DamageReporting.Size = new System.Drawing.Size(230, 45);
@@ -245,7 +243,6 @@
             this.panelContainer.Name = "panelContainer";
             this.panelContainer.Size = new System.Drawing.Size(974, 749);
             this.panelContainer.TabIndex = 6;
-//            this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint);
             // 
             // FarmerDashboard
             // 
@@ -278,7 +275,6 @@
 
         private System.Windows.Forms.Panel panelsideMenu;
         private System.Windows.Forms.Button btn_DamageReporting;
-        private System.Windows.Forms.Button btn_ReportsAnalytics;
         private System.Windows.Forms.Button btn_StockManagement;
         private System.Windows.Forms.Button btn_Sales;
         private System.Windows.Forms.Button btn_Farmers;

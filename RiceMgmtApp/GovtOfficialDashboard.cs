@@ -114,7 +114,7 @@ namespace RiceMgmtApp
 
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-            GovernmentHome governmentHome = new GovernmentHome();
+            GovernmentHome governmentHome = new GovernmentHome(_userId); // Pass the required parameter
             LoadUserControl(governmentHome);
             SetActiveButton(btn_Dashboard);
             UpdateBreadcrumb("Dashboard");
@@ -135,23 +135,7 @@ namespace RiceMgmtApp
             LoadUserControl(dr);
         }
 
-        private void GovtOfficialDashboard_Load(object sender, EventArgs e)
-        {
-            // Configure based on screen resolution
-            ConfigureForScreenResolution();
-
-            // Initialize UI elements
-            InitializeProgressBar();
-            AddUserProfileSection();
-            InitializeBreadcrumb();
-            ModernizeUI();
-
-            // Show GovernmentHome as default on load
-            GovernmentHome gh = new GovernmentHome();
-            LoadUserControl(gh);
-            SetActiveButton(btn_Dashboard);
-            UpdateBreadcrumb("Dashboard");
-        }
+       
 
         private void panelContainer_Paint(object sender, PaintEventArgs e)
         {
@@ -471,9 +455,36 @@ namespace RiceMgmtApp
         // Update the constructor call in GovtOfficialDashboard
         private void btn_Sales_Click(object sender, EventArgs e)
         {
-            SalesManagement salesManagement = new SalesManagement(); // Use the parameterless constructor
-            LoadUserControl(salesManagement);
+           
+            BuyPaddy buypaddy = new BuyPaddy(_userId); // Pass the required parameter
+            LoadUserControl(buypaddy);
         }
+        private void btn_RequestPaddy_Click(object sender, EventArgs e)
+        {
+            RequestPaddy requestPaddy = new RequestPaddy(_userId, _roleId);
+            LoadUserControl(requestPaddy);
+        }
+
+        // Update the constructor call in GovtOfficialDashboard_Load
+        private void GovtOfficialDashboard_Load(object sender, EventArgs e)
+        {
+            // Configure based on screen resolution
+            ConfigureForScreenResolution();
+
+            // Initialize UI elements
+            InitializeProgressBar();
+            AddUserProfileSection();
+            InitializeBreadcrumb();
+            ModernizeUI();
+
+            // Show GovernmentHome as default on load
+            GovernmentHome gh = new GovernmentHome(_userId); // Pass the required parameter
+            LoadUserControl(gh);
+            SetActiveButton(btn_Dashboard);
+            UpdateBreadcrumb("Dashboard");
+        }
+
+       
     }
     #endregion
 }
