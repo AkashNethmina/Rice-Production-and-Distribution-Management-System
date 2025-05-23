@@ -48,8 +48,10 @@
             this.lblPrivateBuyerCount = new System.Windows.Forms.Label();
             this.lblPriveteBuyersTitle = new System.Windows.Forms.Label();
             this.panelFarmers = new System.Windows.Forms.Panel();
+            this.lbltotalPurchaseQuantity = new System.Windows.Forms.Label();
             this.lblFarmerTitle1 = new System.Windows.Forms.Label();
             this.panelGovernment = new System.Windows.Forms.Panel();
+            this.lblTotalPendingRequests = new System.Windows.Forms.Label();
             this.lblGovernmentTitle = new System.Windows.Forms.Label();
             this.lblDashboardTitle = new System.Windows.Forms.Label();
             this.tableLayoutPanelCharts = new System.Windows.Forms.TableLayoutPanel();
@@ -58,8 +60,6 @@
             this.chartSales = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartStock = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnRefresh = new System.Windows.Forms.Button();
-            this.lbltotalPurchaseQuantity = new System.Windows.Forms.Label();
-            this.lblTotalPendingRequests = new System.Windows.Forms.Label();
             this.panelStats.SuspendLayout();
             this.panelTotalUsers.SuspendLayout();
             this.panelAdmins.SuspendLayout();
@@ -183,6 +183,20 @@
             this.panelFarmers.Size = new System.Drawing.Size(227, 94);
             this.panelFarmers.TabIndex = 2;
             // 
+            // lbltotalPurchaseQuantity
+            // 
+            this.lbltotalPurchaseQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbltotalPurchaseQuantity.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbltotalPurchaseQuantity.ForeColor = System.Drawing.Color.White;
+            this.lbltotalPurchaseQuantity.Location = new System.Drawing.Point(0, 27);
+            this.lbltotalPurchaseQuantity.Name = "lbltotalPurchaseQuantity";
+            this.lbltotalPurchaseQuantity.Size = new System.Drawing.Size(227, 67);
+            this.lbltotalPurchaseQuantity.TabIndex = 3;
+            this.lbltotalPurchaseQuantity.Text = "0";
+            this.lbltotalPurchaseQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // lblFarmerTitle1
             // 
             this.lblFarmerTitle1.Dock = System.Windows.Forms.DockStyle.Top;
@@ -206,6 +220,20 @@
             this.panelGovernment.Name = "panelGovernment";
             this.panelGovernment.Size = new System.Drawing.Size(227, 94);
             this.panelGovernment.TabIndex = 3;
+            // 
+            // lblTotalPendingRequests
+            // 
+            this.lblTotalPendingRequests.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblTotalPendingRequests.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalPendingRequests.ForeColor = System.Drawing.Color.White;
+            this.lblTotalPendingRequests.Location = new System.Drawing.Point(0, 27);
+            this.lblTotalPendingRequests.Name = "lblTotalPendingRequests";
+            this.lblTotalPendingRequests.Size = new System.Drawing.Size(227, 67);
+            this.lblTotalPendingRequests.TabIndex = 4;
+            this.lblTotalPendingRequests.Text = "0";
+            this.lblTotalPendingRequests.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblGovernmentTitle
             // 
@@ -316,7 +344,6 @@
             this.mychartSales.Size = new System.Drawing.Size(460, 196);
             this.mychartSales.TabIndex = 2;
             this.mychartSales.Text = "My Sales Chart";
-//            this.mychartSales.Click += new System.EventHandler(this.chart1_Click);
             // 
             // chartSales
             // 
@@ -399,34 +426,6 @@
             this.btnRefresh.UseVisualStyleBackColor = false;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
-            // lbltotalPurchaseQuantity
-            // 
-            this.lbltotalPurchaseQuantity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbltotalPurchaseQuantity.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbltotalPurchaseQuantity.ForeColor = System.Drawing.Color.White;
-            this.lbltotalPurchaseQuantity.Location = new System.Drawing.Point(0, 27);
-            this.lbltotalPurchaseQuantity.Name = "lbltotalPurchaseQuantity";
-            this.lbltotalPurchaseQuantity.Size = new System.Drawing.Size(227, 67);
-            this.lbltotalPurchaseQuantity.TabIndex = 3;
-            this.lbltotalPurchaseQuantity.Text = "0";
-            this.lbltotalPurchaseQuantity.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lblTotalPendingRequests
-            // 
-            this.lblTotalPendingRequests.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotalPendingRequests.Font = new System.Drawing.Font("Segoe UI", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPendingRequests.ForeColor = System.Drawing.Color.White;
-            this.lblTotalPendingRequests.Location = new System.Drawing.Point(0, 27);
-            this.lblTotalPendingRequests.Name = "lblTotalPendingRequests";
-            this.lblTotalPendingRequests.Size = new System.Drawing.Size(227, 67);
-            this.lblTotalPendingRequests.TabIndex = 4;
-            this.lblTotalPendingRequests.Text = "0";
-            this.lblTotalPendingRequests.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // GovernmentHome
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -440,6 +439,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "GovernmentHome";
             this.Size = new System.Drawing.Size(1000, 630);
+            this.Load += new System.EventHandler(this.GovernmentHome_Load);
             this.panelStats.ResumeLayout(false);
             this.panelTotalUsers.ResumeLayout(false);
             this.panelAdmins.ResumeLayout(false);

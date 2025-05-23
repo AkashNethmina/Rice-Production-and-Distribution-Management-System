@@ -459,11 +459,8 @@ namespace RiceMgmtApp
             BuyPaddy buypaddy = new BuyPaddy(_userId); // Pass the required parameter
             LoadUserControl(buypaddy);
         }
-        private void btn_RequestPaddy_Click(object sender, EventArgs e)
-        {
-            RequestPaddy requestPaddy = new RequestPaddy(_userId, _roleId);
-            LoadUserControl(requestPaddy);
-        }
+       
+       
 
         // Update the constructor call in GovtOfficialDashboard_Load
         private void GovtOfficialDashboard_Load(object sender, EventArgs e)
@@ -484,7 +481,11 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Dashboard");
         }
 
-       
+        private void btn_RequestPaddy_Click(object sender, EventArgs e)
+        {
+            RequestPaddy requestPaddy = new RequestPaddy(_userId, _roleId);
+            LoadUserControl(requestPaddy);
+        }
     }
     #endregion
 }

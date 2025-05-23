@@ -34,6 +34,7 @@
             this.sqlCommand2 = new Microsoft.Data.SqlClient.SqlCommand();
             this.sidebarTimer = new System.Windows.Forms.Timer(this.components);
             this.panelsideMenu = new System.Windows.Forms.Panel();
+            this.btn_RequestPaddy = new System.Windows.Forms.Button();
             this.btnPrice_Monitoring = new System.Windows.Forms.Button();
             this.btn_StockManagement = new System.Windows.Forms.Button();
             this.btn_Purchase = new System.Windows.Forms.Button();
@@ -65,6 +66,7 @@
             // 
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
+            this.panelsideMenu.Controls.Add(this.btn_RequestPaddy);
             this.panelsideMenu.Controls.Add(this.btnPrice_Monitoring);
             this.panelsideMenu.Controls.Add(this.btn_StockManagement);
             this.panelsideMenu.Controls.Add(this.btn_Purchase);
@@ -79,6 +81,23 @@
             this.panelsideMenu.Padding = new System.Windows.Forms.Padding(10, 0, 10, 46);
             this.panelsideMenu.Size = new System.Drawing.Size(250, 749);
             this.panelsideMenu.TabIndex = 5;
+            // 
+            // btn_RequestPaddy
+            // 
+            this.btn_RequestPaddy.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_RequestPaddy.FlatAppearance.BorderSize = 0;
+            this.btn_RequestPaddy.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_RequestPaddy.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_RequestPaddy.ForeColor = System.Drawing.Color.White;
+            this.btn_RequestPaddy.Location = new System.Drawing.Point(10, 375);
+            this.btn_RequestPaddy.Name = "btn_RequestPaddy";
+            this.btn_RequestPaddy.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_RequestPaddy.Size = new System.Drawing.Size(230, 45);
+            this.btn_RequestPaddy.TabIndex = 16;
+            this.btn_RequestPaddy.Text = "Request Paddy";
+            this.btn_RequestPaddy.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_RequestPaddy.UseVisualStyleBackColor = true;
+            this.btn_RequestPaddy.Click += new System.EventHandler(this.btn_RequestPaddy_Click);
             // 
             // btnPrice_Monitoring
             // 
@@ -215,13 +234,11 @@
             // 
             // panelContainer
             // 
-            this.panelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-            this.panelContainer.Location = new System.Drawing.Point(265, 25);
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContainer.Location = new System.Drawing.Point(250, 0);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(934, 697);
+            this.panelContainer.Size = new System.Drawing.Size(974, 749);
             this.panelContainer.TabIndex = 6;
             this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint);
             // 
@@ -258,5 +275,6 @@
         private System.Windows.Forms.Button btn_Dashboard;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panelContainer;
+        private System.Windows.Forms.Button btn_RequestPaddy;
     }
 }

@@ -49,15 +49,7 @@ namespace RiceMgmtApp
             this.Load += GovernmentHome_Load;
         }
 
-        private void GovernmentHome_Load(object sender, EventArgs e)
-        {
-            // Load all data when the control is loaded
-            LoadGovernmentStatistics();
-            SetupSalesChart();
-            SetupStockChart();
-            SetupMySalesChart();
-            SetupMyStockChart();
-        }
+        
 
         private void LoadGovernmentStatistics()
         {
@@ -578,5 +570,15 @@ namespace RiceMgmtApp
             SetupMyStockChart();
         }
 
+        private void GovernmentHome_Load(object sender, EventArgs e)
+        {
+
+            // Load all data when the control is loaded
+            LoadGovernmentStatistics();
+            SetupSalesChart();
+            SetupStockChart();
+            SetupMySalesChart();
+            SetupMyStockChart();
+        }
     }
 }

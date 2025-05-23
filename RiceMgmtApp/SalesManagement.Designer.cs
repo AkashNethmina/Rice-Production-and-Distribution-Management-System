@@ -485,6 +485,7 @@
             this.Controls.Add(this.pnlInvoice);
             this.Name = "SalesManagement";
             this.Size = new System.Drawing.Size(1000, 860);
+            this.Load += new System.EventHandler(this.SalesManagement_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewSales)).EndInit();
             this.panelInput.ResumeLayout(false);
             this.panelInput.PerformLayout();
