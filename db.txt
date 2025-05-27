@@ -19,16 +19,7 @@ CREATE TABLE Users (
     FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
 
--- Farmers Table
-CREATE TABLE Farmers (
-    FarmerID INT IDENTITY(1,1) PRIMARY KEY,
-    UserID INT NOT NULL UNIQUE,
-    ContactNumber NVARCHAR(20) NOT NULL,
-    Address NVARCHAR(255),
-    FarmSize DECIMAL(10,2) NULL,
-    RegistrationDate DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
-);
+-
 -- Authentication Logs Table
 CREATE TABLE AuthLogs (
     LogID INT IDENTITY(1,1) PRIMARY KEY,
@@ -125,15 +116,6 @@ CREATE TABLE DamageReports (
     FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
--- Reports & Analytics Table
-CREATE TABLE Reports (
-    ReportID INT IDENTITY(1,1) PRIMARY KEY,
-    ReportType NVARCHAR(50) NOT NULL,
-    GeneratedBy INT NOT NULL,
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (GeneratedBy) REFERENCES Users(UserID) ON DELETE CASCADE
-);
-
 -- Price Monitoring Table
 CREATE TABLE PriceMonitoring (
     PriceID INT IDENTITY(1,1) PRIMARY KEY,
@@ -150,30 +132,6 @@ CREATE TABLE PriceMonitoring (
     GovernmentPrice DECIMAL(10,2) NOT NULL,
     PriceDeviation AS (AvgPrice - GovernmentPrice) PERSISTED,
     CreatedAt DATETIME DEFAULT GETDATE()
-);
-
-
--- Cultivation Table
-CREATE TABLE Cultivation (
-    CultivationID INT IDENTITY(1,1) PRIMARY KEY,
-    FarmerID INT NOT NULL,
-    FieldID INT NOT NULL,
-    Season VARCHAR(10) CHECK (Season IN ('Yala', 'Maha')),
-    Year INT,
-    AcresCultivated DECIMAL(10,2),
-    ExpectedYield DECIMAL(10,2),
-    ActualYield DECIMAL(10,2) NULL,
-    CropLoss DECIMAL(10,2) NULL, -- Keep CropLoss manually updatable
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (FarmerID) REFERENCES Users(UserID) ON DELETE CASCADE
-);
-
-CREATE TABLE Invoices (
-    InvoiceID INT IDENTITY(1,1) PRIMARY KEY,
-    SaleID INT NOT NULL,
-    InvoicePath NVARCHAR(200),
-    CreatedAt DATETIME DEFAULT GETDATE(),
-    FOREIGN KEY (SaleID) REFERENCES Sales(SaleID) ON DELETE CASCADE
 );
 
 
@@ -223,24 +181,3 @@ END;
 | Damage Reporting | View & Approve | Create reports | No access | Review & Approve |
 | System Settings | Full access | No access | No access | Limited access |
 
-
-
-
-flowchart TD
-    A[Start] --> B[Private Buyer Request Paddy
-    B --> C[Submit Request]
-    C --> D[System notifies Farmer]
-    D --> E[Farmer  reviews report]
-    E --> F{Verification needed?}
-    F -->|Yes| G[Schedule field visit]
-    F -->|No| H[Make assessment decision]
-    G --> I[Conduct field inspection]
-    I --> J[Document findings]
-    J --> H
-    H --> K{Approve compensation?}
-    K -->|Yes| L[Calculate compensation amount]
-    K -->|No| M[Reject claim with reason]
-    L --> N[Process compensation payment]
-    N --> O[Notify farmer]
-    M --> O
-    O --> P[End]
