@@ -184,8 +184,6 @@
             this.btn_logout.Text = "Logout";
             this.btn_logout.UseVisualStyleBackColor = false;
             this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
-            this.btn_logout.MouseEnter += new System.EventHandler(this.btn_logout_MouseEnter);
-            this.btn_logout.MouseLeave += new System.EventHandler(this.btn_logout_MouseLeave);
             // 
             // btn_profile
             // 

@@ -30,11 +30,10 @@ namespace RiceMgmtApp
 
         private void ConfigureBasedOnRole()
         {
-            // Configure buttons and interface based on role
             switch (currentUserRoleID)
             {
                 case 1: // Admin
-                    // Full access - enable all controls
+                 
                     btnAdd.Visible = true;
                     btnEdit.Visible = true;
                     btnDelete.Visible = true;
@@ -42,16 +41,16 @@ namespace RiceMgmtApp
                     break;
 
                 case 2: // Farmer
-                    // Can only view own stock and add/edit/delete own records
+                    
                     btnAdd.Visible = true;
                     btnEdit.Visible = true;
                     btnDelete.Visible = true;
                     btnExportPDF.Visible = true;
-                    // Filter will be applied in LoadStockData
+                   
                     break;
 
                 case 3: // Government
-                    // View only access
+                   
                     btnAdd.Visible = false;
                     btnEdit.Visible = false;
                     btnDelete.Visible = false;
@@ -59,8 +58,7 @@ namespace RiceMgmtApp
                     break;
 
                 case 4: // Private Buyer
-                    // No access - this should be handled at navigation level
-                    // But in case they somehow access this control:
+                    
                     MessageBox.Show("You do not have permission to access Stock Management.",
                                    "Access Denied", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     this.Enabled = false;
@@ -76,14 +74,14 @@ namespace RiceMgmtApp
                 {
                     string query;
 
-                    if (currentUserRoleID == 2) // Farmer - show only own stock
+                    if (currentUserRoleID == 2) 
                     {
                         query = @"SELECT S.StockID, U.FullName AS FarmerName, S.CropType, S.Quantity, S.LastUpdated
                                 FROM Stock S
                                 INNER JOIN Users U ON S.FarmerID = U.UserID
                                 WHERE S.FarmerID = @UserID";
                     }
-                    else // Admin or Government - show all
+                    else 
                     {
                         query = @"SELECT S.StockID, U.FullName AS FarmerName, S.CropType, S.Quantity, S.LastUpdated
                                 FROM Stock S
@@ -92,7 +90,7 @@ namespace RiceMgmtApp
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        if (currentUserRoleID == 2) // Add parameter for farmer filter
+                        if (currentUserRoleID == 2) 
                         {
                             cmd.Parameters.AddWithValue("@UserID", currentUserID);
                         }
@@ -104,7 +102,6 @@ namespace RiceMgmtApp
                     }
                 }
 
-                // Format the DataGridView for better readability
                 FormatDataGridView();
             }
             catch (Exception ex)
@@ -122,28 +119,31 @@ namespace RiceMgmtApp
             dataGridViewStock.ReadOnly = true;
             dataGridViewStock.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            // Style header row
             dataGridViewStock.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Arial", 10F, FontStyle.Bold);
-            dataGridViewStock.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(200, 230, 201); // Light green for rice theme
+            dataGridViewStock.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(200, 230, 201);
             dataGridViewStock.ColumnHeadersDefaultCellStyle.ForeColor = Color.DarkGreen;
 
-            // Format datetime column
             if (dataGridViewStock.Columns["LastUpdated"] != null)
             {
                 dataGridViewStock.Columns["LastUpdated"].DefaultCellStyle.Format = "yyyy-MM-dd HH:mm";
             }
 
-            // Format quantity with 2 decimal places
             if (dataGridViewStock.Columns["Quantity"] != null)
             {
                 dataGridViewStock.Columns["Quantity"].DefaultCellStyle.Format = "N2";
             }
 
-            // Alternate row colors for better readability
-            dataGridViewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 248, 240); // Very light green
-            dataGridViewStock.DefaultCellStyle.SelectionBackColor = Color.FromArgb(76, 175, 80); // Material Green
+            dataGridViewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(240, 248, 240);
+            dataGridViewStock.DefaultCellStyle.SelectionBackColor = Color.FromArgb(76, 175, 80);
             dataGridViewStock.DefaultCellStyle.SelectionForeColor = Color.White;
+
+           
+            if (dataGridViewStock.Columns["FarmerName"] != null)
+            {
+                dataGridViewStock.Columns["FarmerName"].Visible = currentUserRoleID != 2;
+            }
         }
+
 
         private int GetFarmerIdByStockId(int stockId)
         {
@@ -169,7 +169,7 @@ namespace RiceMgmtApp
                 MessageBox.Show("Error retrieving farmer information: " + ex.Message, "Database Error",
                                MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return -1; // Invalid ID
+            return -1;
         }
 
         private void DeleteStock(int stockId)
@@ -207,19 +207,18 @@ namespace RiceMgmtApp
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Check if current user is allowed to add stock
-            if (currentUserRoleID != 1 && currentUserRoleID != 2) // Only Admin and Farmer can add
+          
+            if (currentUserRoleID != 1 && currentUserRoleID != 2)
             {
                 MessageBox.Show("You don't have permission to add stock entries.", "Permission Denied",
                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Open a form to add new stock
-            StockEntryForm stockForm = new StockEntryForm(currentUserID, currentUserRoleID, 0); // 0 means new entry
+            StockEntryForm stockForm = new StockEntryForm(currentUserID, currentUserRoleID, 0); 
             if (stockForm.ShowDialog() == DialogResult.OK)
             {
-                LoadStockData(); // Refresh data after adding
+                LoadStockData(); 
             }
         }
 
@@ -234,7 +233,7 @@ namespace RiceMgmtApp
 
             int stockId = Convert.ToInt32(dataGridViewStock.SelectedRows[0].Cells["StockID"].Value);
 
-            // For farmers, verify they own this stock before allowing edit
+           
             if (currentUserRoleID == 2)
             {
                 int farmerId = GetFarmerIdByStockId(stockId);
@@ -245,18 +244,18 @@ namespace RiceMgmtApp
                     return;
                 }
             }
-            else if (currentUserRoleID != 1) // Not an admin
+            else if (currentUserRoleID != 1)
             {
                 MessageBox.Show("You don't have permission to edit stock entries.", "Permission Denied",
                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Open edit form
+         
             StockEntryForm stockForm = new StockEntryForm(currentUserID, currentUserRoleID, stockId);
             if (stockForm.ShowDialog() == DialogResult.OK)
             {
-                LoadStockData(); // Refresh data after editing
+                LoadStockData();
             }
         }
 
@@ -271,7 +270,7 @@ namespace RiceMgmtApp
 
             int stockId = Convert.ToInt32(dataGridViewStock.SelectedRows[0].Cells["StockID"].Value);
 
-            // For farmers, verify they own this stock before allowing delete
+         
             if (currentUserRoleID == 2)
             {
                 int farmerId = GetFarmerIdByStockId(stockId);
@@ -282,19 +281,19 @@ namespace RiceMgmtApp
                     return;
                 }
             }
-            else if (currentUserRoleID != 1) // Not an admin
+            else if (currentUserRoleID != 1)
             {
                 MessageBox.Show("You don't have permission to delete stock entries.", "Permission Denied",
                                MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // Confirm deletion
+           
             if (MessageBox.Show("Are you sure you want to delete this stock entry?", "Confirm Delete",
                               MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 DeleteStock(stockId);
-                LoadStockData(); // Refresh data after deleting
+                LoadStockData(); 
             }
         }
 
@@ -321,7 +320,7 @@ namespace RiceMgmtApp
                     PdfWriter.GetInstance(doc, new FileStream(sfd.FileName, FileMode.Create));
                     doc.Open();
 
-                    // Add title and timestamp
+                   
                     Paragraph title = new Paragraph("Rice Stock Report",
                                      FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 18))
                     {
@@ -338,39 +337,39 @@ namespace RiceMgmtApp
                     };
                     doc.Add(timestamp);
 
-                    // Create table
+                   
                     PdfPTable table = new PdfPTable(dataGridViewStock.Columns.Count);
                     table.WidthPercentage = 100;
                     float[] widths = new float[dataGridViewStock.Columns.Count];
 
-                    // Customize column widths
+                 
                     for (int i = 0; i < dataGridViewStock.Columns.Count; i++)
                     {
                         if (dataGridViewStock.Columns[i].HeaderText.Contains("Name"))
-                            widths[i] = 3f; // Name columns wider
+                            widths[i] = 3f; 
                         else if (dataGridViewStock.Columns[i].HeaderText.Contains("Type"))
-                            widths[i] = 2f; // Type columns medium
+                            widths[i] = 2f;
                         else if (dataGridViewStock.Columns[i].HeaderText.Contains("Updated"))
-                            widths[i] = 2f; // Date columns medium
+                            widths[i] = 2f; 
                         else
-                            widths[i] = 1f; // Default width
+                            widths[i] = 1f; 
                     }
                     table.SetWidths(widths);
 
-                    // Add headers
+                  
                     foreach (DataGridViewColumn column in dataGridViewStock.Columns)
                     {
                         PdfPCell cell = new PdfPCell(new Phrase(column.HeaderText,
                                         FontFactory.GetFont(FontFactory.HELVETICA_BOLD, 10)))
                         {
-                            BackgroundColor = new BaseColor(200, 230, 201), // Match the UI green theme
+                            BackgroundColor = new BaseColor(200, 230, 201), 
                             HorizontalAlignment = Element.ALIGN_CENTER,
                             Padding = 5
                         };
                         table.AddCell(cell);
                     }
 
-                    // Add data rows
+                  
                     foreach (DataGridViewRow row in dataGridViewStock.Rows)
                     {
                         for (int i = 0; i < row.Cells.Count; i++)
@@ -380,9 +379,7 @@ namespace RiceMgmtApp
                             {
                                 Padding = 4
                             };
-
-                            // Center ID and quantity columns
-                            if (i == 0 || i == 3) // StockID or Quantity column
+                            if (i == 0 || i == 3) 
                                 cell.HorizontalAlignment = Element.ALIGN_CENTER;
 
                             table.AddCell(cell);
@@ -405,29 +402,19 @@ namespace RiceMgmtApp
             }
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtSearch_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        
     }
-
-    // This is the dialog form for adding/editing stock entries
     public class StockEntryForm : Form
     {
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
         private int currentUserID;
         private int currentUserRoleID;
-        private int stockID; // 0 for new entry, >0 for editing existing
+        private int stockID; 
 
-        // Form controls
+      
         private ComboBox cmbCropType;
         private TextBox txtQuantity;
-        private ComboBox cmbFarmer; // For admin to select farmer
+        private ComboBox cmbFarmer; 
         private Button btnSave;
         private Button btnCancel;
         private Label lblCropType;
@@ -457,12 +444,12 @@ namespace RiceMgmtApp
             this.MinimizeBox = false;
             this.BackColor = Color.White;
 
-            // Header panel
+           
             headerPanel = new Panel
             {
                 Dock = DockStyle.Top,
                 Height = 60,
-                BackColor = Color.FromArgb(76, 175, 80) // Material Green
+                BackColor = Color.FromArgb(76, 175, 80) 
             };
 
             lblHeader = new Label
@@ -476,7 +463,7 @@ namespace RiceMgmtApp
 
             headerPanel.Controls.Add(lblHeader);
 
-            // Create labels with improved styling
+            
             lblCropType = new Label
             {
                 Text = "Crop Type:",
@@ -499,10 +486,9 @@ namespace RiceMgmtApp
                 Location = new Point(40, 190),
                 Size = new Size(120, 25),
                 Font = new System.Drawing.Font("Arial", 10F),
-                Visible = (currentUserRoleID == 1) // Only visible to Admin
+                Visible = (currentUserRoleID == 1) 
             };
 
-            // Create input controls with improved styling
             cmbCropType = new ComboBox
             {
                 Location = new Point(160, 90),
@@ -528,10 +514,10 @@ namespace RiceMgmtApp
                 Size = new Size(240, 25),
                 DropDownStyle = ComboBoxStyle.DropDownList,
                 Font = new System.Drawing.Font("Arial", 10F),
-                Visible = (currentUserRoleID == 1) // Only visible to Admin
+                Visible = (currentUserRoleID == 1) 
             };
 
-            // Create buttons with improved styling
+         
             btnSave = new Button
             {
                 Text = "Save",
@@ -539,7 +525,7 @@ namespace RiceMgmtApp
                 Size = new Size(100, 35),
                 DialogResult = DialogResult.OK,
                 Font = new System.Drawing.Font("Arial", 10F),
-                BackColor = Color.FromArgb(76, 175, 80), // Green
+                BackColor = Color.FromArgb(76, 175, 80), 
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
             };
@@ -553,13 +539,13 @@ namespace RiceMgmtApp
                 Size = new Size(100, 35),
                 DialogResult = DialogResult.Cancel,
                 Font = new System.Drawing.Font("Arial", 10F),
-                BackColor = Color.FromArgb(158, 158, 158), // Gray
+                BackColor = Color.FromArgb(158, 158, 158), 
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat
             };
             btnCancel.FlatAppearance.BorderSize = 0;
 
-            // Add controls to form
+           
             this.Controls.Add(headerPanel);
             this.Controls.Add(lblCropType);
             this.Controls.Add(cmbCropType);
@@ -576,26 +562,26 @@ namespace RiceMgmtApp
 
         private void StyleControls()
         {
-            // Additional styling for input controls
+           
             txtQuantity.BorderStyle = BorderStyle.FixedSingle;
 
-            // Add event handlers for visual feedback
-            btnSave.MouseEnter += (s, e) => btnSave.BackColor = Color.FromArgb(56, 142, 60); // Darker green on hover
+           
+            btnSave.MouseEnter += (s, e) => btnSave.BackColor = Color.FromArgb(56, 142, 60); 
             btnSave.MouseLeave += (s, e) => btnSave.BackColor = Color.FromArgb(76, 175, 80);
 
-            btnCancel.MouseEnter += (s, e) => btnCancel.BackColor = Color.FromArgb(117, 117, 117); // Darker gray on hover
+            btnCancel.MouseEnter += (s, e) => btnCancel.BackColor = Color.FromArgb(117, 117, 117); 
             btnCancel.MouseLeave += (s, e) => btnCancel.BackColor = Color.FromArgb(158, 158, 158);
         }
 
         private void LoadFormData()
         {
-            // If admin, load farmer list
+           
             if (currentUserRoleID == 1)
             {
                 LoadFarmersList();
             }
 
-            // If editing existing record, load its data
+           
             if (stockID > 0)
             {
                 try
@@ -618,7 +604,7 @@ namespace RiceMgmtApp
                                     if (currentUserRoleID == 1) // Admin
                                     {
                                         int farmerId = Convert.ToInt32(reader["FarmerID"]);
-                                        // Select the farmer in dropdown
+                                        
                                         foreach (DataRowView item in cmbFarmer.Items)
                                         {
                                             if (Convert.ToInt32(item["UserID"]) == farmerId)
@@ -649,7 +635,7 @@ namespace RiceMgmtApp
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = @"SELECT UserID, FullName FROM Users 
-                                    WHERE RoleID = 2 AND Status = 'Active'"; // RoleID 2 = Farmer
+                                    WHERE RoleID = 2 AND Status = 'Active'"; 
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
@@ -668,7 +654,7 @@ namespace RiceMgmtApp
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            // Validate input
+          
             if (string.IsNullOrWhiteSpace(cmbCropType.Text))
             {
                 MessageBox.Show("Please select a crop type.", "Validation Error",
@@ -701,7 +687,7 @@ namespace RiceMgmtApp
                 farmerID = currentUserID;
             }
 
-            // Save to database
+         
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -710,7 +696,7 @@ namespace RiceMgmtApp
                     string query;
                     SqlCommand cmd;
 
-                    if (stockID > 0) // Update existing record
+                    if (stockID > 0) 
                     {
                         query = @"UPDATE Stock SET CropType = @CropType, 
                                 Quantity = @Quantity, FarmerID = @FarmerID, 
@@ -719,14 +705,14 @@ namespace RiceMgmtApp
                         cmd = new SqlCommand(query, conn);
                         cmd.Parameters.AddWithValue("@StockID", stockID);
                     }
-                    else // Insert new record
+                    else 
                     {
                         query = @"INSERT INTO Stock (CropType, Quantity, FarmerID, LastUpdated) 
                                 VALUES (@CropType, @Quantity, @FarmerID, GETDATE())";
                         cmd = new SqlCommand(query, conn);
                     }
 
-                    // Add common parameters
+                   
                     cmd.Parameters.AddWithValue("@CropType", cmbCropType.Text);
                     cmd.Parameters.AddWithValue("@Quantity", quantity);
                     cmd.Parameters.AddWithValue("@FarmerID", farmerID);

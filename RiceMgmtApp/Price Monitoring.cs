@@ -18,13 +18,13 @@ namespace RiceMgmtApp
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
         private int currentUserRoleID;
 
-        // Constants for role IDs
+      
         private const int ROLE_ADMIN = 1;
         private const int ROLE_FARMER = 2;
         private const int ROLE_GOVERNMENT = 3;
         private const int ROLE_PRIVATE_BUYER = 4;
 
-        // Properties to store selected price data
+       
         private int selectedPriceID = -1;
         private string selectedCropType = string.Empty;
 
@@ -33,10 +33,9 @@ namespace RiceMgmtApp
             InitializeComponent();
             currentUserRoleID = userRoleID;
 
-            // Set up the connection
+           
             connection = new SqlConnection(connectionString);
-
-            // Subscribe to events
+            
             Load += Price_Monitoring_Load;
         }
 
@@ -44,13 +43,13 @@ namespace RiceMgmtApp
         {
             try
             {
-                // Load the crop types
+              
                 LoadCropTypes();
 
-                // Load price monitoring data
+               
                 LoadPriceMonitoringData();
 
-                // Set up UI based on user role
+               
                 ConfigureUIByRole();
             }
             catch (Exception ex)
@@ -61,7 +60,7 @@ namespace RiceMgmtApp
 
         private void LoadCropTypes()
         {
-            // List of crop types as per the database CHECK constraint
+           
             string[] cropTypes = new string[]
             {
                 "Red Nadu",
@@ -79,11 +78,11 @@ namespace RiceMgmtApp
             if (comCropType.Items.Count > 0)
                 comCropType.SelectedIndex = 0;
 
-            // Load filter dropdown with same crop types plus "All" option
+        
             comFilterCrop.Items.Clear();
             comFilterCrop.Items.Add("All");
             comFilterCrop.Items.AddRange(cropTypes);
-            comFilterCrop.SelectedIndex = 0; // Select "All" by default
+            comFilterCrop.SelectedIndex = 0; 
         }
 
         private void LoadPriceMonitoringData()
@@ -111,11 +110,11 @@ namespace RiceMgmtApp
 
                     dgvPriceMonitoring.DataSource = dt;
 
-                    // Hide PriceID column
+                  
                     if (dgvPriceMonitoring.Columns.Contains("PriceID"))
                         dgvPriceMonitoring.Columns["PriceID"].Visible = false;
 
-                    // Format column headers
+                   
                     if (dgvPriceMonitoring.Columns.Contains("CropType"))
                         dgvPriceMonitoring.Columns["CropType"].HeaderText = "Crop Type";
 
@@ -144,7 +143,7 @@ namespace RiceMgmtApp
             {
                 string selectedCrop = comFilterCrop.SelectedItem?.ToString();
 
-                // If "All" is selected or nothing is selected, show all data
+               
                 if (string.IsNullOrEmpty(selectedCrop) || selectedCrop.ToLower() == "all")
                 {
                     LoadPriceMonitoringData();
@@ -176,7 +175,7 @@ namespace RiceMgmtApp
 
                     dgvPriceMonitoring.DataSource = dt;
 
-                    // Hide PriceID column
+              
                     if (dgvPriceMonitoring.Columns.Contains("PriceID"))
                         dgvPriceMonitoring.Columns["PriceID"].Visible = false;
 
@@ -191,34 +190,32 @@ namespace RiceMgmtApp
 
         private void ConfigureUIByRole()
         {
-            // Check if the user has edit permissions (Admin or Government)
+           
             bool canEdit = currentUserRoleID == ROLE_ADMIN || currentUserRoleID == ROLE_GOVERNMENT;
             bool isViewOnlyUser = currentUserRoleID == ROLE_FARMER || currentUserRoleID == ROLE_PRIVATE_BUYER;
 
-            // Configure visibility of UI elements based on role
-            grpPriceDetails.Visible = !isViewOnlyUser; // Hide the entire price details group for Farmers and Private Buyers
+          
+            grpPriceDetails.Visible = !isViewOnlyUser;
             btnAddUpdate.Visible = canEdit;
             btnDelete.Visible = canEdit;
             btnClear.Visible = canEdit;
 
-            // For viewing roles, disable cell click selection functionality
+           
             if (isViewOnlyUser)
             {
-                // Remove the event handler for cell click if it's a view-only user
                 dgvPriceMonitoring.CellClick -= DgvPriceMonitoring_CellClick;
 
-                // Set the selection mode to prevent visual selection in the grid
                 dgvPriceMonitoring.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
                 dgvPriceMonitoring.ReadOnly = true;
             }
             else
             {
-                // Make sure cell click is hooked up for admin/government users
+              
                 dgvPriceMonitoring.CellClick += DgvPriceMonitoring_CellClick;
                 dgvPriceMonitoring.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             }
 
-            // Adjust title based on role
+         
             if (isViewOnlyUser)
             {
                 lblTitle.Text = "Paddy Price Monitoring (View Only)";
@@ -231,7 +228,7 @@ namespace RiceMgmtApp
 
         private void DgvPriceMonitoring_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Only process cell clicks for users with appropriate permissions
+          
             if (currentUserRoleID != ROLE_ADMIN && currentUserRoleID != ROLE_GOVERNMENT)
                 return;
 
@@ -244,10 +241,10 @@ namespace RiceMgmtApp
                     selectedPriceID = Convert.ToInt32(row.Cells["PriceID"].Value);
                     selectedCropType = row.Cells["CropType"].Value.ToString();
 
-                    // Select the crop type in the combo box
+                
                     comCropType.Text = selectedCropType;
 
-                    // Populate the textboxes
+                
                     txtAvgPrice.Text = row.Cells["AvgPrice"].Value.ToString();
                     txtGovtPrice.Text = row.Cells["GovernmentPrice"].Value.ToString();
                     txtPriceDeviation.Text = row.Cells["PriceDeviation"].Value.ToString();
@@ -261,7 +258,7 @@ namespace RiceMgmtApp
 
         private void BtnAddUpdate_Click(object sender, EventArgs e)
         {
-            // Check if user has permission to add/update
+          
             if (currentUserRoleID != ROLE_ADMIN && currentUserRoleID != ROLE_GOVERNMENT)
             {
                 MessageBox.Show("You do not have permission to modify price data.",
@@ -269,7 +266,7 @@ namespace RiceMgmtApp
                 return;
             }
 
-            // Validate inputs
+           
             if (comCropType.SelectedItem == null)
             {
                 MessageBox.Show("Please select a crop type.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -297,10 +294,10 @@ namespace RiceMgmtApp
                     conn.Open();
                     SqlCommand cmd;
 
-                    // Check if we're updating or adding
+                 
                     if (selectedPriceID > 0)
                     {
-                        // Update existing record
+                       
                         string updateQuery = @"
                             UPDATE PriceMonitoring 
                             SET CropType = @CropType, 
@@ -313,7 +310,7 @@ namespace RiceMgmtApp
                     }
                     else
                     {
-                        // Insert new record
+                      
                         string insertQuery = @"
                             INSERT INTO PriceMonitoring 
                                 (CropType, AvgPrice, GovernmentPrice) 
@@ -323,7 +320,7 @@ namespace RiceMgmtApp
                         cmd = new SqlCommand(insertQuery, conn);
                     }
 
-                    // Common parameters
+                   
                     cmd.Parameters.AddWithValue("@CropType", comCropType.Text);
                     cmd.Parameters.AddWithValue("@AvgPrice", avgPrice);
                     cmd.Parameters.AddWithValue("@GovtPrice", govtPrice);
@@ -336,10 +333,10 @@ namespace RiceMgmtApp
                             "Price data updated successfully." :
                             "New price data added successfully.";
 
-                        // Refresh data grid
+                     
                         LoadPriceMonitoringData();
 
-                        // Clear the form
+                    
                         ClearForm();
                     }
                     else
@@ -356,7 +353,7 @@ namespace RiceMgmtApp
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            // Check if user has permission to delete
+           
             if (currentUserRoleID != ROLE_ADMIN && currentUserRoleID != ROLE_GOVERNMENT)
             {
                 MessageBox.Show("You do not have permission to delete price data.",
@@ -364,7 +361,7 @@ namespace RiceMgmtApp
                 return;
             }
 
-            // Check if a record is selected
+          
             if (selectedPriceID <= 0)
             {
                 MessageBox.Show("Please select a price record to delete.",
@@ -372,7 +369,7 @@ namespace RiceMgmtApp
                 return;
             }
 
-            // Confirm deletion
+          
             DialogResult result = MessageBox.Show(
                 $"Are you sure you want to delete the price data for {selectedCropType}?",
                 "Confirm Delete",
@@ -396,10 +393,9 @@ namespace RiceMgmtApp
                         {
                             lblStatus.Text = "Price data deleted successfully.";
 
-                            // Refresh data grid
                             LoadPriceMonitoringData();
 
-                            // Clear the form
+                     
                             ClearForm();
                         }
                         else

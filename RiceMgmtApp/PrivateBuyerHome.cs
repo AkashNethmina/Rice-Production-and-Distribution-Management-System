@@ -69,23 +69,7 @@ namespace RiceMgmtApp
                         totalPurchaseQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
                     }
 
-                    // Get total stock quantity
-                    //string stockQuery = @"
-                    //    SELECT 
-                    //        SUM(Quantity) as TotalQuantity
-                    //    FROM 
-                    //        Stock
-                    //    WHERE 
-                    //        BuyerID = @BuyerID";
-
-                    //using (SqlCommand command = new SqlCommand(stockQuery, connection))
-                    //{
-                    //    command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
-                    //    object result = command.ExecuteScalar();
-                    //    totalStockQuantity = result != DBNull.Value ? Convert.ToDecimal(result) : 0;
-                    //}
-
-                    // Get request Paddy count
+                    
                     string requestQuantity = @"
                         SELECT 
                             SUM(Quantity) as TotalQuantity
@@ -103,7 +87,7 @@ namespace RiceMgmtApp
 
                 }
 
-                // Update UI elements
+               
                 UpdateBuyerStatisticsDisplay();
             }
             catch (Exception ex)
@@ -115,13 +99,11 @@ namespace RiceMgmtApp
 
         private void UpdateBuyerStatisticsDisplay()
         {
-            // Update your UI controls with the farmer's data
+           
             lbltotalPurchaseQuantity.Text = totalPurchaseQuantity.ToString("N2") + " kg";
-            lblTotalRiceSales.Text = totalStockQuantity.ToString("N2") + " kg";
             lblTotalrequest.Text = totalrequestQuantity.ToString("N2") + " Kg";
 
-            // Note: You'll need to add these labels to your form design
-            // and remove the previous user count labels
+            
         }
 
         private void SetupSalesChart()
@@ -132,7 +114,7 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get monthly sales data for this farmer only
+                    
                     string query = @"
                         SELECT 
                             FORMAT(SaleDate, 'yyyy-MM') as Month,
@@ -162,16 +144,15 @@ namespace RiceMgmtApp
                     }
                 }
 
-                // Configure the Sales Chart
+                
                 chartSales.Series.Clear();
                 chartSales.ChartAreas.Clear();
 
-                // Specify the full namespace for ChartArea to resolve ambiguity
+               
                 System.Windows.Forms.DataVisualization.Charting.ChartArea salesChartArea =
                     new System.Windows.Forms.DataVisualization.Charting.ChartArea("SalesChartArea");
                 chartSales.ChartAreas.Add(salesChartArea);
 
-                // Specify the full namespace for Series to avoid ambiguity
                 System.Windows.Forms.DataVisualization.Charting.Series salesSeries =
                     new System.Windows.Forms.DataVisualization.Charting.Series("Sales");
 
@@ -185,18 +166,18 @@ namespace RiceMgmtApp
                 chartSales.Series.Add(salesSeries);
                 chartSales.Titles.Add(new Title("My Monthly Sales", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
 
-                // Set chart appearance
+                
                 salesChartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
                 salesChartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
                 salesChartArea.AxisX.LabelStyle.Font = new System.Drawing.Font("Arial", 9);
                 salesChartArea.AxisY.LabelStyle.Font = new System.Drawing.Font("Arial", 9);
 
-                // Add formatting to make the chart more readable
+              
                 salesChartArea.AxisX.LabelStyle.Angle = -45;
                 salesChartArea.AxisX.LabelStyle.IsStaggered = false;
                 salesChartArea.AxisX.MajorGrid.Enabled = false;
 
-                // Set bar color
+                
                 salesSeries.Color = Color.FromArgb(52, 152, 219);
             }
             catch (Exception ex)
@@ -214,7 +195,7 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get stock data by crop type for this farmer only
+                    
                     string query = @"
                         SELECT 
                             CropType,
@@ -244,18 +225,18 @@ namespace RiceMgmtApp
                     }
                 }
 
-                // Configure the Stock Chart
+               
                 chartStock.Series.Clear();
                 chartStock.ChartAreas.Clear();
                 chartStock.Legends.Clear();
                 chartStock.Titles.Clear();
 
-                // Specify the full namespace for ChartArea to resolve ambiguity
+                
                 System.Windows.Forms.DataVisualization.Charting.ChartArea stockChartArea =
                     new System.Windows.Forms.DataVisualization.Charting.ChartArea("StockChartArea");
                 chartStock.ChartAreas.Add(stockChartArea);
 
-                // Inside SetupStockChart method
+               
                 System.Windows.Forms.DataVisualization.Charting.Series stockSeries =
                     new System.Windows.Forms.DataVisualization.Charting.Series("Stock");
 
@@ -266,7 +247,7 @@ namespace RiceMgmtApp
                     DataPoint point = new DataPoint();
                     point.SetValueXY(entry.Key, entry.Value);
                     point.LegendText = entry.Key;
-                    // Show percentage in the pie chart
+                   
                     point.Label = "#PERCENT{P0}";
                     stockSeries.Points.Add(point);
                 }
@@ -274,13 +255,13 @@ namespace RiceMgmtApp
                 chartStock.Series.Add(stockSeries);
                 chartStock.Titles.Add(new Title("My Current Stock by Crop Type", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
 
-                // Specify the full namespace for Legend to resolve ambiguity
+               
                 System.Windows.Forms.DataVisualization.Charting.Legend stockLegend =
                     new System.Windows.Forms.DataVisualization.Charting.Legend("StockLegend");
                 chartStock.Legends.Add(stockLegend);
                 stockSeries.Legend = "StockLegend";
 
-                // Add custom colors
+               
                 stockSeries.Palette = ChartColorPalette.BrightPastel;
             }
             catch (Exception ex)
@@ -290,142 +271,45 @@ namespace RiceMgmtApp
             }
         }
 
-        // Add method to get field details (total acreage by zone)
-        //private void LoadFieldsByZone()
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection connection = new SqlConnection(connectionString))
-        //        {
-        //            connection.Open();
-
-        //            // SQL query to get fields by zone
-        //            string query = @"
-        //                SELECT 
-        //                    Zone,
-        //                    SUM(FieldSize) as TotalSize
-        //                FROM 
-        //                    Fields
-        //                WHERE 
-        //                    BuyerID = @BuyerID
-        //                GROUP BY 
-        //                    Zone
-        //                ORDER BY 
-        //                    TotalSize DESC";
-
-        //            using (SqlCommand command = new SqlCommand(query, connection))
-        //            {
-        //                command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
-
-        //                // Explicitly specify the namespace for DataTable to resolve ambiguity
-        //                System.Data.DataTable dt = new System.Data.DataTable();
-        //                using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-        //                {
-        //                    adapter.Fill(dt);
-        //                }
-
-        //                // If you have a DataGridView for fields
-        //                // dgvFieldsByZone.DataSource = dt;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Error loading field data: " + ex.Message, "Database Error",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-
-        // Button click handler for the refresh button
+       
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Reset counters and dictionaries
+            
             totalPurchaseQuantity = 0;
             totalStockQuantity = 0;
             totalrequestQuantity = 0;
             stockByType.Clear();
             salesByMonth.Clear();
 
-            // Clear chart titles
+            
             chartSales.Titles.Clear();
             chartStock.Titles.Clear();
 
-            // Reload all data
             LoadBuyerStatistics();
             SetupSalesChart();
             SetupStockChart();
-           // LoadFieldsByZone();
 
             MessageBox.Show("Dashboard data has been refreshed.", "Refresh Complete",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Add method to refresh data (can be called from outside if needed)
+        
         public void RefreshDashboard()
         {
-            // Reset counters and dictionaries
+           
             totalPurchaseQuantity = 0;
             totalStockQuantity = 0;
             totalrequestQuantity = 0;
             stockByType.Clear();
             salesByMonth.Clear();
 
-            // Reload all data
+           
             LoadBuyerStatistics();
             SetupSalesChart();
             SetupStockChart();
-         //   LoadFieldsByZone();
+         
         }
 
-        // Add method to analyze crop performance
-        //public void AnalyzeCropPerformance()
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection connection = new SqlConnection(connectionString))
-        //        {
-        //            connection.Open();
-
-        //            // SQL query to get sales performance by crop type
-        //            string query = @"
-        //                SELECT 
-        //                    CropType,
-        //                    SUM(Quantity) as TotalQuantitySold,
-        //                    SUM(SalePrice * Quantity) as TotalRevenue,
-        //                    AVG(SalePrice) as AveragePrice
-        //                FROM 
-        //                    Sales
-        //                WHERE 
-        //                    BuyerID = @BuyerID
-        //                GROUP BY 
-        //                    CropType
-        //                ORDER BY 
-        //                    TotalRevenue DESC";
-
-        //            using (SqlCommand command = new SqlCommand(query, connection))
-        //            {
-        //                command.Parameters.AddWithValue("@BuyerID", currentBuyerId);
-
-        //                // If you have a DataGridView for crop performance
-        //                // DataTable dt = new DataTable();
-        //                // using (SqlDataAdapter adapter = new SqlDataAdapter(command))
-        //                // {
-        //                //     adapter.Fill(dt);
-        //                // }
-        //                // dgvCropPerformance.DataSource = dt;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show("Error analyzing crop performance: " + ex.Message, "Database Error",
-        //            MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //    }
-        //}
-
-        private void panelStats_Paint(object sender, PaintEventArgs e)
-        {
-            // You can add any custom painting if needed
-        }
+      
     }
 }

@@ -42,18 +42,13 @@ namespace RiceMgmtApp
             _userId = userId;
             _roleId = roleId;
 
-            // Add event handlers for resizing
             this.Resize += BuyerDashboard_Resize;
-
-            // Set minimum form size
             this.MinimumSize = new Size(900, 600);
         }
 
         private void LoadUserControl(UserControl userControl)
         {
-            // Show loading indicator
             ShowLoadingIndicator();
-            // Check if progressBar is initialized
             if (progressBar != null)
             {
                 progressBar.Visible = true;
@@ -61,15 +56,12 @@ namespace RiceMgmtApp
             }
             else
             {
-                // Initialize progressBar if it's null
                 InitializeProgressBar();
                 progressBar.Visible = true;
                 progressBar.StartLoading();
             }
 
-            // Use Task to load control asynchronously
             Task.Run(() => {
-                // Simulate loading time or actual initialization
                 Thread.Sleep(300);
 
                 this.Invoke((MethodInvoker)delegate {
@@ -80,7 +72,6 @@ namespace RiceMgmtApp
                     panelContainer.Controls.Add(userControl);
                     userControl.BringToFront();
 
-                    // Hide loading indicator and progress bar after a delay
                     Task.Delay(200).ContinueWith(t => {
                         this.Invoke((MethodInvoker)delegate {
                             HideLoadingIndicator();
@@ -105,19 +96,16 @@ namespace RiceMgmtApp
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
-            frm_login fl = new frm_login();
-            fl.Show();
-            this.Close();
-        }
-        private void btn_logout_MouseEnter(object sender, EventArgs e)
-        {
-            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
-        }
+            var result = MessageBox.Show("Are you sure you want to log out?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-        private void btn_logout_MouseLeave(object sender, EventArgs e)
-        {
-            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
+            if (result == DialogResult.Yes)
+            {
+                frm_login fl = new frm_login();
+                fl.Show();
+                this.Close();
+            }
         }
+        
 
         private void btn_Sales_Click(object sender, EventArgs e)
         {
@@ -256,12 +244,12 @@ namespace RiceMgmtApp
         {
             if (activeButton != null)
             {
-                // Reset previous active button
+                
                 activeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
                 activeButton.ForeColor = Color.White;
             }
 
-            // Set new active button
+           
             activeButton = button;
             activeButton.BackColor = Color.White;
             activeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
@@ -330,7 +318,7 @@ namespace RiceMgmtApp
             roleLabel.Location = new Point(60, 30);
             roleLabel.AutoSize = true;
 
-            // Add circular avatar placeholder
+           
             Panel avatarPanel = new Panel();
             avatarPanel.Size = new Size(40, 40);
             avatarPanel.Location = new Point(10, 10);
@@ -340,7 +328,7 @@ namespace RiceMgmtApp
                 {
                     e.Graphics.FillEllipse(brush, 0, 0, avatarPanel.Width, avatarPanel.Height);
                 }
-                // Draw first letter of username
+              
                 string username = LoggedInUsername ?? "B";
                 if (!string.IsNullOrEmpty(username))
                 {
@@ -367,51 +355,7 @@ namespace RiceMgmtApp
             panelsideMenu.Controls.Add(profilePanel);
         }
 
-        private void ModernizeUI()
-        {
-            // Add hover effects to buttons
-            foreach (Control ctrl in panelsideMenu.Controls)
-            {
-                if (ctrl is Button btn)
-                {
-                    btn.MouseEnter += Button_MouseEnter;
-                    btn.MouseLeave += Button_MouseLeave;
-                }
-            }
-
-            // Make container panel slightly rounded
-            panelContainer.Region = System.Drawing.Region.FromHrgn(
-                CreateRoundRectRgn(0, 0, panelContainer.Width, panelContainer.Height, 15, 15)
-            );
-
-            // Add shadow effect (simplified approach)
-            Panel shadowPanel = new Panel();
-            shadowPanel.BackColor = Color.FromArgb(20, 0, 0, 0);
-            shadowPanel.Size = new Size(panelContainer.Width + 6, panelContainer.Height + 6);
-            shadowPanel.Location = new Point(panelContainer.Left - 3, panelContainer.Top - 3);
-            this.Controls.Add(shadowPanel);
-            shadowPanel.SendToBack();
-        }
-
-        private void Button_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != activeButton)
-            {
-                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(150)))), ((int)(((byte)(70)))));
-            }
-        }
-
-        private void Button_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != activeButton)
-            {
-                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
-            }
-        }
-
-
+      
 
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
@@ -421,22 +365,13 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Dashboard");
         }
 
-        
-
-       
-
         private void BuyerDashboard_Load(object sender, EventArgs e)
         {
-            // Configure based on screen resolution
             ConfigureForScreenResolution();
 
-            // Initialize UI elements
             InitializeProgressBar();
             AddUserProfileSection();
             InitializeBreadcrumb();
-            ModernizeUI();
-
-            // Show PrivateBuyerHome as default on load
             PrivateBuyerHome pbh = new PrivateBuyerHome(_userId);
             LoadUserControl(pbh);
             SetActiveButton(btn_Dashboard);

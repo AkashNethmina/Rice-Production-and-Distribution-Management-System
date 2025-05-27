@@ -51,7 +51,6 @@ namespace RiceMgmtApp
             this.riceProductionDB2DataSet = new RiceMgmtApp.RiceProductionDB2DataSet();
             this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
-          //  this.showPasswordCheckBox = new System.Windows.Forms.CheckBox();
             this.actionPanel = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
@@ -85,7 +84,7 @@ namespace RiceMgmtApp
             this.headerLabel.ForeColor = System.Drawing.Color.White;
             this.headerLabel.Location = new System.Drawing.Point(20, 20);
             this.headerLabel.Name = "headerLabel";
-            this.headerLabel.Size = new System.Drawing.Size(163, 30);
+            this.headerLabel.Size = new System.Drawing.Size(162, 30);
             this.headerLabel.TabIndex = 0;
             this.headerLabel.Text = "Add New User";
             // 
@@ -124,13 +123,13 @@ namespace RiceMgmtApp
             this.lblFullName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblFullName.Location = new System.Drawing.Point(9, 15);
             this.lblFullName.Name = "lblFullName";
-            this.lblFullName.Size = new System.Drawing.Size(77, 19);
+            this.lblFullName.Size = new System.Drawing.Size(79, 19);
             this.lblFullName.TabIndex = 0;
             this.lblFullName.Text = "Full Name*";
             // 
             // txtFullName
             // 
-            this.txtFullName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtFullName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtFullName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtFullName.Font = new System.Drawing.Font("Segoe UI", 10.5F);
@@ -146,13 +145,13 @@ namespace RiceMgmtApp
             this.lblUsername.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblUsername.Location = new System.Drawing.Point(8, 80);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(79, 19);
+            this.lblUsername.Size = new System.Drawing.Size(77, 19);
             this.lblUsername.TabIndex = 2;
             this.lblUsername.Text = "Username*";
             // 
             // txtUsername
             // 
-            this.txtUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtUsername.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtUsername.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtUsername.Font = new System.Drawing.Font("Segoe UI", 10.5F);
@@ -168,13 +167,13 @@ namespace RiceMgmtApp
             this.lblContact.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblContact.Location = new System.Drawing.Point(8, 145);
             this.lblContact.Name = "lblContact";
-            this.lblContact.Size = new System.Drawing.Size(118, 19);
+            this.lblContact.Size = new System.Drawing.Size(113, 19);
             this.lblContact.TabIndex = 3;
             this.lblContact.Text = "Contact Number";
             // 
             // txtContact
             // 
-            this.txtContact.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtContact.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtContact.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtContact.Font = new System.Drawing.Font("Segoe UI", 10.5F);
@@ -191,7 +190,6 @@ namespace RiceMgmtApp
             this.rightPanel.Controls.Add(this.cmbRole);
             this.rightPanel.Controls.Add(this.lblPassword);
             this.rightPanel.Controls.Add(this.txtPassword);
-       //     this.rightPanel.Controls.Add(this.showPasswordCheckBox);
             this.rightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.rightPanel.Location = new System.Drawing.Point(492, 20);
             this.rightPanel.Name = "rightPanel";
@@ -206,13 +204,13 @@ namespace RiceMgmtApp
             this.lblEmail.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblEmail.Location = new System.Drawing.Point(15, 15);
             this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(101, 19);
+            this.lblEmail.Size = new System.Drawing.Size(102, 19);
             this.lblEmail.TabIndex = 0;
             this.lblEmail.Text = "Email Address*";
             // 
             // txtEmail
             // 
-            this.txtEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtEmail.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEmail.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtEmail.Font = new System.Drawing.Font("Segoe UI", 10.5F);
@@ -228,13 +226,13 @@ namespace RiceMgmtApp
             this.lblRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(60)))), ((int)(((byte)(60)))));
             this.lblRole.Location = new System.Drawing.Point(15, 80);
             this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(42, 19);
+            this.lblRole.Size = new System.Drawing.Size(43, 19);
             this.lblRole.TabIndex = 5;
             this.lblRole.Text = "Role*";
             // 
             // cmbRole
             // 
-            this.cmbRole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.cmbRole.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbRole.DataBindings.Add(new System.Windows.Forms.Binding("SelectedValue", this.rolesBindingSource, "RoleName", true));
             this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -268,7 +266,7 @@ namespace RiceMgmtApp
             // 
             // txtPassword
             // 
-            this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+            this.txtPassword.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPassword.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtPassword.Font = new System.Drawing.Font("Segoe UI", 10.5F);
@@ -277,18 +275,6 @@ namespace RiceMgmtApp
             this.txtPassword.PasswordChar = '•';
             this.txtPassword.Size = new System.Drawing.Size(420, 26);
             this.txtPassword.TabIndex = 6;
-            // 
-            // showPasswordCheckBox
-            // 
-            //this.showPasswordCheckBox.AutoSize = true;
-            //this.showPasswordCheckBox.Font = new System.Drawing.Font("Segoe UI", 9F);
-            //this.showPasswordCheckBox.Location = new System.Drawing.Point(15, 199);
-            //this.showPasswordCheckBox.Name = "showPasswordCheckBox";
-            //this.showPasswordCheckBox.Size = new System.Drawing.Size(113, 19);
-            //this.showPasswordCheckBox.TabIndex = 7;
-            //this.showPasswordCheckBox.Text = "Show Password";
-            //this.showPasswordCheckBox.UseVisualStyleBackColor = true;
-            //this.showPasswordCheckBox.CheckedChanged += new System.EventHandler(this.showPasswordCheckBox_CheckedChanged);
             // 
             // actionPanel
             // 
@@ -301,6 +287,7 @@ namespace RiceMgmtApp
             this.actionPanel.Padding = new System.Windows.Forms.Padding(30, 10, 30, 10);
             this.actionPanel.Size = new System.Drawing.Size(972, 86);
             this.actionPanel.TabIndex = 2;
+//            this.actionPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.actionPanel_Paint_1);
             // 
             // btnCancel
             // 
@@ -354,7 +341,6 @@ namespace RiceMgmtApp
             this.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.Name = "UsersAdd";
             this.Size = new System.Drawing.Size(972, 472);
-          //  this.Load += new System.EventHandler(this.UsersAdd_Load);
             this.headerPanel.ResumeLayout(false);
             this.headerPanel.PerformLayout();
             this.contentPanel.ResumeLayout(false);
@@ -367,6 +353,7 @@ namespace RiceMgmtApp
             this.actionPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         

@@ -22,26 +22,20 @@ namespace RiceMgmtApp
         private int governmentCount = 0;
         private int privateBuyerCount = 0;
 
-        // Dictionary to store role names and their corresponding counts
         private Dictionary<string, int> roleCounts = new Dictionary<string, int>();
 
-        // Dictionary for crop types and quantities
         private Dictionary<string, decimal> stockByType = new Dictionary<string, decimal>();
 
-        // Dictionary for sales data by month
         private Dictionary<string, decimal> salesByMonth = new Dictionary<string, decimal>();
 
         public AdminHome()
         {
             InitializeComponent();
-
-            // Subscribe to the Load event
             this.Load += AdminHome_Load;
         }
 
         private void AdminHome_Load(object sender, EventArgs e)
         {
-            // Load all data when the control is loaded
             LoadUserStatistics();
             SetupSalesChart();
             SetupStockChart();
@@ -55,7 +49,6 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get user counts by role
                     string query = @"
                         SELECT 
                             r.RoleName, 
@@ -78,10 +71,10 @@ namespace RiceMgmtApp
                                 string roleName = reader["RoleName"].ToString();
                                 int count = Convert.ToInt32(reader["UserCount"]);
 
-                                // Store in dictionary
+                              
                                 roleCounts[roleName] = count;
 
-                                // Update specific counters
+                               
                                 switch (roleName)
                                 {
                                     case "Admin":
@@ -104,7 +97,7 @@ namespace RiceMgmtApp
                     }
                 }
 
-                // Update UI elements
+              
                 UpdateUserStatisticsDisplay();
             }
             catch (Exception ex)
@@ -116,7 +109,6 @@ namespace RiceMgmtApp
 
         private void UpdateUserStatisticsDisplay()
         {
-            // Update your UI controls with the counts
             lblTotalUsers.Text = totalUsers.ToString();
             lblAdminCount.Text = adminCount.ToString();
             lblFarmerCount.Text = farmerCount.ToString();
@@ -209,7 +201,6 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get stock data by crop type
                     string query = @"
                         SELECT 
                             CropType,
@@ -236,39 +227,37 @@ namespace RiceMgmtApp
                     }
                 }
 
-                // Configure the Stock Chart
                 chartStock.Series.Clear();
                 chartStock.ChartAreas.Clear();
                 chartStock.Legends.Clear();
                 chartStock.Titles.Clear();
 
-                // Specify the full namespace for ChartArea to resolve ambiguity
                 System.Windows.Forms.DataVisualization.Charting.ChartArea stockChartArea =
                     new System.Windows.Forms.DataVisualization.Charting.ChartArea("StockChartArea");
                 chartStock.ChartAreas.Add(stockChartArea);
 
-                // Inside SetupStockChart method
                 System.Windows.Forms.DataVisualization.Charting.Series stockSeries =
                     new System.Windows.Forms.DataVisualization.Charting.Series("Stock");
+
+                stockSeries.ChartType = SeriesChartType.Pie;
 
                 foreach (var entry in stockByType)
                 {
                     DataPoint point = new DataPoint();
                     point.SetValueXY(entry.Key, entry.Value);
                     point.LegendText = entry.Key;
+                    point.Label = "#PERCENT{P0}";
                     stockSeries.Points.Add(point);
                 }
 
                 chartStock.Series.Add(stockSeries);
-                chartStock.Titles.Add(new Title("Current Stock by Crop Type", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
+                chartStock.Titles.Add(new Title("System-wide Stock by Crop Type", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
 
-                // Specify the full namespace for Legend to resolve ambiguity
                 System.Windows.Forms.DataVisualization.Charting.Legend stockLegend =
                     new System.Windows.Forms.DataVisualization.Charting.Legend("StockLegend");
                 chartStock.Legends.Add(stockLegend);
                 stockSeries.Legend = "StockLegend";
 
-                // Add custom colors
                 stockSeries.Palette = ChartColorPalette.BrightPastel;
             }
             catch (Exception ex)
@@ -278,10 +267,10 @@ namespace RiceMgmtApp
             }
         }
 
-        // Button click handler for the refresh button
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Reset counters
+          
             totalUsers = 0;
             adminCount = 0;
             farmerCount = 0;
@@ -291,11 +280,11 @@ namespace RiceMgmtApp
             stockByType.Clear();
             salesByMonth.Clear();
 
-            // Clear chart titles
+           
             chartSales.Titles.Clear();
             chartStock.Titles.Clear();
 
-            // Reload all data
+            
             LoadUserStatistics();
             SetupSalesChart();
             SetupStockChart();
@@ -304,10 +293,9 @@ namespace RiceMgmtApp
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        // Add method to refresh data (can be called from outside if needed)
+      
         public void RefreshDashboard()
         {
-            // Reset counters
             totalUsers = 0;
             adminCount = 0;
             farmerCount = 0;
@@ -317,7 +305,6 @@ namespace RiceMgmtApp
             stockByType.Clear();
             salesByMonth.Clear();
 
-            // Reload all data
             LoadUserStatistics();
             SetupSalesChart();
             SetupStockChart();

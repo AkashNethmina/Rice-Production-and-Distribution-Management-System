@@ -90,7 +90,7 @@ namespace RiceMgmtApp
         {
             profileControl pc = new profileControl();
             pc.LoggedInUsername = LoggedInUsername;
-            pc.LoadUserDetails( ); // Make sure this method exists in your profileControl
+            pc.LoadUserDetails( ); 
             LoadUserControl(pc);
             SetActiveButton(btn_profile);
             UpdateBreadcrumb("Profile");
@@ -98,23 +98,20 @@ namespace RiceMgmtApp
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
-            frm_login fl = new frm_login();
-            fl.Show();
-            this.Close(); // Close instead of Hide for better resource management
-        }
-        private void btn_logout_MouseEnter(object sender, EventArgs e)
-        {
-            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
-        }
+            var result = MessageBox.Show("Are you sure you want to log out?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-        private void btn_logout_MouseLeave(object sender, EventArgs e)
-        {
-            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
+            if (result == DialogResult.Yes)
+            {
+                frm_login fl = new frm_login();
+                fl.Show();
+                this.Close();
+            }
         }
+       
 
         private void btn_Dashboard_Click(object sender, EventArgs e)
         {
-            GovernmentHome governmentHome = new GovernmentHome(_userId); // Pass the required parameter
+            GovernmentHome governmentHome = new GovernmentHome(_userId); 
             LoadUserControl(governmentHome);
             SetActiveButton(btn_Dashboard);
             UpdateBreadcrumb("Dashboard");
@@ -131,16 +128,10 @@ namespace RiceMgmtApp
         private void btn_DamageReporting_Click(object sender, EventArgs e)
         {
             DamageReporting dr = new DamageReporting();
-            dr.SetUserContext(_userId, _roleId); // Set user context after instantiation
+            dr.SetUserContext(_userId, _roleId); 
             LoadUserControl(dr);
         }
 
-       
-
-        private void panelContainer_Paint(object sender, PaintEventArgs e)
-        {
-            // Can be used for custom painting if needed
-        }
 
         #region Responsive Design Implementation
 
@@ -276,12 +267,10 @@ namespace RiceMgmtApp
         {
             if (activeButton != null)
             {
-                // Reset previous active button
                 activeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
                 activeButton.ForeColor = Color.White;
             }
 
-            // Set new active button
             activeButton = button;
             activeButton.BackColor = Color.White;
             activeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
@@ -350,7 +339,7 @@ namespace RiceMgmtApp
             roleLabel.Location = new Point(60, 30);
             roleLabel.AutoSize = true;
 
-            // Add circular avatar placeholder
+           
             Panel avatarPanel = new Panel();
             avatarPanel.Size = new Size(40, 40);
             avatarPanel.Location = new Point(10, 10);
@@ -360,7 +349,7 @@ namespace RiceMgmtApp
                 {
                     e.Graphics.FillEllipse(brush, 0, 0, avatarPanel.Width, avatarPanel.Height);
                 }
-                // Draw first letter of username
+                
                 string username = LoggedInUsername ?? "G";
                 if (!string.IsNullOrEmpty(username))
                 {
@@ -387,95 +376,29 @@ namespace RiceMgmtApp
             panelsideMenu.Controls.Add(profilePanel);
         }
 
-        private void ModernizeUI()
-        {
-            // Add hover effects to buttons
-            foreach (Control ctrl in panelsideMenu.Controls)
-            {
-                if (ctrl is Button btn)
-                {
-                    btn.MouseEnter += Button_MouseEnter;
-                    btn.MouseLeave += Button_MouseLeave;
-                }
-            }
-
-            // Make container panel slightly rounded
-            panelContainer.Region = System.Drawing.Region.FromHrgn(
-                CreateRoundRectRgn(0, 0, panelContainer.Width, panelContainer.Height, 15, 15)
-            );
-
-            // Add shadow effect (simplified approach)
-            Panel shadowPanel = new Panel();
-            shadowPanel.BackColor = Color.FromArgb(20, 0, 0, 0);
-            shadowPanel.Size = new Size(panelContainer.Width + 6, panelContainer.Height + 6);
-            shadowPanel.Location = new Point(panelContainer.Left - 3, panelContainer.Top - 3);
-            this.Controls.Add(shadowPanel);
-            shadowPanel.SendToBack();
-
-            // Add toggle sidebar button
-            Button btnToggleSidebar = new Button();
-            btnToggleSidebar.Size = new Size(30, 30);
-            btnToggleSidebar.Location = new Point(5, 5);
-            btnToggleSidebar.BackColor = Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
-            btnToggleSidebar.ForeColor = Color.White;
-            btnToggleSidebar.Text = "≡";
-            btnToggleSidebar.Font = new Font("Arial", 12, FontStyle.Bold);
-            btnToggleSidebar.FlatStyle = FlatStyle.Flat;
-            btnToggleSidebar.FlatAppearance.BorderSize = 0;
-            btnToggleSidebar.Click += btnToggleSidebar_Click;
-            this.Controls.Add(btnToggleSidebar);
-        }
-
-        private void Button_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != activeButton)
-            {
-                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(150)))), ((int)(((byte)(70)))));
-            }
-        }
-
-        private void Button_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != activeButton)
-            {
-                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
-            }
-        }
-
-      
 
         private void btn_Farmers_Click(object sender, EventArgs e)
         {
-            Fields fields = new Fields(_userId, _roleId); // Pass the required parameters
+            Fields fields = new Fields(_userId, _roleId);
             LoadUserControl(fields);
         }
 
-        // Update the constructor call in GovtOfficialDashboard
         private void btn_Sales_Click(object sender, EventArgs e)
         {
            
-            BuyPaddy buypaddy = new BuyPaddy(_userId); // Pass the required parameter
+            BuyPaddy buypaddy = new BuyPaddy(_userId); 
             LoadUserControl(buypaddy);
         }
        
-       
-
-        // Update the constructor call in GovtOfficialDashboard_Load
         private void GovtOfficialDashboard_Load(object sender, EventArgs e)
         {
-            // Configure based on screen resolution
+            
             ConfigureForScreenResolution();
-
-            // Initialize UI elements
             InitializeProgressBar();
             AddUserProfileSection();
             InitializeBreadcrumb();
-            ModernizeUI();
-
-            // Show GovernmentHome as default on load
-            GovernmentHome gh = new GovernmentHome(_userId); // Pass the required parameter
+         
+            GovernmentHome gh = new GovernmentHome(_userId); 
             LoadUserControl(gh);
             SetActiveButton(btn_Dashboard);
             UpdateBreadcrumb("Dashboard");

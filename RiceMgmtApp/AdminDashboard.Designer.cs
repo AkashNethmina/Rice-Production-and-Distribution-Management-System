@@ -37,11 +37,7 @@
             this.btn_PriceSetting = new System.Windows.Forms.Button();
             this.btn_StockManagement = new System.Windows.Forms.Button();
             this.btn_Sales = new System.Windows.Forms.Button();
-            this.panel3side = new System.Windows.Forms.Panel();
-            this.btn_Cultivation = new System.Windows.Forms.Button();
             this.btn_Fields = new System.Windows.Forms.Button();
-            this.btn_AllFarmers = new System.Windows.Forms.Button();
-            this.btn_Farmers = new System.Windows.Forms.Button();
             this.btn_logout = new System.Windows.Forms.Button();
             this.panel2submenu = new System.Windows.Forms.Panel();
             this.btn_AddUsers = new System.Windows.Forms.Button();
@@ -55,8 +51,8 @@
             this.usersTableAdapter = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
             this.usersTableAdapter1 = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
             this.usersTableAdapter2 = new RiceMgmtApp.RiceProductionDB2DataSetTableAdapters.UsersTableAdapter();
+            this.btn_AuthLogs = new System.Windows.Forms.Button();
             this.panelsideMenu.SuspendLayout();
-            this.panel3side.SuspendLayout();
             this.panel2submenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).BeginInit();
@@ -67,13 +63,13 @@
             // 
             this.panelsideMenu.AutoScroll = true;
             this.panelsideMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
+            this.panelsideMenu.Controls.Add(this.btn_AuthLogs);
             this.panelsideMenu.Controls.Add(this.btn_profile);
             this.panelsideMenu.Controls.Add(this.btn_DamageReporting);
             this.panelsideMenu.Controls.Add(this.btn_PriceSetting);
             this.panelsideMenu.Controls.Add(this.btn_StockManagement);
             this.panelsideMenu.Controls.Add(this.btn_Sales);
-            this.panelsideMenu.Controls.Add(this.panel3side);
-            this.panelsideMenu.Controls.Add(this.btn_Farmers);
+            this.panelsideMenu.Controls.Add(this.btn_Fields);
             this.panelsideMenu.Controls.Add(this.btn_logout);
             this.panelsideMenu.Controls.Add(this.panel2submenu);
             this.panelsideMenu.Controls.Add(this.btn_manUser);
@@ -93,7 +89,7 @@
             this.btn_profile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_profile.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_profile.ForeColor = System.Drawing.Color.White;
-            this.btn_profile.Location = new System.Drawing.Point(10, 627);
+            this.btn_profile.Location = new System.Drawing.Point(10, 500);
             this.btn_profile.Name = "btn_profile";
             this.btn_profile.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_profile.Size = new System.Drawing.Size(230, 45);
@@ -110,7 +106,7 @@
             this.btn_DamageReporting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_DamageReporting.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_DamageReporting.ForeColor = System.Drawing.Color.White;
-            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 582);
+            this.btn_DamageReporting.Location = new System.Drawing.Point(10, 455);
             this.btn_DamageReporting.Name = "btn_DamageReporting";
             this.btn_DamageReporting.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_DamageReporting.Size = new System.Drawing.Size(230, 45);
@@ -127,7 +123,7 @@
             this.btn_PriceSetting.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_PriceSetting.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_PriceSetting.ForeColor = System.Drawing.Color.White;
-            this.btn_PriceSetting.Location = new System.Drawing.Point(10, 537);
+            this.btn_PriceSetting.Location = new System.Drawing.Point(10, 410);
             this.btn_PriceSetting.Name = "btn_PriceSetting";
             this.btn_PriceSetting.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_PriceSetting.Size = new System.Drawing.Size(230, 45);
@@ -144,7 +140,7 @@
             this.btn_StockManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_StockManagement.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_StockManagement.ForeColor = System.Drawing.Color.White;
-            this.btn_StockManagement.Location = new System.Drawing.Point(10, 492);
+            this.btn_StockManagement.Location = new System.Drawing.Point(10, 365);
             this.btn_StockManagement.Name = "btn_StockManagement";
             this.btn_StockManagement.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_StockManagement.Size = new System.Drawing.Size(230, 45);
@@ -161,7 +157,7 @@
             this.btn_Sales.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btn_Sales.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_Sales.ForeColor = System.Drawing.Color.White;
-            this.btn_Sales.Location = new System.Drawing.Point(10, 447);
+            this.btn_Sales.Location = new System.Drawing.Point(10, 320);
             this.btn_Sales.Name = "btn_Sales";
             this.btn_Sales.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btn_Sales.Size = new System.Drawing.Size(230, 45);
@@ -171,88 +167,22 @@
             this.btn_Sales.UseVisualStyleBackColor = true;
             this.btn_Sales.Click += new System.EventHandler(this.btn_Sales_Click);
             // 
-            // panel3side
-            // 
-            this.panel3side.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(240)))), ((int)(((byte)(112)))));
-            this.panel3side.Controls.Add(this.btn_Cultivation);
-            this.panel3side.Controls.Add(this.btn_Fields);
-            this.panel3side.Controls.Add(this.btn_AllFarmers);
-            this.panel3side.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel3side.Location = new System.Drawing.Point(10, 320);
-            this.panel3side.Name = "panel3side";
-            this.panel3side.Size = new System.Drawing.Size(230, 127);
-            this.panel3side.TabIndex = 9;
-            // 
-            // btn_Cultivation
-            // 
-            this.btn_Cultivation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
-            this.btn_Cultivation.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_Cultivation.FlatAppearance.BorderSize = 0;
-            this.btn_Cultivation.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Cultivation.Font = new System.Drawing.Font("Outfit SemiBold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Cultivation.ForeColor = System.Drawing.Color.Black;
-            this.btn_Cultivation.Location = new System.Drawing.Point(0, 87);
-            this.btn_Cultivation.Name = "btn_Cultivation";
-            this.btn_Cultivation.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
-            this.btn_Cultivation.Size = new System.Drawing.Size(230, 40);
-            this.btn_Cultivation.TabIndex = 6;
-            this.btn_Cultivation.Text = "Cultivation";
-            this.btn_Cultivation.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Cultivation.UseVisualStyleBackColor = false;
-            this.btn_Cultivation.Click += new System.EventHandler(this.btn_Cultivation_Click);
-            // 
             // btn_Fields
             // 
-            this.btn_Fields.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
             this.btn_Fields.Dock = System.Windows.Forms.DockStyle.Top;
             this.btn_Fields.FlatAppearance.BorderSize = 0;
             this.btn_Fields.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Fields.Font = new System.Drawing.Font("Outfit SemiBold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Fields.ForeColor = System.Drawing.Color.Black;
-            this.btn_Fields.Location = new System.Drawing.Point(0, 40);
+            this.btn_Fields.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Fields.ForeColor = System.Drawing.Color.White;
+            this.btn_Fields.Location = new System.Drawing.Point(10, 275);
             this.btn_Fields.Name = "btn_Fields";
-            this.btn_Fields.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
-            this.btn_Fields.Size = new System.Drawing.Size(230, 47);
-            this.btn_Fields.TabIndex = 5;
+            this.btn_Fields.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_Fields.Size = new System.Drawing.Size(230, 45);
+            this.btn_Fields.TabIndex = 7;
             this.btn_Fields.Text = "Field Management";
             this.btn_Fields.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Fields.UseVisualStyleBackColor = false;
+            this.btn_Fields.UseVisualStyleBackColor = true;
             this.btn_Fields.Click += new System.EventHandler(this.btn_Fields_Click);
-            // 
-            // btn_AllFarmers
-            // 
-            this.btn_AllFarmers.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
-            this.btn_AllFarmers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_AllFarmers.FlatAppearance.BorderSize = 0;
-            this.btn_AllFarmers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_AllFarmers.Font = new System.Drawing.Font("Outfit SemiBold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_AllFarmers.ForeColor = System.Drawing.Color.Black;
-            this.btn_AllFarmers.Location = new System.Drawing.Point(0, 0);
-            this.btn_AllFarmers.Name = "btn_AllFarmers";
-            this.btn_AllFarmers.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
-            this.btn_AllFarmers.Size = new System.Drawing.Size(230, 40);
-            this.btn_AllFarmers.TabIndex = 4;
-            this.btn_AllFarmers.Text = "All Farmers";
-            this.btn_AllFarmers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_AllFarmers.UseVisualStyleBackColor = false;
-            this.btn_AllFarmers.Click += new System.EventHandler(this.btn_AllFarmers_Click);
-            // 
-            // btn_Farmers
-            // 
-            this.btn_Farmers.Dock = System.Windows.Forms.DockStyle.Top;
-            this.btn_Farmers.FlatAppearance.BorderSize = 0;
-            this.btn_Farmers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_Farmers.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Farmers.ForeColor = System.Drawing.Color.White;
-            this.btn_Farmers.Location = new System.Drawing.Point(10, 275);
-            this.btn_Farmers.Name = "btn_Farmers";
-            this.btn_Farmers.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.btn_Farmers.Size = new System.Drawing.Size(230, 45);
-            this.btn_Farmers.TabIndex = 7;
-            this.btn_Farmers.Text = "Farmers";
-            this.btn_Farmers.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btn_Farmers.UseVisualStyleBackColor = true;
-            this.btn_Farmers.Click += new System.EventHandler(this.btn_Farmers_Click);
             // 
             // btn_logout
             // 
@@ -270,8 +200,6 @@
             this.btn_logout.Text = "Logout";
             this.btn_logout.UseVisualStyleBackColor = false;
             this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
-            this.btn_logout.MouseEnter += new System.EventHandler(this.btn_logout_MouseEnter);
-            this.btn_logout.MouseLeave += new System.EventHandler(this.btn_logout_MouseLeave);
             // 
             // panel2submenu
             // 
@@ -368,13 +296,11 @@
             // 
             // panelContainer
             // 
-            this.panelContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.panelContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(244)))), ((int)(((byte)(247)))));
-            this.panelContainer.Location = new System.Drawing.Point(268, 27);
+            this.panelContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContainer.Location = new System.Drawing.Point(250, 0);
             this.panelContainer.Name = "panelContainer";
-            this.panelContainer.Size = new System.Drawing.Size(934, 697);
+            this.panelContainer.Size = new System.Drawing.Size(974, 749);
             this.panelContainer.TabIndex = 5;
             // 
             // riceProductionDB2DataSet
@@ -399,6 +325,23 @@
             // 
             this.usersTableAdapter2.ClearBeforeFill = true;
             // 
+            // btn_AuthLogs
+            // 
+            this.btn_AuthLogs.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btn_AuthLogs.FlatAppearance.BorderSize = 0;
+            this.btn_AuthLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_AuthLogs.Font = new System.Drawing.Font("Outfit", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_AuthLogs.ForeColor = System.Drawing.Color.White;
+            this.btn_AuthLogs.Location = new System.Drawing.Point(10, 545);
+            this.btn_AuthLogs.Name = "btn_AuthLogs";
+            this.btn_AuthLogs.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            this.btn_AuthLogs.Size = new System.Drawing.Size(230, 45);
+            this.btn_AuthLogs.TabIndex = 16;
+            this.btn_AuthLogs.Text = "AuthLogs";
+            this.btn_AuthLogs.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btn_AuthLogs.UseVisualStyleBackColor = true;
+            this.btn_AuthLogs.Click += new System.EventHandler(this.btn_AuthLogs_Click);
+            // 
             // AdminDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 14F);
@@ -416,7 +359,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Load += new System.EventHandler(this.AdminDashboard_Load);
             this.panelsideMenu.ResumeLayout(false);
-            this.panel3side.ResumeLayout(false);
             this.panel2submenu.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSet)).EndInit();
@@ -434,12 +376,9 @@
         private System.Windows.Forms.Panel panel2submenu;
         private System.Windows.Forms.Button btn_logout;
         private System.Windows.Forms.Button btn_AllUsers;
-        private System.Windows.Forms.Button btn_Farmers;
         private System.Windows.Forms.Panel panelContainer;
-        private System.Windows.Forms.Panel panel3side;
         private System.Windows.Forms.Button btn_Sales;
         private System.Windows.Forms.Button btn_Fields;
-        private System.Windows.Forms.Button btn_AllFarmers;
         private RiceProductionDB2DataSet riceProductionDB2DataSet;
         private System.Windows.Forms.BindingSource usersBindingSource;
         private RiceProductionDB2DataSetTableAdapters.UsersTableAdapter usersTableAdapter;
@@ -450,8 +389,8 @@
         private System.Windows.Forms.Button btn_DamageReporting;
         private System.Windows.Forms.Button btn_PriceSetting;
         private System.Windows.Forms.Button btn_StockManagement;
-        private System.Windows.Forms.Button btn_Cultivation;
         private System.Windows.Forms.Button btn_profile;
+        private System.Windows.Forms.Button btn_AuthLogs;
         // private FontAwesome.Sharp.IconToolStripButton iconToolStripButton1;
         // private FontAwesome.Sharp.IconMenuItem iconMenuItem1;
     }

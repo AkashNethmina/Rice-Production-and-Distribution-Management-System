@@ -183,8 +183,6 @@
             this.btn_logout.Text = "Logout";
             this.btn_logout.UseVisualStyleBackColor = false;
             this.btn_logout.Click += new System.EventHandler(this.btn_logout_Click);
-            this.btn_logout.MouseEnter += new System.EventHandler(this.btn_logout_MouseEnter);
-            this.btn_logout.MouseLeave += new System.EventHandler(this.btn_logout_MouseLeave);
             // 
             // btn_profile
             // 
@@ -240,7 +238,6 @@
             this.panelContainer.Name = "panelContainer";
             this.panelContainer.Size = new System.Drawing.Size(974, 749);
             this.panelContainer.TabIndex = 6;
-            this.panelContainer.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContainer_Paint);
             // 
             // GovtOfficialDashboard
             // 

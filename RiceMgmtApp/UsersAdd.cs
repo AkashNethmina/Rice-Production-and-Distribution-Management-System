@@ -141,9 +141,6 @@ namespace RiceMgmtApp
             txtUsername.Focus();
         }
 
-        private void actionPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
+      
     }
 }

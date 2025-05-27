@@ -404,12 +404,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddEditCultivation.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="AddEditCultivation.Designer.cs">
-      <DependentUpon>AddEditCultivation.cs</DependentUpon>
-    </Compile>
     <Compile Include="AdminDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -422,6 +416,12 @@
     <Compile Include="AdminHome.Designer.cs">
       <DependentUpon>AdminHome.cs</DependentUpon>
     </Compile>
+    <Compile Include="AuthLogs.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="AuthLogs.Designer.cs">
+      <DependentUpon>AuthLogs.cs</DependentUpon>
+    </Compile>
     <Compile Include="BuyerDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -433,12 +433,6 @@
     </Compile>
     <Compile Include="BuyPaddy.Designer.cs">
       <DependentUpon>BuyPaddy.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Cultivation.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Cultivation.Designer.cs">
-      <DependentUpon>Cultivation.cs</DependentUpon>
     </Compile>
     <Compile Include="DamageReporting.cs">
       <SubType>UserControl</SubType>
@@ -536,12 +530,6 @@
     <Compile Include="SalesManagement.Designer.cs">
       <DependentUpon>SalesManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="SalesRecord.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SalesRecord.Designer.cs">
-      <DependentUpon>SalesRecord.cs</DependentUpon>
-    </Compile>
     <Compile Include="SellPady.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -566,23 +554,20 @@
     <Compile Include="UsersAdd.Designer.cs">
       <DependentUpon>UsersAdd.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="AddEditCultivation.resx">
-      <DependentUpon>AddEditCultivation.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AdminDashboard.resx">
       <DependentUpon>AdminDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AdminHome.resx">
       <DependentUpon>AdminHome.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AuthLogs.resx">
+      <DependentUpon>AuthLogs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BuyerDashboard.resx">
       <DependentUpon>BuyerDashboard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BuyPaddy.resx">
       <DependentUpon>BuyPaddy.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Cultivation.resx">
-      <DependentUpon>Cultivation.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DamageReporting.resx">
       <DependentUpon>DamageReporting.cs</DependentUpon>
@@ -630,9 +615,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SalesManagement.resx">
       <DependentUpon>SalesManagement.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SalesRecord.resx">
-      <DependentUpon>SalesRecord.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SellPady.resx">
       <DependentUpon>SellPady.cs</DependentUpon>

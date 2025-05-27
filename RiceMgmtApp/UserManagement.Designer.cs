@@ -34,11 +34,7 @@ namespace RiceMgmtApp
             this.topPanel = new System.Windows.Forms.Panel();
             this.lblTitle = new System.Windows.Forms.Label();
             this.controlPanel = new System.Windows.Forms.Panel();
-            this.searchPanel = new System.Windows.Forms.Panel();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
             this.exportPanel = new System.Windows.Forms.Panel();
-            this.btn_exportExcel = new System.Windows.Forms.Button();
             this.btn_exportPdf = new System.Windows.Forms.Button();
             this.usersBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.riceProductionDB2DataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -51,7 +47,6 @@ namespace RiceMgmtApp
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.topPanel.SuspendLayout();
             this.controlPanel.SuspendLayout();
-            this.searchPanel.SuspendLayout();
             this.exportPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).BeginInit();
@@ -84,7 +79,6 @@ namespace RiceMgmtApp
             // controlPanel
             // 
             this.controlPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(232)))), ((int)(((byte)(245)))), ((int)(((byte)(233)))));
-            this.controlPanel.Controls.Add(this.searchPanel);
             this.controlPanel.Controls.Add(this.exportPanel);
             this.controlPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.controlPanel.Location = new System.Drawing.Point(0, 50);
@@ -92,64 +86,14 @@ namespace RiceMgmtApp
             this.controlPanel.Size = new System.Drawing.Size(972, 60);
             this.controlPanel.TabIndex = 1;
             // 
-            // searchPanel
-            // 
-            this.searchPanel.Controls.Add(this.txtSearch);
-            this.searchPanel.Controls.Add(this.btnSearch);
-            this.searchPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.searchPanel.Location = new System.Drawing.Point(0, 0);
-            this.searchPanel.Name = "searchPanel";
-            this.searchPanel.Size = new System.Drawing.Size(343, 60);
-            this.searchPanel.TabIndex = 1;
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearch.Location = new System.Drawing.Point(12, 17);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(250, 27);
-            this.txtSearch.TabIndex = 0;
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
-            this.btnSearch.FlatAppearance.BorderSize = 0;
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(268, 17);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(58, 27);
-            this.btnSearch.TabIndex = 1;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
             // exportPanel
             // 
-            this.exportPanel.Controls.Add(this.btn_exportExcel);
             this.exportPanel.Controls.Add(this.btn_exportPdf);
             this.exportPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.exportPanel.Location = new System.Drawing.Point(772, 0);
             this.exportPanel.Name = "exportPanel";
             this.exportPanel.Size = new System.Drawing.Size(200, 60);
             this.exportPanel.TabIndex = 0;
-            // 
-            // btn_exportExcel
-            // 
-            this.btn_exportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btn_exportExcel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(150)))), ((int)(((byte)(136)))));
-            this.btn_exportExcel.FlatAppearance.BorderSize = 0;
-            this.btn_exportExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btn_exportExcel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_exportExcel.ForeColor = System.Drawing.Color.White;
-            this.btn_exportExcel.Location = new System.Drawing.Point(23, 14);
-            this.btn_exportExcel.Name = "btn_exportExcel";
-            this.btn_exportExcel.Size = new System.Drawing.Size(75, 32);
-            this.btn_exportExcel.TabIndex = 0;
-            this.btn_exportExcel.Text = "Excel";
-            this.btn_exportExcel.UseVisualStyleBackColor = false;
-            this.btn_exportExcel.Click += new System.EventHandler(this.btn_exportExcel_Click);
             // 
             // btn_exportPdf
             // 
@@ -236,8 +180,6 @@ namespace RiceMgmtApp
             this.topPanel.ResumeLayout(false);
             this.topPanel.PerformLayout();
             this.controlPanel.ResumeLayout(false);
-            this.searchPanel.ResumeLayout(false);
-            this.searchPanel.PerformLayout();
             this.exportPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.riceProductionDB2DataSetBindingSource)).EndInit();
@@ -265,11 +207,7 @@ namespace RiceMgmtApp
         // private System.Windows.Forms.Button exportPdfBtn;
         // private System.Windows.Forms.Button exportExcelBtn;
         private System.Windows.Forms.Button btn_exportPdf;
-        private System.Windows.Forms.Button btn_exportExcel;
         private System.Windows.Forms.Panel controlPanel;
-        private System.Windows.Forms.Panel searchPanel;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Panel exportPanel;
         private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.Button btnAddUser;

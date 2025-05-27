@@ -17,7 +17,7 @@ namespace RiceMgmtApp
         private int selectedStockId = -1;
         private int selectedFarmerId = -1;
         private int selectedSaleId = -1;
-        private int userRoleId = -1; // Store the user's role
+        private int userRoleId = -1; 
 
         public BuyPaddy(int buyerID)
         {
@@ -32,7 +32,7 @@ namespace RiceMgmtApp
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    // Modified query to accept both Government (3) and Private Buyer (4) roles
+                   
                     string query = "SELECT FullName, RoleID FROM Users WHERE UserID = @BuyerID AND RoleID IN (3, 4)";
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
@@ -45,12 +45,8 @@ namespace RiceMgmtApp
                             string fullName = reader["FullName"].ToString();
                             userRoleId = Convert.ToInt32(reader["RoleID"]);
 
-                            // You can uncomment this if you have a label to display buyer name
-                            // lblBuyerName.Text = fullName;
-
-                            // Optional: Show role-specific information
                             string roleText = userRoleId == 3 ? "Government Buyer" : "Private Buyer";
-                            // lblBuyerRole.Text = roleText; // If you have a role label
+                          
                         }
                         else
                         {
@@ -96,7 +92,7 @@ namespace RiceMgmtApp
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Modified query to show purchases for both Government and Private buyers
+                
                 string query = @"
             SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, s.BuyerType,
                    s.CropType, s.SalePrice, s.Quantity,
@@ -116,7 +112,6 @@ namespace RiceMgmtApp
                     dataGridViewSales.DataSource = dt;
                 }
 
-                // Rename and format columns for display
                 if (dataGridViewSales.Columns["SaleID"] != null)
                     dataGridViewSales.Columns["SaleID"].HeaderText = "Purchase ID";
 
@@ -171,21 +166,28 @@ namespace RiceMgmtApp
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType, s.CropType,
-                            f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
-                            b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
-                            FROM Sales s
-                            INNER JOIN Users f ON s.FarmerID = f.UserID
-                            LEFT JOIN Users b ON s.BuyerID = b.UserID
-                            WHERE s.SaleID = @SaleID AND s.BuyerID = @BuyerID";
+                    f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
+                    b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
+                    FROM Sales s
+                    INNER JOIN Users f ON s.FarmerID = f.UserID
+                    LEFT JOIN Users b ON s.BuyerID = b.UserID
+                    WHERE s.SaleID = @SaleID AND s.BuyerID = @BuyerID";
+
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@SaleID", saleId);
                     cmd.Parameters.AddWithValue("@BuyerID", currentBuyerId);
+
                     conn.Open();
                     SqlDataReader reader = cmd.ExecuteReader();
                     if (reader.Read())
                     {
+                        // Format using Sri Lankan Rupees
+                        var lkrCulture = new System.Globalization.CultureInfo("en-LK");
+
                         StringBuilder sb = new StringBuilder();
-                        decimal totalAmount = Convert.ToDecimal(reader["SalePrice"]) * Convert.ToDecimal(reader["Quantity"]);
+                        decimal salePrice = Convert.ToDecimal(reader["SalePrice"]);
+                        decimal quantity = Convert.ToDecimal(reader["Quantity"]);
+                        decimal totalAmount = salePrice * quantity;
                         string buyerType = reader["BuyerType"].ToString();
 
                         sb.AppendLine("RICE PRODUCTION SYSTEM");
@@ -194,6 +196,7 @@ namespace RiceMgmtApp
                         sb.AppendLine($"Invoice #: INV-{saleId:D5}");
                         sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
                         sb.AppendLine("=============================================");
+
                         sb.AppendLine($"\nBUYER INFORMATION ({buyerType.ToUpper()}):");
                         sb.AppendLine($"Name: {reader["BuyerName"]}");
                         if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"Contact: {reader["BuyerContactNumber"]}");
@@ -210,20 +213,22 @@ namespace RiceMgmtApp
 
                         string cropType = reader["CropType"] != DBNull.Value ? reader["CropType"].ToString() : "Rice";
                         sb.AppendLine($"Product: {cropType}");
-                        sb.AppendLine($"Price per kg: {Convert.ToDecimal(reader["SalePrice"]):C}");
-                        sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
-                        sb.AppendLine($"Total Amount: {totalAmount:C}");
+                        sb.AppendLine($"Price per kg: {salePrice.ToString("C", lkrCulture)}");
+                        sb.AppendLine($"Quantity: {quantity:N2} kg");
+                        sb.AppendLine($"Total Amount: {totalAmount.ToString("C", lkrCulture)}");
                         sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
                         sb.AppendLine($"Buyer Type: {buyerType}");
                         sb.AppendLine("=============================================");
                         sb.AppendLine("\nThank you for your business!");
                         sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
+
                         rtbInvoicePreview.Text = sb.ToString();
                     }
                     else
                     {
                         MessageBox.Show("Invoice data not found or you don't have permission to view this purchase.");
                     }
+
                     reader.Close();
                 }
             }
@@ -232,6 +237,7 @@ namespace RiceMgmtApp
                 MessageBox.Show($"Error generating invoice: {ex.Message}");
             }
         }
+
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
@@ -256,8 +262,7 @@ namespace RiceMgmtApp
             if (printDialog.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show("Printing functionality would be implemented here.");
-                // In a real application, you would implement printing here
-                // This would typically use a PrintDocument object
+                
             }
         }
 
@@ -284,7 +289,7 @@ namespace RiceMgmtApp
 
                     if (fileExtension == ".pdf")
                     {
-                        // Create a PDF using iTextSharp
+                       
                         using (FileStream fs = new FileStream(saveDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
                             Document doc = new Document(PageSize.A4);
@@ -297,11 +302,11 @@ namespace RiceMgmtApp
                     }
                     else
                     {
-                        // Save as plain text
+                       
                         File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
                     }
 
-                    // Update invoice path in DB
+                  
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         string query = "UPDATE Invoices SET InvoicePath = @Path WHERE SaleID = @SaleID";
@@ -340,24 +345,18 @@ namespace RiceMgmtApp
 
         private void BuyPaddy_Load(object sender, EventArgs e)
         {
-            // Initialize UI elements
+       
             LoadBuyerInfo();
-
-            // Add purchase history functionality
             dataGridViewSales.CellClick += dataGridViewSales_CellClick;
 
-            // Add invoice-related functionality
             btnGenerateInvoice.Click += btnGenerateInvoice_Click;
             btnSaveInvoice.Click += btnSaveInvoice_Click;
             btnPrintInvoice.Click += btnPrintInvoice_Click;
 
-            // Style data grid views
             StylePurchaseGrid();
 
-            // Load purchase history
             LoadBuyerPurchasesData();
 
-            // Hide invoice panel initially
             pnlInvoice.Visible = false;
         }
     }

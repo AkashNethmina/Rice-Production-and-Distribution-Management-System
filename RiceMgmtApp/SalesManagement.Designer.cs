@@ -254,6 +254,7 @@
             this.btnViewStock.TabIndex = 14;
             this.btnViewStock.Text = "View Stock";
             this.btnViewStock.UseVisualStyleBackColor = false;
+//            this.btnViewStock.Click += new System.EventHandler(this.btnViewStock_Click_1);
             // 
             // lblSelectedStock
             // 

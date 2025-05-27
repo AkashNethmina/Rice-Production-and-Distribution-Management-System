@@ -42,31 +42,39 @@ namespace RiceMgmtApp
             _userId = userId;
             _roleId = roleId;
 
-            // Add event handlers for resizing
+         
             this.Resize += AdminDashboard_Resize;
 
-            // Set minimum form size
+          
             this.MinimumSize = new Size(900, 600);
+        }
+
+        private void AdminDashboard_Load(object sender, EventArgs e)
+        {
+
+            ConfigureForScreenResolution();
+            HideAllSubMenus();
+            InitializeProgressBar();
+            AddUserProfileSection();
+            InitializeBreadcrumb();
+            AdminHome ah = new AdminHome();
+            LoadUserControl(ah);
+            SetActiveButton(btn_Dashboard);
+            UpdateBreadcrumb("Dashboard");
         }
 
         private void HideSubMenu()
         {
             if (panel2submenu.Visible)
                 panel2submenu.Visible = false;
-            if (panel3side.Visible)
-                panel3side.Visible = false;
-        }
-
-        private void ShowSection(Panel panel)
-        {
-            panel.Visible = true;
+           
         }
 
         private void ShowSubMenu(Panel subMenu)
         {
             if (!subMenu.Visible)
             {
-                HideSubMenu();
+                HideAllSubMenus();
                 subMenu.Visible = true;
             }
             else
@@ -75,11 +83,19 @@ namespace RiceMgmtApp
             }
         }
 
+        private void HideAllSubMenus()
+        {
+            panel2submenu.Visible = false;
+            
+        }
+
+
+
         private void LoadUserControl(UserControl userControl)
         {
-            // Show loading indicator
+            
             ShowLoadingIndicator();
-            // Check if progressBar is initialized
+           
             if (progressBar != null)
             {
                 progressBar.Visible = true;
@@ -87,15 +103,15 @@ namespace RiceMgmtApp
             }
             else
             {
-                // Initialize progressBar if it's null
+                
                 InitializeProgressBar();
                 progressBar.Visible = true;
                 progressBar.StartLoading();
             }
 
-            // Use Task to load control asynchronously
+            
             Task.Run(() => {
-                // Simulate loading time or actual initialization
+                
                 Thread.Sleep(300);
 
                 this.Invoke((MethodInvoker)delegate {
@@ -106,7 +122,7 @@ namespace RiceMgmtApp
                     panelContainer.Controls.Add(userControl);
                     userControl.BringToFront();
 
-                    // Hide loading indicator and progress bar after a delay
+                    
                     Task.Delay(200).ContinueWith(t => {
                         this.Invoke((MethodInvoker)delegate {
                             HideLoadingIndicator();
@@ -146,11 +162,7 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Manage Users > Add New Users");
         }
 
-        private void btn_Farmers_Click(object sender, EventArgs e)
-        {
-            ShowSubMenu(panel3side);
-            SetActiveButton(btn_Farmers);
-        }
+        
 
         private void btn_AllFarmers_Click(object sender, EventArgs e)
         {
@@ -159,12 +171,7 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Farmers > All Farmers");
         }
 
-        private void btn_Fields_Click(object sender, EventArgs e)
-        {
-            Fields fie = new Fields(_userId, _roleId);
-            LoadUserControl(fie);
-            UpdateBreadcrumb("Farmers > Field Management");
-        }
+       
 
         private void btn_Sales_Click(object sender, EventArgs e)
         {
@@ -184,35 +191,21 @@ namespace RiceMgmtApp
 
         private void btn_logout_Click(object sender, EventArgs e)
         {
-            frm_login fl = new frm_login();
-            fl.Show();
-            this.Hide();
+            var result = MessageBox.Show("Are you sure you want to log out?", "Confirm Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                frm_login fl = new frm_login();
+                fl.Show();
+                this.Close(); 
+            }
         }
 
-        private void btn_logout_MouseEnter(object sender, EventArgs e)
-        {
-            btn_logout.BackColor = System.Drawing.Color.FromArgb(200, 35, 51); // Darker red on hover
-        }
 
-        private void btn_logout_MouseLeave(object sender, EventArgs e)
-        {
-            btn_logout.BackColor = System.Drawing.Color.FromArgb(220, 53, 69); // Back to original red
-        }
 
-      
-
-        private void btn_Cultivation_Click(object sender, EventArgs e)
-        {
-            // Pass the required parameters _userId and _roleId to the Cultivation constructor
-            Cultivation ca = new Cultivation();
-            LoadUserControl(ca);
-            UpdateBreadcrumb("Farmers > Cultivation");
-        }
-
-        // Update the instantiation of DamageReporting in AdminDashboard.cs
         private void btn_DamageReporting_Click(object sender, EventArgs e)
         {
-            // Use the SetUserContext method to pass userId and roleId
+           
             DamageReporting dr = new DamageReporting();
             dr.SetUserContext(_userId, _roleId);
             LoadUserControl(dr);
@@ -228,26 +221,19 @@ namespace RiceMgmtApp
             UpdateBreadcrumb("Price Setting");
         }
 
-        private void panelContainer_Paint(object sender, PaintEventArgs e)
-        {
-            // Can be used for custom painting if needed
-        }
-
-        #region Responsive Design Implementation
-
         private void AdminDashboard_Resize(object sender, EventArgs e)
         {
-            // Adjust UI elements based on form size
+           
             ResizeUI();
         }
 
         private void ResizeUI()
         {
-            // Adjust panel container margins based on window size
+            
             int margin = this.Width < 1000 ? 10 : 20;
             panelContainer.Padding = new Padding(margin);
 
-            // Potentially collapse side menu to icons only when window is narrow
+            
             if (this.Width < 800)
             {
                 CollapseMenu();
@@ -257,7 +243,7 @@ namespace RiceMgmtApp
                 ExpandMenu();
             }
 
-            // Make container panel slightly rounded
+           
             panelContainer.Region = System.Drawing.Region.FromHrgn(
                 CreateRoundRectRgn(0, 0, panelContainer.Width, panelContainer.Height, 15, 15)
             );
@@ -272,14 +258,14 @@ namespace RiceMgmtApp
                 {
                     btn.ImageAlign = ContentAlignment.MiddleCenter;
                     btn.Padding = new Padding(0);
-                    // Store text somewhere if you need to restore it later
+                   
                     btn.Tag = btn.Text;
                     btn.Text = "";
                 }
             }
-            // Hide the submenu panels
+            
             panel2submenu.Visible = false;
-            panel3side.Visible = false;
+         
         }
 
         private void ExpandMenu()
@@ -291,7 +277,7 @@ namespace RiceMgmtApp
                 {
                     if (btn.Tag != null && btn.Tag is string)
                     {
-                        // Restore original text from tag
+                       
                         btn.Text = (string)btn.Tag;
                         btn.Tag = null;
                     }
@@ -303,13 +289,13 @@ namespace RiceMgmtApp
 
         private void ConfigureForScreenResolution()
         {
-            // Get screen resolution
+           
             Screen screen = Screen.FromControl(this);
             int screenWidth = screen.Bounds.Width;
             int screenHeight = screen.Bounds.Height;
 
-            // Adjust based on resolution
-            if (screenWidth <= 1366) // Common laptop resolution
+           
+            if (screenWidth <= 1366) 
             {
                 this.Font = new Font(this.Font.FontFamily, this.Font.Size - 1);
                 if (this.Width < 1200)
@@ -317,15 +303,14 @@ namespace RiceMgmtApp
                     CollapseMenu();
                 }
             }
-            else if (screenWidth >= 1920) // Full HD and higher
+            else if (screenWidth >= 1920) 
             {
-                // Can increase padding, font sizes for better readability
+              
                 this.Font = new Font(this.Font.FontFamily, this.Font.Size + 1);
                 panelContainer.Padding = new Padding(20);
             }
         }
 
-        #endregion
 
         #region UI Enhancement Methods
 
@@ -355,12 +340,12 @@ namespace RiceMgmtApp
         {
             if (activeButton != null)
             {
-                // Reset previous active button
+               
                 activeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
                 activeButton.ForeColor = Color.White;
             }
 
-            // Set new active button
+          
             activeButton = button;
             activeButton.BackColor = Color.White;
             activeButton.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
@@ -429,7 +414,6 @@ namespace RiceMgmtApp
             roleLabel.Location = new Point(60, 30);
             roleLabel.AutoSize = true;
 
-            // Add circular avatar placeholder
             Panel avatarPanel = new Panel();
             avatarPanel.Size = new Size(40, 40);
             avatarPanel.Location = new Point(10, 10);
@@ -439,7 +423,7 @@ namespace RiceMgmtApp
                 {
                     e.Graphics.FillEllipse(brush, 0, 0, avatarPanel.Width, avatarPanel.Height);
                 }
-                // Draw first letter of username
+              
                 string username = LoggedInUsername ?? "A";
                 if (!string.IsNullOrEmpty(username))
                 {
@@ -466,96 +450,6 @@ namespace RiceMgmtApp
             panelsideMenu.Controls.Add(profilePanel);
         }
 
-        private void ModernizeUI()
-        {
-            // Add hover effects to buttons
-            foreach (Control ctrl in panelsideMenu.Controls)
-            {
-                if (ctrl is Button btn)
-                {
-                    btn.MouseEnter += Button_MouseEnter;
-                    btn.MouseLeave += Button_MouseLeave;
-                }
-
-                // Handle nested panels
-                if (ctrl is Panel panel)
-                {
-                    foreach (Control panelCtrl in panel.Controls)
-                    {
-                        if (panelCtrl is Button panelBtn)
-                        {
-                            panelBtn.MouseEnter += SubmenuButton_MouseEnter;
-                            panelBtn.MouseLeave += SubmenuButton_MouseLeave;
-                        }
-                    }
-                }
-            }
-
-            // Make container panel slightly rounded
-            panelContainer.Region = System.Drawing.Region.FromHrgn(
-                CreateRoundRectRgn(0, 0, panelContainer.Width, panelContainer.Height, 15, 15)
-            );
-
-            // Add shadow effect (simplified approach)
-            Panel shadowPanel = new Panel();
-            shadowPanel.BackColor = Color.FromArgb(20, 0, 0, 0);
-            shadowPanel.Size = new Size(panelContainer.Width + 6, panelContainer.Height + 6);
-            shadowPanel.Location = new Point(panelContainer.Left - 3, panelContainer.Top - 3);
-            this.Controls.Add(shadowPanel);
-            shadowPanel.SendToBack();
-        }
-
-        private void Button_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != activeButton)
-            {
-                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(9)))), ((int)(((byte)(150)))), ((int)(((byte)(70)))));
-            }
-        }
-
-        private void Button_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            if (btn != activeButton)
-            {
-                btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(179)))), ((int)(((byte)(86)))));
-            }
-        }
-
-        private void SubmenuButton_MouseEnter(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(120)))), ((int)(((byte)(220)))), ((int)(((byte)(180)))));
-        }
-
-        private void SubmenuButton_MouseLeave(object sender, EventArgs e)
-        {
-            Button btn = sender as Button;
-            btn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(167)))), ((int)(((byte)(250)))), ((int)(((byte)(206)))));
-        }
-
-       
-
-        private void AdminDashboard_Load(object sender, EventArgs e)
-        {
-
-            // Configure based on screen resolution
-            ConfigureForScreenResolution();
-
-            // Initialize UI elements
-            InitializeProgressBar();
-            AddUserProfileSection();
-            InitializeBreadcrumb();
-            ModernizeUI();
-
-            // Show AdminHome as default on load
-            AdminHome ah = new AdminHome();
-            LoadUserControl(ah);
-            SetActiveButton(btn_Dashboard);
-            UpdateBreadcrumb("Dashboard");
-        }
-
         private void btn_profile_Click(object sender, EventArgs e)
         {
             profileControl profileControl = new profileControl();
@@ -565,9 +459,23 @@ namespace RiceMgmtApp
             SetActiveButton(btn_profile);
             UpdateBreadcrumb("Profile");
         }
+
+        private void btn_Fields_Click(object sender, EventArgs e)
+        {
+            Fields fie = new Fields(_userId, _roleId);
+            LoadUserControl(fie);
+            UpdateBreadcrumb("Farmers > Field Management");
+        }
+
+        private void btn_AuthLogs_Click(object sender, EventArgs e)
+        {
+            AuthLogs authLogs = new AuthLogs(_roleId);
+            LoadUserControl(authLogs);
+            UpdateBreadcrumb("Authentication Logs");
+        }
     }
 
-    // Loading progress bar for visual feedback
+
     public class LoadingProgressBar : Control
     {
         private int _value = 0;
@@ -621,8 +529,7 @@ namespace RiceMgmtApp
             }
         }
     }
-
-    // Responsive panel for better layout in user controls
+   
     public class ResponsivePanel : Panel
     {
         private int _columns = 12;
@@ -654,7 +561,7 @@ namespace RiceMgmtApp
                         int colStart = int.Parse(tagParts[2]);
                         int rowStart = int.Parse(tagParts[3]);
 
-                        int rowHeight = 50; // Default, can be calculated dynamically
+                        int rowHeight = 50; 
 
                         ctrl.Width = (colSpan * colWidth) + ((colSpan - 1) * _gutter);
                         ctrl.Height = (rowSpan * rowHeight) + ((rowSpan - 1) * _gutter);

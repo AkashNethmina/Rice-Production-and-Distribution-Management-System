@@ -25,7 +25,7 @@ namespace RiceMgmtApp
 
         private void SalesManagement_Load(object sender, EventArgs e)
         {
-            // Initialize UI elements
+          
             LoadSalesData();
             LoadFarmerCombo();
             LoadBuyerCombo();
@@ -37,15 +37,15 @@ namespace RiceMgmtApp
             cmbPaymentStatus.Items.Clear();
             cmbPaymentStatus.Items.AddRange(new[] { "Pending", "Completed", "Failed" });
 
-            // Add stock-related functionality
+          
             btnViewStock.Click += BtnViewStock_Click;
 
-            // Add invoice-related functionality
+       
             btnGenerateInvoice.Click += BtnGenerateInvoice_Click;
             btnSaveInvoice.Click += BtnSaveInvoice_Click;
             btnPrintInvoice.Click += BtnPrintInvoice_Click;
 
-            // Add event handler for calculating total when quantity or price changes
+     
             txtQuantity.TextChanged += CalculateTotalAmount;
             txtSalePrice.TextChanged += CalculateTotalAmount;
 
@@ -57,10 +57,10 @@ namespace RiceMgmtApp
         {
             if (cmbBuyerType.SelectedItem?.ToString() == "Government")
             {
-                // Filter only government buyers
+               
                 LoadBuyerComboFiltered("Government");
 
-                // If crop type is already selected, fetch price
+                
                 if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
                 {
                     string cropType = stockInfo.Item2;
@@ -69,10 +69,10 @@ namespace RiceMgmtApp
             }
             else if (cmbBuyerType.SelectedItem?.ToString() == "Private")
             {
-                // Filter only private buyers
+             
                 LoadBuyerComboFiltered("Private");
 
-                // If crop type is already selected, fetch price
+               
                 if (lblSelectedStock.Tag != null && lblSelectedStock.Tag is Tuple<int, string> stockInfo)
                 {
                     string cropType = stockInfo.Item2;
@@ -125,7 +125,7 @@ namespace RiceMgmtApp
 
                     if (dt.Rows.Count > 0)
                     {
-                        // Show the stock in a separate form or dialog
+                    
                         using (Form stockForm = new Form())
                         {
                             stockForm.Text = $"Stock for {cmbFarmer.Text}";
@@ -156,18 +156,18 @@ namespace RiceMgmtApp
                                     decimal availableQuantity = Convert.ToDecimal(row.Cells["Quantity"].Value);
                                     string cropType = row.Cells["CropType"].Value.ToString();
 
-                                    // Set the maximum available quantity
+                                   
                                     txtQuantity.Text = availableQuantity.ToString();
                                     lblSelectedStock.Text = $"Selected: {cropType} - {availableQuantity} kg";
                                     lblSelectedStock.Visible = true;
 
-                                    // Store selected stock ID and crop type for later reference
+                              
                                     lblSelectedStock.Tag = new Tuple<int, string>(
                                         Convert.ToInt32(row.Cells["StockID"].Value),
                                         cropType
                                     );
 
-                                    // Fetch and set price based on crop type and buyer type
+                                   
                                     if (cmbBuyerType.SelectedItem != null)
                                     {
                                         FetchPriceForCropType(cropType, cmbBuyerType.SelectedItem.ToString());
@@ -210,7 +210,7 @@ namespace RiceMgmtApp
 
                     if (buyerType == "Government")
                     {
-                        // For government buyers, fetch government price
+                        
                         query = "SELECT GovernmentPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
@@ -220,7 +220,7 @@ namespace RiceMgmtApp
                             {
                                 decimal govPrice = Convert.ToDecimal(result);
                                 txtSalePrice.Text = govPrice.ToString();
-                                txtSalePrice.ReadOnly = true; // Lock the price for government sales
+                                txtSalePrice.ReadOnly = true; 
                             }
                             else
                             {
@@ -231,7 +231,7 @@ namespace RiceMgmtApp
                     }
                     else if (buyerType == "Private")
                     {
-                        // For private buyers, fetch average price as starting point but allow editing
+                       
                         query = "SELECT AvgPrice FROM PriceMonitoring WHERE CropType = @CropType ORDER BY CreatedAt DESC";
                         using (SqlCommand cmd = new SqlCommand(query, conn))
                         {
@@ -246,7 +246,7 @@ namespace RiceMgmtApp
                             {
                                 MessageBox.Show($"No price data found for {cropType}. Please set up price monitoring data.");
                             }
-                            txtSalePrice.ReadOnly = false; // Allow price negotiation for private sales
+                            txtSalePrice.ReadOnly = false; 
                         }
                     }
                 }
@@ -309,7 +309,7 @@ namespace RiceMgmtApp
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                // Join with Users table to display farmer and buyer names
+               
                 string query = @"SELECT s.SaleID, s.FarmerID, f.FullName AS FarmerName, 
        s.BuyerID, b.FullName AS BuyerName, s.BuyerType, 
        s.CropType, s.SalePrice, s.Quantity, 
@@ -327,7 +327,7 @@ namespace RiceMgmtApp
                 adapter.Fill(dt);
                 dataGridViewSales.DataSource = dt;
 
-                // Rename and reorder columns for better display
+              
                 if (dataGridViewSales.Columns.Contains("SaleID"))
                     dataGridViewSales.Columns["SaleID"].HeaderText = "Sale ID";
                 if (dataGridViewSales.Columns.Contains("FarmerName"))
@@ -394,14 +394,14 @@ namespace RiceMgmtApp
         {
             if (!ValidateInputs()) return;
 
-            // Check if stock is selected
+         
             if (lblSelectedStock.Tag == null)
             {
                 MessageBox.Show("Please select stock before processing the sale.");
                 return;
             }
 
-            // Extract stock ID and crop type from the tag
+        
             var stockInfo = (Tuple<int, string>)lblSelectedStock.Tag;
             int stockId = stockInfo.Item1;
             string cropType = stockInfo.Item2;
@@ -415,7 +415,7 @@ namespace RiceMgmtApp
                     conn.Open();
                     transaction = conn.BeginTransaction();
 
-                    // 1. Check if there's enough stock
+                  
                     string checkStockQuery = "SELECT Quantity FROM Stock WHERE StockID = @StockID";
                     using (SqlCommand checkCmd = new SqlCommand(checkStockQuery, conn, transaction))
                     {
@@ -429,7 +429,7 @@ namespace RiceMgmtApp
                         }
                     }
 
-                    // 2. Insert the sale (now including CropType)
+                 
                     string insertSaleQuery = @"INSERT INTO Sales (FarmerID, BuyerID, BuyerType, SalePrice, Quantity, PaymentStatus, SaleDate, CropType, StockID)
                                       VALUES (@FarmerID, @BuyerID, @BuyerType, @SalePrice, @Quantity, @PaymentStatus, @SaleDate, @CropType, @StockID);
                                       SELECT SCOPE_IDENTITY();";
@@ -451,8 +451,6 @@ namespace RiceMgmtApp
                         newSaleId = Convert.ToInt32(insertCmd.ExecuteScalar());
                     }
 
-                    // Rest of the method remains the same...
-                    // 3. Update the stock quantity
                     string updateStockQuery = "UPDATE Stock SET Quantity = Quantity - @SaleQuantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
                     using (SqlCommand updateCmd = new SqlCommand(updateStockQuery, conn, transaction))
                     {
@@ -461,25 +459,14 @@ namespace RiceMgmtApp
                         updateCmd.ExecuteNonQuery();
                     }
 
-                    // 4. Create invoice record
-                    string invoicePath = $"Invoice_{newSaleId}_{DateTime.Now:yyyyMMdd}.pdf";
-                    string insertInvoiceQuery = "INSERT INTO Invoices (SaleID, InvoicePath, CreatedAt) VALUES (@SaleID, @InvoicePath, GETDATE())";
-                    using (SqlCommand invoiceCmd = new SqlCommand(insertInvoiceQuery, conn, transaction))
-                    {
-                        invoiceCmd.Parameters.AddWithValue("@SaleID", newSaleId);
-                        invoiceCmd.Parameters.AddWithValue("@InvoicePath", invoicePath);
-                        invoiceCmd.ExecuteNonQuery();
-                    }
+                   
 
-                    transaction.Commit();
-                    MessageBox.Show("Sale processed successfully!");
-
-                    // Set the selected sale ID for invoice generation
+                  
                     selectedSaleId = newSaleId;
 
-                    // Show the invoice panel and generate invoice preview
+                  
                     pnlInvoice.Visible = true;
-                    GenerateInvoicePreview(newSaleId);
+                 // GenerateInvoicePreview(newSaleId);
                 }
                 catch (Exception ex)
                 {
@@ -611,15 +598,10 @@ namespace RiceMgmtApp
                         }
                     }
 
-                    // Step 2: Delete related invoice records first
-                    string deleteInvoiceQuery = "DELETE FROM Invoices WHERE SaleID = @SaleID";
-                    using (SqlCommand invoiceCmd = new SqlCommand(deleteInvoiceQuery, conn, transaction))
-                    {
-                        invoiceCmd.Parameters.AddWithValue("@SaleID", saleId);
-                        invoiceCmd.ExecuteNonQuery();
-                    }
+                
+                   
 
-                    // Step 3: Delete the sale
+               
                     string deleteQuery = "DELETE FROM Sales WHERE SaleID = @SaleID";
                     using (SqlCommand cmd = new SqlCommand(deleteQuery, conn, transaction))
                     {
@@ -627,7 +609,7 @@ namespace RiceMgmtApp
                         cmd.ExecuteNonQuery();
                     }
 
-                    // Step 4: Add quantity back to stock
+               
                     string updateStockQuery = "UPDATE Stock SET Quantity = Quantity + @Quantity, LastUpdated = GETDATE() WHERE StockID = @StockID";
                     using (SqlCommand stockCmd = new SqlCommand(updateStockQuery, conn, transaction))
                     {
@@ -703,7 +685,7 @@ namespace RiceMgmtApp
             cmbPaymentStatus.SelectedIndex = -1;
             txtSalePrice.Clear();
             txtQuantity.Clear();
-            txtTotalAmount.Text = string.Empty; // Fixed this line
+            txtTotalAmount.Text = string.Empty; 
             lblSelectedStock.Visible = false;
             lblSelectedStock.Tag = null;
             pnlInvoice.Visible = false;
@@ -731,66 +713,82 @@ namespace RiceMgmtApp
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    // Updated query to include CropType
-                    string query = @"SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType, s.CropType,
-                            f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
-                            b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
-                            FROM Sales s
-                            INNER JOIN Users f ON s.FarmerID = f.UserID
-                            LEFT JOIN Users b ON s.BuyerID = b.UserID
-                            WHERE s.SaleID = @SaleID";
-                    SqlCommand cmd = new SqlCommand(query, conn);
-                    cmd.Parameters.AddWithValue("@SaleID", saleId);
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    if (reader.Read())
+                    string query = @"
+                SELECT s.SaleID, s.SaleDate, s.SalePrice, s.Quantity, s.PaymentStatus, s.BuyerType, s.CropType,
+                       f.FullName AS FarmerName, f.Email AS FarmerEmail, f.ContactNumber AS FarmerContactNumber, 
+                       b.FullName AS BuyerName, b.Email AS BuyerEmail, b.ContactNumber AS BuyerContactNumber
+                FROM Sales s
+                INNER JOIN Users f ON s.FarmerID = f.UserID
+                LEFT JOIN Users b ON s.BuyerID = b.UserID
+                WHERE s.SaleID = @SaleID";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        StringBuilder sb = new StringBuilder();
-                        decimal totalAmount = Convert.ToDecimal(reader["SalePrice"]) * Convert.ToDecimal(reader["Quantity"]);
+                        cmd.Parameters.AddWithValue("@SaleID", saleId);
+                        conn.Open();
 
-                        sb.AppendLine("RICE PRODUCTION SYSTEM");
-                        sb.AppendLine("SALES INVOICE");
-                        sb.AppendLine("=============================================");
-                        sb.AppendLine($"Invoice #: INV-{saleId:D5}");
-                        sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
-                        sb.AppendLine("=============================================");
-                        sb.AppendLine("\nSELLER INFORMATION:");
-                        sb.AppendLine($"Name: {reader["FarmerName"]}");
-                        if (reader["FarmerContactNumber"] != DBNull.Value) sb.AppendLine($"ContactNumber: {reader["FarmerContactNumber"]}");
-                        if (reader["FarmerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["FarmerEmail"]}");
-                        //if (reader["FarmerAddress"] != DBNull.Value) sb.AppendLine($"Address: {reader["FarmerAddress"]}");
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                StringBuilder sb = new StringBuilder();
+                                decimal salePrice = reader["SalePrice"] != DBNull.Value ? Convert.ToDecimal(reader["SalePrice"]) : 0;
+                                decimal quantity = reader["Quantity"] != DBNull.Value ? Convert.ToDecimal(reader["Quantity"]) : 0;
+                                decimal totalAmount = salePrice * quantity;
 
-                        sb.AppendLine("\nBUYER INFORMATION:");
-                        sb.AppendLine($"Type: {reader["BuyerType"]}");
-                        sb.AppendLine($"Name: {reader["BuyerName"]}");
-                        if (reader["BuyerContactNumber"] != DBNull.Value) sb.AppendLine($"ContactNumber: {reader["BuyerContactNumber"]}");
-                        if (reader["BuyerEmail"] != DBNull.Value) sb.AppendLine($"Email: {reader["BuyerEmail"]}");
-                        // if (reader["BuyerAddress"] != DBNull.Value) sb.AppendLine($"Address: {reader["BuyerAddress"]}");
+                                sb.AppendLine("RICE PRODUCTION SYSTEM");
+                                sb.AppendLine("SALES INVOICE");
+                                sb.AppendLine("=============================================");
+                                sb.AppendLine($"Invoice #: INV-{saleId:D5}");
+                                sb.AppendLine($"Date: {Convert.ToDateTime(reader["SaleDate"]):yyyy-MM-dd HH:mm}");
+                                sb.AppendLine("=============================================");
 
-                        sb.AppendLine("\n=============================================");
-                        sb.AppendLine("TRANSACTION DETAILS:");
-                        sb.AppendLine("=============================================");
+                                sb.AppendLine("\nSELLER INFORMATION:");
+                                sb.AppendLine($"Name: {reader["FarmerName"]}");
+                                if (reader["FarmerContactNumber"] != DBNull.Value)
+                                    sb.AppendLine($"Contact Number: {reader["FarmerContactNumber"]}");
+                                if (reader["FarmerEmail"] != DBNull.Value)
+                                    sb.AppendLine($"Email: {reader["FarmerEmail"]}");
 
-                        // Updated to include CropType
-                        string cropType = reader["CropType"] != DBNull.Value ? reader["CropType"].ToString() : "Rice";
-                        sb.AppendLine($"Product: {cropType}");
-                        sb.AppendLine($"Price per kg: {Convert.ToDecimal(reader["SalePrice"]):C}");
-                        sb.AppendLine($"Quantity: {Convert.ToDecimal(reader["Quantity"]):N2} kg");
-                        sb.AppendLine($"Total Amount: {totalAmount:C}");
-                        sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
-                        sb.AppendLine("=============================================");
-                        sb.AppendLine("\nThank you for your business!");
-                        sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
-                        rtbInvoicePreview.Text = sb.ToString();
+                                sb.AppendLine("\nBUYER INFORMATION:");
+                                sb.AppendLine($"Type: {reader["BuyerType"]}");
+                                if (reader["BuyerName"] != DBNull.Value)
+                                    sb.AppendLine($"Name: {reader["BuyerName"]}");
+                                if (reader["BuyerContactNumber"] != DBNull.Value)
+                                    sb.AppendLine($"Contact Number: {reader["BuyerContactNumber"]}");
+                                if (reader["BuyerEmail"] != DBNull.Value)
+                                    sb.AppendLine($"Email: {reader["BuyerEmail"]}");
+
+                                sb.AppendLine("\n=============================================");
+                                sb.AppendLine("TRANSACTION DETAILS:");
+                                sb.AppendLine("=============================================");
+
+                                string cropType = reader["CropType"] != DBNull.Value ? reader["CropType"].ToString() : "Rice";
+                                sb.AppendLine($"Product: {cropType}");
+                                sb.AppendLine($"Price per kg: Rs. {salePrice:N2}");
+                                sb.AppendLine($"Quantity: {quantity:N2} kg");
+                                sb.AppendLine($"Total Amount: Rs. {totalAmount:N2}");
+                                sb.AppendLine($"Payment Status: {reader["PaymentStatus"]}");
+                                sb.AppendLine("=============================================");
+                                sb.AppendLine("\nThank you for your business!");
+                                sb.AppendLine("This is a computer-generated invoice and doesn't require a signature.");
+
+                                rtbInvoicePreview.Text = sb.ToString();
+                            }
+                            else
+                            {
+                                MessageBox.Show("No record found for the given Sale ID.");
+                            }
+                        }
                     }
-                    reader.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error generating invoice: {ex.Message}");
+                MessageBox.Show($"Error generating invoice: {ex.Message}", "Invoice Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
         private void BtnSaveInvoice_Click(object sender, EventArgs e)
         {
             if (selectedSaleId == -1 || string.IsNullOrEmpty(rtbInvoicePreview.Text))
@@ -831,18 +829,7 @@ namespace RiceMgmtApp
                         File.WriteAllText(saveDialog.FileName, rtbInvoicePreview.Text);
                     }
 
-                    // Update invoice path in DB
-                    using (SqlConnection conn = new SqlConnection(connectionString))
-                    {
-                        string query = "UPDATE Invoices SET InvoicePath = @Path WHERE SaleID = @SaleID";
-                        using (SqlCommand cmd = new SqlCommand(query, conn))
-                        {
-                            cmd.Parameters.AddWithValue("@Path", saveDialog.FileName);
-                            cmd.Parameters.AddWithValue("@SaleID", selectedSaleId);
-                            conn.Open();
-                            cmd.ExecuteNonQuery();
-                        }
-                    }
+                   
 
                     MessageBox.Show("Invoice saved successfully!");
                 }
@@ -865,8 +852,7 @@ namespace RiceMgmtApp
             if (printDialog.ShowDialog() == DialogResult.OK)
             {
                 MessageBox.Show("Printing functionality would be implemented here.");
-                // In a real application, you would implement printing here
-                // This would typically use a PrintDocument object
+               
             }
         }
 
@@ -942,12 +928,11 @@ namespace RiceMgmtApp
 
                 cmbPaymentStatus.Text = row.Cells["PaymentStatus"].Value?.ToString();
 
-                // Disable stock selection for existing records
+               
                 btnViewStock.Enabled = false;
                 lblSelectedStock.Visible = false;
             }
         }
 
-        
     }
 }

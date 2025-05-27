@@ -8,7 +8,7 @@ namespace RiceMgmtApp
 {
     public partial class frm_login : Form
     {
-        // Store connection 
+       
         private readonly string _connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
 
         public frm_login()
@@ -31,7 +31,7 @@ namespace RiceMgmtApp
             string username = txt_username.Text.Trim();
             string password = txt_password.Text.Trim();
 
-            // Validate inputs
+     
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
                 MessageBox.Show("Please enter both username and password.", "Login Error",
@@ -54,7 +54,7 @@ namespace RiceMgmtApp
                         return;
                     }
 
-                    // Check status
+                   
                     if (userInfo.Status == "Suspended")
                     {
                         MessageBox.Show("Your account is suspended.", "Access Denied",
@@ -62,7 +62,7 @@ namespace RiceMgmtApp
                         return;
                     }
 
-                    // Verify password
+                   
                     if (VerifyPassword(password, userInfo.PasswordHash))
                     {
                         LogAuthAttempt(connection, userInfo.UserId, "Success");

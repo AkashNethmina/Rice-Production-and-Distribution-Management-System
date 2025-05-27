@@ -31,7 +31,7 @@ namespace RiceMgmtApp
         {
             InitializeUI();
             LoadDamageReports();
-            ConfigureUIBasedOnRole(); // Show/hide UI based on user role
+            ConfigureUIBasedOnRole(); 
             dgvDamageReports.SelectionChanged += dgvDamageReports_SelectionChanged;
         }
 
@@ -56,7 +56,7 @@ namespace RiceMgmtApp
             dgvDamageReports.Columns["ReportDetails"].DataPropertyName = "ReportDetails";
             dgvDamageReports.Columns["ReportDetails"].Width = 200;
 
-            // Status column (as TextBoxColumn for future customization)
+       
             DataGridViewTextBoxColumn statusCol = new DataGridViewTextBoxColumn
             {
                 Name = "Status",
@@ -67,15 +67,12 @@ namespace RiceMgmtApp
             dgvDamageReports.Columns.Add(statusCol);
             
 
-            // CreatedAt column with date formatting
             dgvDamageReports.Columns.Add("CreatedAt", "Reported On");
             dgvDamageReports.Columns["CreatedAt"].DataPropertyName = "CreatedAt";
             dgvDamageReports.Columns["CreatedAt"].Width = 120;
             dgvDamageReports.Columns["CreatedAt"].DefaultCellStyle.Format = "dd-MMM-yyyy";
 
             
-
-            // Set up status filter
             cmbStatusFilter.Items.Clear();
             cmbStatusFilter.Items.AddRange(new string[] { "All", "Pending", "Under Review", "Approved", "Rejected" });
             cmbStatusFilter.SelectedIndex = 0;
@@ -83,7 +80,7 @@ namespace RiceMgmtApp
 
         private void ConfigureUIBasedOnRole()
         {
-            // Configure UI elements based on user role
+          
             switch (currentUserRole)
             {
                 case 1: // Admin
@@ -96,7 +93,7 @@ namespace RiceMgmtApp
                     pnlReviewActions.Visible = false;
                     btnRefreshReports.Visible = true;
                     break;
-                case 3: // Government official
+                case 3: // Government
                     pnlReportCreation.Visible = false;
                     pnlReviewActions.Visible = true;
                     btnRefreshReports.Visible = true;
@@ -106,6 +103,10 @@ namespace RiceMgmtApp
                     pnlReviewActions.Visible = false;
                     btnRefreshReports.Visible = false;
                     break;
+            }
+            if (dgvDamageReports.Columns["FarmerName"] != null)
+            {
+                dgvDamageReports.Columns["FarmerName"].Visible = currentUserRole != 2;
             }
         }
 
@@ -123,7 +124,7 @@ namespace RiceMgmtApp
                 if (filterByStatus)
                     query.Append(" AND dr.Status = @Status");
 
-                // Farmers can only see their own reports
+               
                 if (currentUserRole == 2)
                     query.Append(" AND dr.FarmerID = @UserID");
 
@@ -176,7 +177,7 @@ namespace RiceMgmtApp
                 {
                     conn.Open();
 
-                    // Check if currentUserID exists in Users table
+                   
                     string checkQuery = "SELECT COUNT(*) FROM Users WHERE UserID = @UserID";
                     using (SqlCommand checkCmd = new SqlCommand(checkQuery, conn))
                     {
@@ -190,7 +191,7 @@ namespace RiceMgmtApp
                         }
                     }
 
-                    // Insert the damage report
+                    
                     string insertQuery = @"
                         INSERT INTO DamageReports (FarmerID, ReportDetails, Status, CreatedAt)
                         VALUES (@FarmerID, @ReportDetails, 'Pending', GETDATE())";
@@ -227,7 +228,7 @@ namespace RiceMgmtApp
         {
             bool hasSelection = dgvDamageReports.SelectedRows.Count > 0;
 
-            // Disable all action buttons by default
+        
             btnApprove.Enabled = false;
             btnReject.Enabled = false;
             btnReview.Enabled = false;
@@ -237,7 +238,7 @@ namespace RiceMgmtApp
             {
                 var selectedRow = dgvDamageReports.SelectedRows[0];
 
-                // Check if the column "Status" exists in the grid
+               
                 if (dgvDamageReports.Columns.Contains("Status"))
                 {
                     var statusCell = selectedRow.Cells["Status"];
@@ -245,13 +246,12 @@ namespace RiceMgmtApp
                     {
                         string status = statusCell.Value.ToString();
 
-                        // Allow actions only for "Pending" or "Under Review" statuses
+                        
                         bool canAct = (status == "Pending" || status == "Under Review");
 
                         btnApprove.Enabled = canAct;
                         btnReject.Enabled = canAct;
 
-                        // Can only review if currently "Pending"
                         btnReview.Enabled = (status == "Pending");
                     }
                 }

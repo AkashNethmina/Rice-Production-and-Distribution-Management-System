@@ -20,7 +20,7 @@ namespace RiceMgmtApp
 
         public Fields(int userId, int roleId)
         {
-            if (roleId == 4) // Private Buyer - No access
+            if (roleId == 4) 
             {
                 MessageBox.Show("Access denied. You are not authorized to view field data.", "Access Denied",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -32,15 +32,12 @@ namespace RiceMgmtApp
             currentUserId = userId;
             currentUserRoleId = roleId;
 
-            // Initialize UI
-            btnAddField.Visible = currentUserRoleId == 2; // Show add only to farmers
-            cboFilter.SelectedIndex = 0; // Default to "All Zones"
+            btnAddField.Visible = currentUserRoleId == 2; 
+            cboFilter.SelectedIndex = 0; 
 
-            // Responsive design handling
             this.SizeChanged += Fields_SizeChanged;
             this.Resize += Fields_Resize;
 
-            // Load data
             LoadFields();
         }
         private void Fields_SizeChanged(object sender, EventArgs e)
@@ -55,21 +52,15 @@ namespace RiceMgmtApp
 
         private void ResizeUI()
         {
-            // Adjust UI elements based on control size
             if (this.Width < 700)
             {
-                // Compact mode
-                txtSearch.Width = 150;
                 cboFilter.Width = 100;
                 btnExportPDF.Text = "PDF";
-                // Explicitly specify the namespace for System.Drawing.Font
                 lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 14, FontStyle.Bold);
                 lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 14, FontStyle.Bold);
             }
             else
             {
-                // Normal mode
-                txtSearch.Width = 200;
                 cboFilter.Width = 150;
                 btnExportPDF.Text = "📋 PDF";
                 lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 16, FontStyle.Bold);
@@ -102,7 +93,7 @@ namespace RiceMgmtApp
                     JOIN Users FA ON F.FarmerID = FA.UserID
                     WHERE FA.UserID = @UserID";
                     }
-                    else if (currentUserRoleId == 1 || currentUserRoleId == 3) // Admin or Govt
+                    else if (currentUserRoleId == 1 || currentUserRoleId == 3)
                     {
                         query = @"
                     SELECT 
@@ -134,7 +125,6 @@ namespace RiceMgmtApp
                     DataTable dt = new DataTable();
                     da.Fill(dt);
 
-                    // Store original data for filtering
                     originalDataTable = dt.Copy();
 
                     SetupDataGridView(dt);
@@ -153,23 +143,30 @@ namespace RiceMgmtApp
         {
             dgvFields.DataSource = dt;
 
-            // Setup columns
             dgvFields.Columns["FieldID"].HeaderText = "ID";
-            dgvFields.Columns["FarmerName"].HeaderText = "Farmer Name";
-            dgvFields.Columns["FarmerID"].Visible = false; // Hide FarmerID but keep it for reference
+
+            if (currentUserRoleId == 2)
+            {
+                dgvFields.Columns["FarmerName"].Visible = false;
+            }
+            else
+            {
+                dgvFields.Columns["FarmerName"].HeaderText = "Farmer Name";
+                dgvFields.Columns["FarmerName"].Visible = true;
+            }
+
+            dgvFields.Columns["FarmerID"].Visible = false;
             dgvFields.Columns["LocationCoordinates"].HeaderText = "Location";
             dgvFields.Columns["FieldSize"].HeaderText = "Size (Acres)";
             dgvFields.Columns["SoilCondition"].HeaderText = "Soil Condition";
             dgvFields.Columns["Zone"].HeaderText = "Zone";
             dgvFields.Columns["SeasonType"].HeaderText = "Season Type";
             dgvFields.Columns["CreatedAt"].HeaderText = "Created At";
-            dgvFields.Columns["CreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm:ss"; // Format date
+            dgvFields.Columns["CreatedAt"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm:ss";
 
-            // Remove old buttons if any
             if (dgvFields.Columns["Edit"] != null) dgvFields.Columns.Remove("Edit");
             if (dgvFields.Columns["Delete"] != null) dgvFields.Columns.Remove("Delete");
 
-            // Add Edit button for Admin/Farmer
             if (currentUserRoleId == 1 || currentUserRoleId == 2)
             {
                 DataGridViewImageColumn editColumn = new DataGridViewImageColumn();
@@ -180,11 +177,7 @@ namespace RiceMgmtApp
                 editColumn.Width = 50;
                 editColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                 dgvFields.Columns.Add(editColumn);
-            }
 
-            // Add Delete button for Admin/Farmer
-            if (currentUserRoleId == 1 || currentUserRoleId == 2)
-            {
                 DataGridViewImageColumn deleteColumn = new DataGridViewImageColumn();
                 deleteColumn.Name = "Delete";
                 deleteColumn.HeaderText = "";
@@ -195,13 +188,13 @@ namespace RiceMgmtApp
                 dgvFields.Columns.Add(deleteColumn);
             }
 
-            // Set preferred column widths
             if (dgvFields.Columns["FieldID"] != null)
                 dgvFields.Columns["FieldID"].Width = 60;
 
             if (dgvFields.Columns["FieldSize"] != null)
                 dgvFields.Columns["FieldSize"].Width = 80;
         }
+
         private void dgvFields_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -261,7 +254,6 @@ namespace RiceMgmtApp
 
                 if (reader.Read())
                 {
-                    // Store the current values
                     string currentLocation = reader["LocationCoordinates"].ToString();
                     decimal currentSize = Convert.ToDecimal(reader["FieldSize"]);
                     string currentSoilCondition = reader["SoilCondition"].ToString();
@@ -270,7 +262,6 @@ namespace RiceMgmtApp
 
                     reader.Close();
 
-                    // Create a modern, responsive edit form
                     Form editForm = new Form();
                     editForm.Text = "Edit Field";
                     editForm.Size = new Size(550, 500);
@@ -280,13 +271,11 @@ namespace RiceMgmtApp
                     editForm.MinimizeBox = false;
                     editForm.BackColor = Color.FromArgb(245, 246, 250);
 
-                    // Modern form header panel
                     Panel headerPanel = new Panel();
                     headerPanel.Dock = DockStyle.Top;
                     headerPanel.Height = 70;
                     headerPanel.BackColor = Color.FromArgb(30, 136, 229);
 
-                    // Form title
                     Label lblFormTitle = new Label();
                     lblFormTitle.Text = "Edit Field Details";
                     lblFormTitle.ForeColor = Color.White;
@@ -296,13 +285,11 @@ namespace RiceMgmtApp
                     lblFormTitle.TextAlign = ContentAlignment.MiddleCenter;
                     headerPanel.Controls.Add(lblFormTitle);
 
-                    // Main content panel
                     Panel contentPanel = new Panel();
                     contentPanel.Dock = DockStyle.Fill;
                     contentPanel.Padding = new Padding(30, 25, 30, 20);
                     contentPanel.BackColor = Color.FromArgb(245, 246, 250);
 
-                    // Table layout for responsive form controls
                     TableLayoutPanel formLayout = new TableLayoutPanel();
                     formLayout.Dock = DockStyle.Top;
                     formLayout.ColumnCount = 2;
@@ -316,19 +303,16 @@ namespace RiceMgmtApp
                     formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
                     formLayout.AutoSize = true;
 
-                    // Location control
                     Label lblLocation = CreateFormLabel("Location Coordinates");
                     TextBox txtLocation = CreateFormTextBox(currentLocation);
                     formLayout.Controls.Add(lblLocation, 0, 0);
                     formLayout.Controls.Add(txtLocation, 1, 0);
 
-                    // Field Size control
                     Label lblSize = CreateFormLabel("Field Size (Acres)");
                     TextBox txtSize = CreateFormTextBox(currentSize.ToString());
                     formLayout.Controls.Add(lblSize, 0, 1);
                     formLayout.Controls.Add(txtSize, 1, 1);
 
-                    // Soil Condition control
                     Label lblSoil = CreateFormLabel("Soil Condition");
                     ComboBox cboSoil = CreateFormComboBox(new string[] {
                 "Alluvial Soils",
@@ -340,7 +324,6 @@ namespace RiceMgmtApp
                     formLayout.Controls.Add(lblSoil, 0, 2);
                     formLayout.Controls.Add(cboSoil, 1, 2);
 
-                    // Zone control
                     Label lblZone = CreateFormLabel("Zone");
                     ComboBox cboZone = CreateFormComboBox(new string[] {
                 "Lowlands",
@@ -352,34 +335,28 @@ namespace RiceMgmtApp
                     formLayout.Controls.Add(lblZone, 0, 3);
                     formLayout.Controls.Add(cboZone, 1, 3);
 
-                    // Season Type control
                     Label lblSeason = CreateFormLabel("Season Type");
                     ComboBox cboSeason = CreateFormComboBox(new string[] { "Yala", "Maha" }, currentSeasonType);
                     formLayout.Controls.Add(lblSeason, 0, 4);
                     formLayout.Controls.Add(cboSeason, 1, 4);
 
-                    // Button panel for actions
                     FlowLayoutPanel buttonPanel = new FlowLayoutPanel();
                     buttonPanel.Dock = DockStyle.Bottom;
                     buttonPanel.Height = 70;
                     buttonPanel.FlowDirection = FlowDirection.RightToLeft;
                     buttonPanel.Padding = new Padding(0, 15, 0, 0);
 
-                    // Cancel Button
                     Button btnCancel = CreateButton("Cancel", Color.FromArgb(120, 120, 120), Color.White);
                     btnCancel.DialogResult = DialogResult.Cancel;
                     buttonPanel.Controls.Add(btnCancel);
 
-                    // OK Button
                     Button btnOK = CreateButton("Update Field", Color.FromArgb(76, 175, 80), Color.White);
                     btnOK.DialogResult = DialogResult.OK;
                     buttonPanel.Controls.Add(btnOK);
 
-                    // Add controls to content panel
                     contentPanel.Controls.Add(buttonPanel);
                     contentPanel.Controls.Add(formLayout);
 
-                    // Add panels to form
                     editForm.Controls.Add(contentPanel);
                     editForm.Controls.Add(headerPanel);
 
@@ -407,12 +384,11 @@ namespace RiceMgmtApp
                             updateCmd.Parameters.AddWithValue("@FieldID", fieldID);
                             updateCmd.ExecuteNonQuery();
 
-                            ShowNotification("Field updated successfully!");
                             LoadFields();
                         }
                         else
                         {
-                            ShowErrorMessage("Invalid size input!");
+                            MessageBox.Show("Invalid size input!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                     }
                 }
@@ -421,70 +397,18 @@ namespace RiceMgmtApp
 
         private void DeleteField(int fieldID)
         {
-            // Create confirmation dialog
-            Form confirmDialog = new Form();
-            confirmDialog.Text = "Confirm Deletion";
-            confirmDialog.Size = new Size(400, 200);
-            confirmDialog.StartPosition = FormStartPosition.CenterParent;
-            confirmDialog.FormBorderStyle = FormBorderStyle.FixedDialog;
-            confirmDialog.MaximizeBox = false;
-            confirmDialog.MinimizeBox = false;
-            confirmDialog.BackColor = Color.White;
-
-            // Warning Icon
-            PictureBox warningIcon = new PictureBox();
-            warningIcon.Size = new Size(48, 48);
-            warningIcon.Location = new Point(30, 30);
-            warningIcon.Image = SystemIcons.Warning.ToBitmap();
-            warningIcon.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            // Warning Message
-            Label lblWarning = new Label();
-            lblWarning.Text = "Are you sure you want to delete this field?\nThis action cannot be undone.";
-            lblWarning.Location = new Point(100, 30);
-            lblWarning.Size = new Size(270, 50);
-            lblWarning.Font = new System.Drawing.Font("Segoe UI", 10);
-
-            // Delete Button
-            Button btnDelete = CreateButton("Delete", Color.FromArgb(244, 67, 54), Color.White);
-            btnDelete.Location = new Point(200, 100);
-            btnDelete.DialogResult = DialogResult.Yes;
-
-            // Cancel Button
-            Button btnCancel = CreateButton("Cancel", Color.FromArgb(120, 120, 120), Color.White);
-            btnCancel.Location = new Point(100, 100);
-            btnCancel.DialogResult = DialogResult.Cancel;
-
-            confirmDialog.Controls.Add(warningIcon);
-            confirmDialog.Controls.Add(lblWarning);
-            confirmDialog.Controls.Add(btnDelete);
-            confirmDialog.Controls.Add(btnCancel);
-
-            confirmDialog.AcceptButton = btnCancel;
-            confirmDialog.CancelButton = btnCancel;
-
-            if (confirmDialog.ShowDialog() == DialogResult.Yes)
-            {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
                     con.Open();
 
-                    // First delete dependent rows
-                    string deleteCultivations = "DELETE FROM Cultivation WHERE FieldID = @FieldID";
-                    SqlCommand cmd1 = new SqlCommand(deleteCultivations, con);
-                    cmd1.Parameters.AddWithValue("@FieldID", fieldID);
-                    cmd1.ExecuteNonQuery();
 
-                    // Then delete the field
                     string deleteField = "DELETE FROM Fields WHERE FieldID = @FieldID";
                     SqlCommand cmd2 = new SqlCommand(deleteField, con);
                     cmd2.Parameters.AddWithValue("@FieldID", fieldID);
                     cmd2.ExecuteNonQuery();
 
-                    ShowNotification("Field and its related cultivations deleted successfully!");
                     LoadFields();
                 }
-            }
         }
 
         private void btnExportPDF_Click(object sender, EventArgs e)
@@ -499,45 +423,18 @@ namespace RiceMgmtApp
                 {
                     try
                     {
-                        // Show progress indicator
-                        Form progressForm = new Form();
-                        progressForm.Text = "Exporting PDF";
-                        progressForm.Size = new Size(400, 150);
-                        progressForm.StartPosition = FormStartPosition.CenterParent;
-                        progressForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-                        progressForm.ControlBox = false;
-                        progressForm.BackColor = Color.White;
-
-                        Label lblStatus = new Label();
-                        lblStatus.Text = "Generating PDF report...";
-                        lblStatus.Location = new Point(20, 20);
-                        lblStatus.Size = new Size(360, 30);
-                        lblStatus.Font = new System.Drawing.Font("Segoe UI", 10);
-
-                        ProgressBar progressBar = new ProgressBar();
-                        progressBar.Style = ProgressBarStyle.Marquee;
-                        progressBar.Size = new Size(360, 25);
-                        progressBar.Location = new Point(20, 60);
-                        progressBar.MarqueeAnimationSpeed = 30;
-
-                        progressForm.Controls.Add(lblStatus);
-                        progressForm.Controls.Add(progressBar);
-
-                        progressForm.Show();
-                        Application.DoEvents();
-
                         Document doc = new Document(PageSize.A4);
                         PdfWriter writer = PdfWriter.GetInstance(doc, new FileStream(sfd.FileName, FileMode.Create));
                         doc.Open();
 
-                        // Fixed Paragraph instantiation
+                     
                         Paragraph title = new Paragraph("Fields Management Report",
                             new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 18, iTextSharp.text.Font.BOLD));
                         title.Alignment = Element.ALIGN_CENTER;
                         title.SpacingAfter = 20f;
                         doc.Add(title);
 
-                        // Add date
+                 
                         Paragraph date = new Paragraph(
     new Phrase($"Generated on: {DateTime.Now.ToString("dd MMMM yyyy HH:mm")}",
     new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 10, iTextSharp.text.Font.NORMAL)));
@@ -545,13 +442,12 @@ namespace RiceMgmtApp
                         date.SpacingAfter = 20f;
                         doc.Add(date);
 
-                        // Create the table
-                        PdfPTable pdfTable = new PdfPTable(dgvFields.Columns.Count - 3); // Subtract for Edit, Delete, and hidden FarmerID
+                        PdfPTable pdfTable = new PdfPTable(dgvFields.Columns.Count - 3); 
                         pdfTable.WidthPercentage = 100;
 
-                        // Add table headers with styling
+                     
                         BaseFont baseFont = BaseFont.CreateFont(BaseFont.HELVETICA_BOLD, BaseFont.CP1252, BaseFont.NOT_EMBEDDED);
-                        // Use the fully qualified name for iTextSharp.text.Font to resolve ambiguity
+         
                         iTextSharp.text.Font headerFont = new iTextSharp.text.Font(baseFont, 10, iTextSharp.text.Font.BOLD, new iTextSharp.text.BaseColor(255, 255, 255));
 
                         foreach (DataGridViewColumn column in dgvFields.Columns)
@@ -567,7 +463,6 @@ namespace RiceMgmtApp
                             }
                         }
 
-                        // Use the fully qualified name for iTextSharp.text.Font to avoid ambiguity
                         iTextSharp.text.Font contentFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 9);
                         BaseColor lightBlue = new BaseColor(240, 248, 255);
                         BaseColor white = new BaseColor(255, 255, 255);
@@ -582,7 +477,6 @@ namespace RiceMgmtApp
                                     dgvFields.Columns[cell.ColumnIndex].Name != "FarmerID" &&
                                     dgvFields.Columns[cell.ColumnIndex].Visible)
                                 {
-                                    // Use fully qualified name for iTextSharp.text.Font to resolve ambiguity
                                     PdfPCell pdfCell = new PdfPCell(new Phrase(cell.Value?.ToString() ?? string.Empty, new iTextSharp.text.Font(contentFont)));
                                     pdfCell.BackgroundColor = useAltColor ? lightBlue : white;
                                     pdfCell.HorizontalAlignment = Element.ALIGN_LEFT;
@@ -596,7 +490,6 @@ namespace RiceMgmtApp
 
                         doc.Add(pdfTable);
 
-                        // Add a footer
                         Paragraph footer = new Paragraph(
     new Phrase("This report was generated by Field Management System",
     new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.ITALIC)));
@@ -605,25 +498,22 @@ namespace RiceMgmtApp
                         doc.Add(footer);
 
                         doc.Close();
-                        progressForm.Close();
-
-                        ShowNotification("PDF Exported Successfully!");
+                        MessageBox.Show("PDF report has been successfully exported.", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
                     {
-                        ShowErrorMessage("Error: " + ex.Message);
+                        MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             else
             {
-                ShowErrorMessage("No data to export!");
+                MessageBox.Show("No data to export!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void btnAddField_Click(object sender, EventArgs e)
         {
-            // add form
             Form addForm = new Form();
             addForm.Text = "Add New Field";
             addForm.Size = new Size(550, 500);
@@ -633,13 +523,11 @@ namespace RiceMgmtApp
             addForm.MinimizeBox = false;
             addForm.BackColor = Color.FromArgb(245, 246, 250);
 
-            //  header panel
             Panel headerPanel = new Panel();
             headerPanel.Dock = DockStyle.Top;
             headerPanel.Height = 70;
             headerPanel.BackColor = Color.FromArgb(33, 150, 243);
 
-            // Form title
             Label lblFormTitle = new Label();
             lblFormTitle.Text = "Add New Field";
             lblFormTitle.ForeColor = Color.White;
@@ -649,13 +537,11 @@ namespace RiceMgmtApp
             lblFormTitle.TextAlign = ContentAlignment.MiddleCenter;
             headerPanel.Controls.Add(lblFormTitle);
 
-            //  content panel
             Panel contentPanel = new Panel();
             contentPanel.Dock = DockStyle.Fill;
             contentPanel.Padding = new Padding(30, 25, 30, 20);
             contentPanel.BackColor = Color.FromArgb(245, 246, 250);
 
-            // Table layout 
             TableLayoutPanel formLayout = new TableLayoutPanel();
             formLayout.Dock = DockStyle.Top;
             formLayout.ColumnCount = 2;
@@ -669,19 +555,16 @@ namespace RiceMgmtApp
             formLayout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
             formLayout.AutoSize = true;
 
-            // Location 
             Label lblLocation = CreateFormLabel("Location Coordinates");
             TextBox txtLocation = CreateFormTextBox();
             formLayout.Controls.Add(lblLocation, 0, 0);
             formLayout.Controls.Add(txtLocation, 1, 0);
 
-            // Field Size control
             Label lblSize = CreateFormLabel("Field Size (Acres)");
             TextBox txtSize = CreateFormTextBox();
             formLayout.Controls.Add(lblSize, 0, 1);
             formLayout.Controls.Add(txtSize, 1, 1);
 
-            // Soil Condition control
             Label lblSoil = CreateFormLabel("Soil Condition");
             ComboBox cboSoil = CreateFormComboBox(new string[] {
         "Alluvial Soils",
@@ -693,7 +576,6 @@ namespace RiceMgmtApp
             formLayout.Controls.Add(lblSoil, 0, 2);
             formLayout.Controls.Add(cboSoil, 1, 2);
 
-            // Zone control
             Label lblZone = CreateFormLabel("Zone");
             ComboBox cboZone = CreateFormComboBox(new string[] {
         "Lowlands",
@@ -705,34 +587,28 @@ namespace RiceMgmtApp
             formLayout.Controls.Add(lblZone, 0, 3);
             formLayout.Controls.Add(cboZone, 1, 3);
 
-            // Season Type control
             Label lblSeason = CreateFormLabel("Season Type");
             ComboBox cboSeason = CreateFormComboBox(new string[] { "Yala", "Maha" });
             formLayout.Controls.Add(lblSeason, 0, 4);
             formLayout.Controls.Add(cboSeason, 1, 4);
 
-            // Button panel for actions
             FlowLayoutPanel buttonPanel = new FlowLayoutPanel();
             buttonPanel.Dock = DockStyle.Bottom;
             buttonPanel.Height = 70;
             buttonPanel.FlowDirection = FlowDirection.RightToLeft;
             buttonPanel.Padding = new Padding(0, 15, 0, 0);
 
-            // Cancel Button
             Button btnCancel = CreateButton("Cancel", Color.FromArgb(120, 120, 120), Color.White);
             btnCancel.DialogResult = DialogResult.Cancel;
             buttonPanel.Controls.Add(btnCancel);
 
-            // Add Button
             Button btnOK = CreateButton("Add Field", Color.FromArgb(76, 175, 80), Color.White);
             btnOK.DialogResult = DialogResult.OK;
             buttonPanel.Controls.Add(btnOK);
 
-            // Add controls to content panel
             contentPanel.Controls.Add(buttonPanel);
             contentPanel.Controls.Add(formLayout);
 
-            // Add panels to form
             addForm.Controls.Add(contentPanel);
             addForm.Controls.Add(headerPanel);
 
@@ -758,18 +634,18 @@ namespace RiceMgmtApp
                         cmd.Parameters.AddWithValue("@Season", cboSeason.Text);
 
                         cmd.ExecuteNonQuery();
-                        ShowNotification("Field added successfully!");
                         LoadFields();
+
+                        MessageBox.Show("Field added successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
                 else
                 {
-                    ShowErrorMessage("Invalid size input!");
+
+                    MessageBox.Show("Invalid size input!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
-
-        // Helper methods for creating UI controls
 
         private Label CreateFormLabel(string text)
         {
@@ -828,110 +704,6 @@ namespace RiceMgmtApp
             return button;
         }
 
-        private void ShowNotification(string message)
-        {
-            // Create a modern toast notification
-            Form toastForm = new Form();
-            toastForm.Size = new Size(300, 70);
-            toastForm.BackColor = Color.FromArgb(76, 175, 80);
-            toastForm.FormBorderStyle = FormBorderStyle.None;
-            toastForm.StartPosition = FormStartPosition.Manual;
-            toastForm.TopMost = true;
-            toastForm.ShowInTaskbar = false;
-
-            // Explicitly specify the namespace for System.Drawing.Rectangle
-            System.Drawing.Rectangle workingArea = Screen.GetWorkingArea(this);
-            toastForm.Location = new Point(
-                workingArea.Right - toastForm.Width - 20,
-                workingArea.Bottom - toastForm.Height - 20
-            );
-
-            // Success icon
-            Label iconLabel = new Label();
-            iconLabel.Text = "✓";
-            iconLabel.Font = new System.Drawing.Font("Segoe UI", 18, FontStyle.Bold);
-            iconLabel.ForeColor = Color.White;
-            iconLabel.Size = new Size(50, 70);
-            iconLabel.TextAlign = ContentAlignment.MiddleCenter;
-
-            // Message
-            Label msgLabel = new Label();
-            msgLabel.Text = message;
-            msgLabel.Font = new System.Drawing.Font("Segoe UI", 10);
-            msgLabel.ForeColor = Color.White;
-            msgLabel.Size = new Size(250, 70);
-            msgLabel.Location = new Point(50, 0);
-            msgLabel.TextAlign = ContentAlignment.MiddleLeft;
-
-            toastForm.Controls.Add(iconLabel);
-            toastForm.Controls.Add(msgLabel);
-
-            // Fade effect
-            Timer timer = new Timer();
-            timer.Interval = 2000;
-            timer.Tick += (s, e) => {
-                timer.Stop();
-                toastForm.Close();
-            };
-            timer.Start();
-
-            toastForm.Show();
-        }
-
-        private void ShowErrorMessage(string message)
-        {
-            // Create a modern error notification
-            Form errorForm = new Form();
-            errorForm.Size = new Size(300, 70);
-            errorForm.BackColor = Color.FromArgb(244, 67, 54);
-            errorForm.FormBorderStyle = FormBorderStyle.None;
-            errorForm.StartPosition = FormStartPosition.Manual;
-            errorForm.TopMost = true;
-            errorForm.ShowInTaskbar = false;
-
-            // Position in bottom-right corner
-            System.Drawing.Rectangle workingArea = Screen.GetWorkingArea(this);
-            errorForm.Location = new Point(
-                workingArea.Right - errorForm.Width - 20,
-                workingArea.Bottom - errorForm.Height - 20
-            );
-
-            // Error icon
-            Label iconLabel = new Label();
-            iconLabel.Text = "✕";
-            iconLabel.Font = new System.Drawing.Font("Segoe UI", 18, FontStyle.Bold);
-            iconLabel.ForeColor = Color.White;
-            iconLabel.Size = new Size(50, 70);
-            iconLabel.TextAlign = ContentAlignment.MiddleCenter;
-
-            // Message
-            Label msgLabel = new Label();
-            msgLabel.Text = message;
-            msgLabel.Font = new System.Drawing.Font("Segoe UI", 10);
-            msgLabel.ForeColor = Color.White;
-            msgLabel.Size = new Size(250, 70);
-            msgLabel.Location = new Point(50, 0);
-            msgLabel.TextAlign = ContentAlignment.MiddleLeft;
-
-            errorForm.Controls.Add(iconLabel);
-            errorForm.Controls.Add(msgLabel);
-
-            // Fade effect
-            Timer timer = new Timer();
-            timer.Interval = 3000;
-            timer.Tick += (s, e) => {
-                timer.Stop();
-                errorForm.Close();
-            };
-            timer.Start();
-
-            errorForm.Show();
-        }
-
-        
-
-        
-
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             isSearching = true;
@@ -950,50 +722,18 @@ namespace RiceMgmtApp
 
             try
             {
-                // Create a copy of the original data to work with
                 DataTable filteredData = originalDataTable.Copy();
-                string searchText = txtSearch.Text.Trim().ToLower();
                 string zoneFilter = cboFilter.SelectedItem.ToString();
 
-                // Create a filtered view of the data
                 DataView dv = filteredData.DefaultView;
 
-                // Apply zone filter if not "All Zones"
                 if (zoneFilter != "All Zones")
                 {
                     dv.RowFilter = $"Zone = '{zoneFilter}'";
                 }
 
-                // Apply search filter if search box is not empty
-                if (!string.IsNullOrEmpty(searchText))
-                {
-                    // If zone filter is already applied, we need to use AND in the filter expression
-                    string searchFilter = string.Empty;
-
-                    // Search across multiple columns
-                    searchFilter = string.Format(
-                        "FarmerName LIKE '%{0}%' OR " +
-                        "LocationCoordinates LIKE '%{0}%' OR " +
-                        "SoilCondition LIKE '%{0}%' OR " +
-                        "Zone LIKE '%{0}%' OR " +
-                        "SeasonType LIKE '%{0}%'",
-                        searchText.Replace("'", "''"));  // Escape single quotes for SQL filter syntax
-
-                    // Combine filters if zone filter is already applied
-                    if (zoneFilter != "All Zones")
-                    {
-                        dv.RowFilter = dv.RowFilter + " AND (" + searchFilter + ")";
-                    }
-                    else
-                    {
-                        dv.RowFilter = searchFilter;
-                    }
-                }
-
-                // Update the DataGridView with the filtered results
                 SetupDataGridView(dv.ToTable());
 
-                // Update status message
                 UpdateStatus($"{dv.Count} record(s) found");
             }
             catch (Exception ex)
@@ -1001,10 +741,8 @@ namespace RiceMgmtApp
                 MessageBox.Show($"Error filtering data: {ex.Message}", "Filter Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                // Reset filters if there's an error
                 if (isSearching)
                 {
-                    txtSearch.Text = string.Empty;
                     cboFilter.SelectedIndex = 0;
                     isSearching = false;
                     SetupDataGridView(originalDataTable);
