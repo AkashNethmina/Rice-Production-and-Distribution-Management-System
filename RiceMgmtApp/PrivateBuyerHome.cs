@@ -17,27 +17,26 @@ namespace RiceMgmtApp
     {
         private readonly string connectionString = "Server=DESKTOP-O6K3I3U\\SQLEXPRESS;Database=RiceProductionDB2;Integrated Security=True;";
         private int currentBuyerId; 
-        private decimal totalPurchaseQuantity = 0; // Total field size for the farmer
-        private decimal totalStockQuantity = 0; // Total stock quantity for the farmer
+        private decimal totalPurchaseQuantity = 0; 
+        private decimal totalStockQuantity = 0; 
         private decimal totalrequestQuantity = 0;
 
-        // Dictionary for crop types and quantities
+        
         private Dictionary<string, decimal> stockByType = new Dictionary<string, decimal>();
 
-        // Dictionary for sales data by month
         private Dictionary<string, decimal> salesByMonth = new Dictionary<string, decimal>();
 
         public PrivateBuyerHome(int buyerid)
         {
             InitializeComponent();
             this.currentBuyerId = buyerid;
-            // Subscribe to the Load event
+           
             this.Load += PrivateBuyerHome_Load;
         }
 
         private void PrivateBuyerHome_Load(object sender, EventArgs e)
         {
-            // Load all data when the control is loaded
+           
             LoadBuyerStatistics();
             SetupSalesChart();
             SetupStockChart();
@@ -47,13 +46,13 @@ namespace RiceMgmtApp
         {
             try
             {
-                int completedSalesCount = 0; // Declare the variable here
+                int completedSalesCount = 0; 
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
 
-                    // Get total Sales quantity
+                  
                     string purchaseQuantity = @"
                         SELECT 
                             SUM(Quantity) as TotalQuantity

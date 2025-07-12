@@ -164,7 +164,7 @@ namespace RiceMgmtApp
 
         private void RedirectToUserManagement()
         {
-            UserManagement userMgmt = new UserManagement(); // ensure this UserControl exists
+            UserManagement userMgmt = new UserManagement(); 
             Control parent = this.Parent;
 
             if (parent != null)

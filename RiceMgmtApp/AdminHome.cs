@@ -124,7 +124,7 @@ namespace RiceMgmtApp
                 {
                     connection.Open();
 
-                    // SQL query to get monthly sales data
+                
                     string query = @"
                         SELECT 
                             FORMAT(SaleDate, 'yyyy-MM') as Month,
@@ -151,16 +151,16 @@ namespace RiceMgmtApp
                     }
                 }
 
-                // Configure the Sales Chart
+             
                 chartSales.Series.Clear();
                 chartSales.ChartAreas.Clear();
 
-                // Specify the full namespace for ChartArea to resolve ambiguity
+              
                 System.Windows.Forms.DataVisualization.Charting.ChartArea salesChartArea =
                     new System.Windows.Forms.DataVisualization.Charting.ChartArea("SalesChartArea");
                 chartSales.ChartAreas.Add(salesChartArea);
 
-                // Specify the full namespace for Series to avoid ambiguity
+             
                 System.Windows.Forms.DataVisualization.Charting.Series salesSeries =
                     new System.Windows.Forms.DataVisualization.Charting.Series("Sales");
 
@@ -172,18 +172,18 @@ namespace RiceMgmtApp
                 chartSales.Series.Add(salesSeries);
                 chartSales.Titles.Add(new Title("Monthly Sales", Docking.Top, new System.Drawing.Font("Arial", 12, FontStyle.Bold), Color.Black));
 
-                // Set chart appearance
+              
                 salesChartArea.AxisX.MajorGrid.LineColor = Color.LightGray;
                 salesChartArea.AxisY.MajorGrid.LineColor = Color.LightGray;
                 salesChartArea.AxisX.LabelStyle.Font = new System.Drawing.Font("Arial", 9);
                 salesChartArea.AxisY.LabelStyle.Font = new System.Drawing.Font("Arial", 9);
 
-                // Add formatting to make the chart more readable
+              
                 salesChartArea.AxisX.LabelStyle.Angle = -45;
                 salesChartArea.AxisX.LabelStyle.IsStaggered = false;
                 salesChartArea.AxisX.MajorGrid.Enabled = false;
 
-                // Set bar color
+            
                 salesSeries.Color = Color.FromArgb(52, 152, 219);
             }
             catch (Exception ex)
