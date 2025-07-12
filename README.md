@@ -1,45 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Rice Production and Distribution Management System</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      padding: 20px;
-      max-width: 900px;
-      margin: auto;
-      background-color: #f9f9f9;
-    }
-    h1, h2, h3 {
-      color: #2c3e50;
-    }
-    code {
-      background-color: #eee;
-      padding: 2px 6px;
-      border-radius: 4px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ccc;
-      padding: 8px;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-    ul {
-      list-style-type: "📌 ";
-      margin-left: 20px;
-    }
-  </style>
-</head>
-<body>
+
 
   <h1>📦 Rice Production and Distribution Management System</h1>
   <p>A comprehensive C# Windows Forms application designed to streamline rice production, sales, and government-private buyer coordination. This system helps farmers register their fields, manage stock, submit damage reports, and connect with buyers while ensuring role-based access and data security.</p>
